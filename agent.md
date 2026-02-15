@@ -92,7 +92,7 @@ LinkLight/
 │   ├── Target: esp32-s3-devkitc-1
 │   ├── Platform: espressif32
 │   ├── Framework: arduino
-│   └── Dependencies: WiFiManager 2.0.17, NeoPixelBus 2.8.5, ArduinoJson 7.2.0
+│   └── Dependencies: WiFiManager 2.0.17, NeoPixelBus 2.8.4, ArduinoJson 7.2.0
 │
 ├── README.md                 # User-facing documentation
 ├── LICENSE                   # MIT License

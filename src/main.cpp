@@ -237,6 +237,8 @@ void updateTrainPositions() {
   Serial.println("Updating train positions...");
   
   HTTPClient http;
+  // Note: API key is passed as URL parameter per OneBusAway API specification
+  // HTTPS is used to protect the key in transit
   String url = String(API_BASE_URL) + "/trips-for-route/" + routeId + ".json?" + API_KEY_PARAM + "=" + apiKey;
   
   http.begin(url);
@@ -268,12 +270,12 @@ void updateTrainPositions() {
 void displayTrainPositions() {
   // TODO: Implement LED display logic based on train positions
   // For now, just show a simple pattern to indicate the system is working
-  static uint8_t hue = 0;
+  static uint8_t animationHue = 0;
   
   for (int i = 0; i < LED_COUNT; i++) {
-    strip.SetPixelColor(i, HslColor(hue / 255.0f, 1.0f, 0.1f));
+    strip.SetPixelColor(i, HslColor(animationHue / 255.0f, 1.0f, 0.1f));
   }
   
   strip.Show();
-  hue++;
+  animationHue++;
 }

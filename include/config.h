@@ -14,7 +14,7 @@
 // API Configuration
 #define API_BASE_URL "https://api.pugetsound.onebusaway.org/api/where"
 #define API_KEY_PARAM "key"       // API key parameter name
-#define API_UPDATE_INTERVAL 30000 // Update interval in milliseconds (30 seconds)
+#define API_UPDATE_INTERVAL (30 * 1000) // Update interval in milliseconds (30 seconds)
 
 // Preferences Keys
 #define PREF_NAMESPACE "linklight"

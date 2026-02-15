@@ -38,3 +38,6 @@ dist/
 __pycache__/
 *.py[cod]
 *$py.class
+
+# CodeQL
+_codeql_detected_source_root

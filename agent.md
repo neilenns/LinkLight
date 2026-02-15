@@ -4,7 +4,8 @@
 
 LinkLight is an ESP32-S3 firmware project that displays real-time SoundTransit Link light rail train positions on a WS2812 LED strip. The system fetches train data from the OneBusAway API and visualizes train locations on a custom PCB with LED indicators.
 
-**Key Technologies:**
+### Key Technologies
+
 - **Hardware**: ESP32-S3 microcontroller (DevKitC-1), WS2812 LED strip (50 LEDs)
 - **Framework**: Arduino-ESP32
 - **Build System**: PlatformIO
@@ -13,6 +14,7 @@ LinkLight is an ESP32-S3 firmware project that displays real-time SoundTransit L
 ## Project Architecture
 
 ### Boot Flow
+
 1. **LED Initialization** - Visual feedback that system is starting
 2. **Load Configuration** - Retrieve saved settings from NVS (Non-Volatile Storage)
 3. **WiFi Setup** - Connect using WiFiManager (captive portal on first boot)
@@ -21,27 +23,32 @@ LinkLight is an ESP32-S3 firmware project that displays real-time SoundTransit L
 
 ### Core Components
 
-**WiFi Provisioning (WiFiManager)**
+#### WiFi Provisioning (WiFiManager)
+
 - Creates "LinkLight-Setup" AP on first boot or connection failure
 - 180-second timeout for captive portal
 - Credentials saved automatically for future boots
 
-**Web Server (WebServer)**
+#### Web Server (WebServer)
+
 - `GET /` - Status page showing IP, home station
 - `GET /config` - Configuration form
 - `POST /config` - Save settings (home station, API key, route ID)
 
-**Persistent Storage (Preferences)**
+#### Persistent Storage (Preferences)
+
 - Namespace: `linklight`
 - Keys: `homeStation`, `apiKey`, `routeId`
 - Uses ESP32 NVS (Non-Volatile Storage)
 
-**LED Control (NeoPixelBus)**
+#### LED Control (NeoPixelBus)
+
 - 50 WS2812 LEDs on GPIO 8
 - Currently shows animated pattern (train logic TODO)
 - Uses HSL color space for smooth animations
 
-**API Integration**
+#### API Integration
+
 - Endpoint: `https://api.pugetsound.onebusaway.org/api/where/trips-for-route/{routeId}.json?key={apiKey}`
 - Default route: `40_102574` (Link Light Rail)
 - Polling interval: 30 seconds
@@ -96,11 +103,13 @@ LinkLight/
 
 ### Building the Project
 
-**Prerequisites:**
+#### Prerequisites
+
 - Python 3.x
 - PlatformIO Core (`pip install platformio`)
 
-**Commands:**
+#### Commands
+
 ```bash
 # Build firmware
 platformio run
@@ -116,6 +125,7 @@ platformio run --target clean
 ```
 
 **Note**: Building requires network access to these domains:
+
 - `api.registry.platformio.org` - PlatformIO registry
 - `github.com` / `raw.githubusercontent.com` - Library downloads
 - `dl.espressif.com` - ESP32 toolchain
@@ -123,7 +133,7 @@ platformio run --target clean
 ### Testing on Hardware
 
 1. **Upload firmware**: `platformio run --target upload`
-2. **Connect to WiFi**: 
+2. **Connect to WiFi**:
    - Look for "LinkLight-Setup" AP
    - Connect and configure WiFi credentials
 3. **Find IP address**: Check serial monitor at 115200 baud
@@ -148,21 +158,25 @@ git push origin v1.0.0
 ### Adding a New Configuration Parameter
 
 1. **Add constant to `include/config.h`**:
+
    ```cpp
    #define PREF_NEW_PARAM "newParam"
    ```
 
 2. **Add global variable to `src/main.cpp`**:
+
    ```cpp
    String newParam = "";
    ```
 
 3. **Update `loadPreferences()`**:
+
    ```cpp
    newParam = preferences.getString(PREF_NEW_PARAM, "default");
    ```
 
 4. **Update `savePreferences()`**:
+
    ```cpp
    preferences.putString(PREF_NEW_PARAM, newParam);
    ```
@@ -176,6 +190,7 @@ git push origin v1.0.0
 **Current behavior**: Animated rainbow pattern (placeholder)
 
 **To implement train display**:
+
 1. Parse train positions in `updateTrainPositions()`
 2. Store train data in global variables/structs
 3. Map train positions to LED indices in `displayTrainPositions()`
@@ -184,6 +199,7 @@ git push origin v1.0.0
 ### Adding a New Web Endpoint
 
 1. **Create handler function**:
+
    ```cpp
    void handleNewEndpoint() {
      String html = "...";
@@ -192,6 +208,7 @@ git push origin v1.0.0
    ```
 
 2. **Register in `setupWebServer()`**:
+
    ```cpp
    server.on("/new", HTTP_GET, handleNewEndpoint);
    ```
@@ -200,12 +217,14 @@ git push origin v1.0.0
 
 **Location**: `updateTrainPositions()` function in `src/main.cpp`
 
-**Current implementation**: 
+**Current implementation**:
+
 - Fetches data from OneBusAway API
 - Parses JSON with ArduinoJson
 - TODO: Extract train position data
 
 **API Response Structure** (needs investigation):
+
 - Check OneBusAway API documentation
 - Use serial output to debug response structure
 - Update JsonDocument parsing accordingly
@@ -213,13 +232,15 @@ git push origin v1.0.0
 ### Adding New Library Dependencies
 
 1. **Update `platformio.ini`**:
+
    ```ini
-   lib_deps = 
+   lib_deps =
        existing/Library @ ^1.0.0
        new/Library @ ^2.0.0
    ```
 
 2. **Include in source files**:
+
    ```cpp
    #include <NewLibrary.h>
    ```
@@ -229,30 +250,35 @@ git push origin v1.0.0
 ## Important Considerations
 
 ### Memory Management
+
 - ESP32-S3 has PSRAM enabled (`-DBOARD_HAS_PSRAM`)
 - NeoPixelBus requires continuous memory for pixel data
 - ArduinoJson uses dynamic allocation - size JsonDocument appropriately
 - Preferences (NVS) has limited write cycles - minimize saves
 
 ### WiFi Stability
+
 - WiFiManager has 180s timeout (adjustable in `config.h`)
 - On connection failure, device restarts and recreates AP
 - Web server only accessible when WiFi connected
 - Consider adding WiFi reconnection logic to `loop()`
 
 ### LED Performance
+
 - 50 LEDs @ 60mA each = up to 3A current draw
 - Ensure adequate power supply (5V, 3A+ recommended)
 - Use level shifter if needed (ESP32 3.3V → WS2812 5V data)
 - `strip.Show()` blocks briefly - avoid calling too frequently
 
 ### API Rate Limits
+
 - Current polling: every 30 seconds
 - OneBusAway may have rate limits - check API terms
 - API key required (get from pugetsound.onebusaway.org)
 - Error handling exists but could be enhanced
 
 ### Security
+
 - API key stored in plaintext in NVS
 - Web interface has no authentication
 - Suitable for home network, not public exposure
@@ -261,10 +287,12 @@ git push origin v1.0.0
 ## Known TODOs and Future Enhancements
 
 ### Immediate TODOs (marked in code)
+
 1. **`updateTrainPositions()`**: Parse train position data from API response
 2. **`displayTrainPositions()`**: Map train positions to LED strip
 
 ### Potential Enhancements
+
 - WiFi reconnection without restart
 - Multiple route support
 - Home station highlighting
@@ -281,6 +309,7 @@ git push origin v1.0.0
 ## Debugging Tips
 
 ### Serial Monitor
+
 - Baud rate: 115200
 - Shows startup sequence, WiFi status, API requests
 - Debug level: 4 (verbose) - set in `platformio.ini`
@@ -288,23 +317,27 @@ git push origin v1.0.0
 ### Common Issues
 
 **Build Fails**:
+
 - Check PlatformIO registry access (network whitelist)
 - Verify library versions in `platformio.ini`
 - Clean and rebuild: `platformio run --target clean`
 
 **WiFi Won't Connect**:
+
 - Check serial monitor for error messages
 - Verify "LinkLight-Setup" AP appears
 - Try power cycle (hard reset)
 - Check WiFiManager timeout (180s default)
 
 **LEDs Not Working**:
+
 - Verify GPIO 8 connection
 - Check power supply (5V, adequate current)
 - Try changing `LED_PIN` in `config.h`
 - Test with simple pattern first
 
 **API Returns Errors**:
+
 - Verify API key is valid
 - Check route ID is correct
 - Test URL manually in browser
@@ -316,10 +349,12 @@ git push origin v1.0.0
 **Feature Branches**: `copilot/*` (agent-created features)
 
 **Commit Message Format**: Descriptive, imperative mood
+
 - Good: "Add WiFi reconnection logic"
 - Bad: "Fixed stuff"
 
-**Pull Requests**: 
+**Pull Requests**:
+
 - Include description of changes
 - Reference any related issues
 - Ensure builds pass in CI
@@ -337,16 +372,19 @@ git push origin v1.0.0
 ## Quick Reference
 
 **Hardware Specs**:
+
 - MCU: ESP32-S3 (dual-core, 240MHz, WiFi + BLE)
 - LED Strip: WS2812/NeoPixel (50 LEDs, GPIO 8)
 - Power: 5V (USB or external, 3A+ recommended)
 
 **Network Info**:
+
 - AP Name: `LinkLight-Setup`
 - Web Interface: `http://<device-ip>`
 - API: `api.pugetsound.onebusaway.org`
 
 **Key Constants** (in `config.h`):
+
 - `LED_PIN`: GPIO 8
 - `LED_COUNT`: 50
 - `WEB_SERVER_PORT`: 80

@@ -35,7 +35,7 @@ String escapeHtml(const String& str);
 
 // Helper function to escape HTML entities
 String escapeHtml(const String& str) {
-  String escaped = "";
+  String escaped;
   escaped.reserve(str.length() * 2); // Pre-allocate to avoid multiple reallocations
   
   for (unsigned int i = 0; i < str.length(); i++) {
@@ -237,15 +237,18 @@ void handleSaveConfig() {
       apiKey = apiKey.substring(0, 64);
     }
   }
-  if (server.hasArg("routeId") && server.arg("routeId").length() > 0) {
-    routeId = server.arg("routeId");
-    // Limit length to prevent excessive storage use
-    if (routeId.length() > 32) {
-      routeId = routeId.substring(0, 32);
+  if (server.hasArg("routeId")) {
+    String newRouteId = server.arg("routeId");
+    if (newRouteId.length() > 0) {
+      routeId = newRouteId;
+      // Limit length to prevent excessive storage use
+      if (routeId.length() > 32) {
+        routeId = routeId.substring(0, 32);
+      }
+    } else {
+      // If routeId is empty, use default
+      routeId = DEFAULT_ROUTE_ID;
     }
-  } else {
-    // If routeId is empty or not provided, use default
-    routeId = DEFAULT_ROUTE_ID;
   }
   
   savePreferences();

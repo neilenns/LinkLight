@@ -1,15 +1,15 @@
-name: Build and Release
+name: PR Build
 
 on:
-  release:
-    types: [created]
-  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: write
     
     steps:
       - name: Checkout code
@@ -50,36 +50,15 @@ jobs:
           cp .pio/build/esp32-s3-devkitc-1/firmware.bin artifacts/LinkLight-firmware.bin
           cp .pio/build/esp32-s3-devkitc-1/firmware.elf artifacts/LinkLight-firmware.elf
           
+      - name: Create artifact zip
+        run: |
+          cd artifacts
+          zip -r ../LinkLight-firmware.zip .
+          cd ..
+          
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: firmware
-          path: artifacts/
-          
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release'
-    
-    permissions:
-      contents: write
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware
-          path: artifacts/
-          
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            artifacts/LinkLight-firmware.bin
-            artifacts/LinkLight-firmware.elf
-          draft: false
-          prerelease: false
-          generate_release_notes: true
+          name: LinkLight-firmware-pr-${{ github.event.pull_request.number }}
+          path: LinkLight-firmware.zip
+          retention-days: 30

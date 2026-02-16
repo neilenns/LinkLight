@@ -83,9 +83,12 @@ LinkLight/
 │       └── Default values (route ID)
 │
 ├── .github/workflows/
-│   └── build-release.yml     # CI/CD pipeline
-│       ├── Build job (on tag push matching v* and workflow_dispatch)
-│       ├── Release job (on tag push only)
+│   ├── pr-build.yml         # CI pipeline for pull requests
+│   │   ├── Build job (on pull request events)
+│   │   └── Artifacts: firmware.bin, firmware.elf (as zip)
+│   └── build-release.yml    # CI/CD pipeline for releases
+│       ├── Build job (on release creation and workflow_dispatch)
+│       ├── Release job (on release creation only)
 │       └── Artifacts: firmware.bin, firmware.elf
 │
 ├── platformio.ini            # PlatformIO configuration
@@ -142,16 +145,15 @@ platformio run --target clean
 
 ### Creating a Release
 
-```bash
-# Tag a version
-git tag -a v1.0.0 -m "Release version 1.0.0"
-git push origin v1.0.0
+1. Go to the GitHub repository page
+2. Click on "Releases" in the right sidebar
+3. Click "Create a new release"
+4. Create a new tag (e.g., v1.0.0) and fill in release details
+5. Click "Publish release"
 
-# GitHub Actions will automatically:
-# 1. Build firmware.bin and firmware.elf
-# 2. Create a GitHub release
-# 3. Attach binaries to release
-```
+GitHub Actions will automatically:
+1. Build firmware.bin and firmware.elf
+2. Attach binaries to the release
 
 ## Common Tasks for AI Agents
 

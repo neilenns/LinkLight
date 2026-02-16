@@ -61,6 +61,12 @@ LinkLight is a project to display the current position of SoundTransit Link ligh
 2. Upload the firmware:
    - Click "Upload" in PlatformIO or press `Ctrl+Alt+U`
 
+3. Upload the filesystem (required for web pages):
+   - In PlatformIO, open the Project Tasks menu
+   - Under "Platform", click "Upload Filesystem Image"
+   - Alternatively, run: `pio run --target uploadfs`
+   - This uploads the HTML files from the `data` folder to the ESP32's LittleFS filesystem
+
 ### First-Time Setup
 
 1. After uploading, the ESP32 will create a WiFi access point named `LinkLight-Setup`
@@ -97,6 +103,18 @@ The default configuration uses:
 
 ### Project Structure
 
+```
+LinkLight/
+├── data/               # Static HTML files for web interface
+│   ├── index.html      # Main page
+│   ├── config.html     # Configuration page
+│   └── config_saved.html  # Configuration saved confirmation
+├── include/            # Header files
+│   └── config.h        # Configuration constants
+├── src/                # Source code
+│   └── main.cpp        # Main application
+└── platformio.ini      # PlatformIO configuration
+```
 
 ### Building Locally
 
@@ -106,6 +124,9 @@ pio run
 
 # Upload to device
 pio run --target upload
+
+# Upload filesystem (HTML files)
+pio run --target uploadfs
 
 # Monitor serial output
 pio device monitor

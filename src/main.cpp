@@ -115,7 +115,7 @@ void setupLEDs() {
 void loadPreferences() {
   Serial.println("Loading preferences...");
   
-  preferences.begin(PREF_NAMESPACE, false);
+  preferences.begin(PREF_NAMESPACE, true);
   
   homeStation = preferences.getString(PREF_HOME_STATION, "");
   apiKey = preferences.getString(PREF_API_KEY, "");

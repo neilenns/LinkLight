@@ -190,10 +190,7 @@ String readFile(const char* path) {
     return String();
   }
   
-  String content;
-  while (file.available()) {
-    content += (char)file.read();
-  }
+  String content = file.readString();
   file.close();
   
   return content;
@@ -202,7 +199,17 @@ String readFile(const char* path) {
 String processTemplate(String html) {
   // Replace placeholders with actual values
   html.replace("%IP_ADDRESS%", WiFi.localIP().toString());
-  html.replace("%HOME_STATION%", homeStation.isEmpty() ? "Not configured" : escapeHtml(homeStation));
+  
+  // For display purposes (like home page), show "Not configured" if empty
+  // For form inputs (like config page), use empty string to avoid pre-filling with "Not configured"
+  if (html.indexOf("value='%HOME_STATION%'") != -1) {
+    // Config form - use actual value (escaped), or empty if not set
+    html.replace("%HOME_STATION%", escapeHtml(homeStation));
+  } else {
+    // Display text - show "Not configured" if empty
+    html.replace("%HOME_STATION%", homeStation.isEmpty() ? "Not configured" : escapeHtml(homeStation));
+  }
+  
   html.replace("%API_KEY%", escapeHtml(apiKey));
   html.replace("%ROUTE_ID%", escapeHtml(routeId));
   

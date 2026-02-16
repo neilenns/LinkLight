@@ -97,19 +97,6 @@ The default configuration uses:
 
 ### Project Structure
 
-```
-LinkLight/
-├── .github/
-│   └── workflows/
-│       └── build-release.yml    # GitHub Actions workflow
-├── include/
-│   └── config.h                 # Configuration constants
-├── src/
-│   └── main.cpp                 # Main application code
-├── .gitignore
-├── platformio.ini               # PlatformIO configuration
-└── README.md
-```
 
 ### Building Locally
 

@@ -184,8 +184,7 @@ void handleRoot() {
   }
   
   // Create data for Ministache template
-  // StaticJsonDocument with size for: ipAddress (string ~15 chars) + homeStation (string ~64 chars)
-  StaticJsonDocument<256> data;
+  JsonDocument data;
   data["ipAddress"] = WiFi.localIP().toString();
   // Only set homeStation if not empty, so Mustache {{^homeStation}} works
   if (!homeStation.isEmpty()) {
@@ -206,8 +205,7 @@ void handleConfig() {
   }
   
   // Create data for Ministache template
-  // StaticJsonDocument with size for: homeStation (64) + apiKey (64) + routeId (32) chars
-  StaticJsonDocument<256> data;
+  JsonDocument data;
   data["homeStation"] = homeStation;
   data["apiKey"] = apiKey;
   data["routeId"] = routeId;

@@ -29,7 +29,7 @@ LinkLight is a project to display the current position of SoundTransit Link ligh
 - **IDE**: Visual Studio Code with PlatformIO extension
 - **Libraries**:
   - WiFiManager (^2.0.17) - WiFi provisioning
-  - NeoPixelBus (^2.8.5) - LED control
+  - NeoPixelBus (^2.8.0) - LED control
   - ArduinoJson (^7.2.0) - JSON parsing
   - Preferences (built-in) - Persistent storage
 

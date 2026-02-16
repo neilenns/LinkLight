@@ -62,3 +62,32 @@ jobs:
           name: LinkLight-firmware-pr-${{ github.event.pull_request.number }}
           path: LinkLight-firmware.zip
           retention-days: 30
+          
+      - name: Comment on PR with artifact link
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runId = context.runId;
+            const prNumber = context.payload.pull_request.number;
+            const artifactName = `LinkLight-firmware-pr-${prNumber}`;
+            const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+            
+            const comment = `## 🎉 Build Successful!
+            
+            The firmware has been built successfully. You can download the artifacts here:
+            
+            📦 **Artifact Name:** \`${artifactName}\`
+            🔗 **Download Link:** [Click here to view artifacts](${artifactUrl})
+            
+            The artifact contains:
+            - \`LinkLight-firmware.bin\` - Firmware binary for flashing
+            - \`LinkLight-firmware.elf\` - ELF file for debugging
+            
+            *Artifacts will be available for 30 days.*`;
+            
+            github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

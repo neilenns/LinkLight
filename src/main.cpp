@@ -9,6 +9,8 @@
 #include <LittleFS.h>
 #include <Ministache.h>
 #include <esp_log.h>
+#include <vector>
+#include <map>
 #include "config.h"
 
 // Global objects
@@ -24,6 +26,21 @@ String routeId = DEFAULT_ROUTE_ID;
 unsigned long lastApiUpdate = 0;
 
 static const char* TAG = "LinkLight";
+
+// Train data structure
+struct TrainData {
+  String closestStop;
+  int closestStopTimeOffset;
+  String nextStop;
+  int nextStopTimeOffset;
+  String tripId;
+  String directionId;
+  String routeId;
+  String tripHeadsign;
+};
+
+// Global train data storage
+std::vector<TrainData> trainDataList;
 
 // Function declarations
 void setupWiFi();
@@ -312,8 +329,67 @@ void updateTrainPositions() {
       ESP_LOGE(TAG, "JSON parsing failed: %s", error.c_str());
     } else {
       ESP_LOGI(TAG, "Successfully retrieved train data");
-      // TODO: Process train position data and update LED display
-      // This will be implemented based on the actual API response structure
+      
+      // Clear previous train data
+      trainDataList.clear();
+      
+      // Get the data object
+      JsonObject data = doc["data"];
+      if (!data.isNull()) {
+        // First, build a map of trip information
+        std::map<String, JsonObject> tripMap;
+        JsonArray trips = data["references"]["trips"];
+        if (!trips.isNull()) {
+          for (JsonObject trip : trips) {
+            String tripId = trip["id"].as<String>();
+            tripMap[tripId] = trip;
+          }
+          ESP_LOGI(TAG, "Loaded %d trip references", tripMap.size());
+        }
+        
+        // Process the list array
+        JsonArray list = data["list"];
+        if (!list.isNull()) {
+          for (JsonObject item : list) {
+            TrainData train;
+            
+            // Extract tripId from the list item
+            train.tripId = item["tripId"].as<String>();
+            
+            // Extract data from status object
+            JsonObject status = item["status"];
+            if (!status.isNull()) {
+              train.closestStop = status["closestStop"].as<String>();
+              train.closestStopTimeOffset = status["closestStopTimeOffset"].as<int>();
+              train.nextStop = status["nextStop"].as<String>();
+              train.nextStopTimeOffset = status["nextStopTimeOffset"].as<int>();
+            }
+            
+            // Merge trip information if available
+            if (tripMap.find(train.tripId) != tripMap.end()) {
+              JsonObject tripInfo = tripMap[train.tripId];
+              train.directionId = tripInfo["directionId"].as<String>();
+              train.routeId = tripInfo["routeId"].as<String>();
+              train.tripHeadsign = tripInfo["tripHeadsign"].as<String>();
+            }
+            
+            // Add to the list
+            trainDataList.push_back(train);
+            
+            // Log parsed data
+            ESP_LOGI(TAG, "Train: tripId=%s, closestStop=%s, offset=%d, nextStop=%s, offset=%d, direction=%s, route=%s, headsign=%s",
+              train.tripId.c_str(),
+              train.closestStop.c_str(),
+              train.closestStopTimeOffset,
+              train.nextStop.c_str(),
+              train.nextStopTimeOffset,
+              train.directionId.c_str(),
+              train.routeId.c_str(),
+              train.tripHeadsign.c_str());
+          }
+          ESP_LOGI(TAG, "Processed %d train positions", trainDataList.size());
+        }
+      }
     }
   } else {
     ESP_LOGW(TAG, "HTTP request failed: %d", httpCode);

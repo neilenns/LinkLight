@@ -31,6 +31,18 @@ void handleConfig();
 void handleSaveConfig();
 void updateTrainPositions();
 void displayTrainPositions();
+String escapeHtml(const String& str);
+
+// Helper function to escape HTML entities
+String escapeHtml(const String& str) {
+  String escaped = str;
+  escaped.replace("&", "&amp;");
+  escaped.replace("<", "&lt;");
+  escaped.replace(">", "&gt;");
+  escaped.replace("\"", "&quot;");
+  escaped.replace("'", "&#39;");
+  return escaped;
+}
 
 void setup() {
   Serial.begin(115200);
@@ -160,7 +172,7 @@ void handleRoot() {
   html += "<div class='info'>";
   html += "<p><strong>Status:</strong> Running</p>";
   html += "<p><strong>IP Address:</strong> " + WiFi.localIP().toString() + "</p>";
-  html += "<p><strong>Home Station:</strong> " + (homeStation.isEmpty() ? "Not configured" : homeStation) + "</p>";
+  html += "<p><strong>Home Station:</strong> " + (homeStation.isEmpty() ? "Not configured" : escapeHtml(homeStation)) + "</p>";
   html += "</div>";
   html += "<a href='/config'>Configuration</a>";
   html += "</body></html>";
@@ -187,11 +199,11 @@ void handleConfig() {
   html += "<h1>LinkLight Configuration</h1>";
   html += "<form method='POST' action='/config'>";
   html += "<label>Home Station:</label>";
-  html += "<input type='text' name='homeStation' value='" + homeStation + "' placeholder='Enter station name'>";
+  html += "<input type='text' name='homeStation' value='" + escapeHtml(homeStation) + "' placeholder='Enter station name'>";
   html += "<label>API Key:</label>";
-  html += "<input type='text' name='apiKey' value='" + apiKey + "' placeholder='Enter OneBusAway API key'>";
+  html += "<input type='text' name='apiKey' value='" + escapeHtml(apiKey) + "' placeholder='Enter OneBusAway API key'>";
   html += "<label>Route ID:</label>";
-  html += "<input type='text' name='routeId' value='" + routeId + "' placeholder='Route ID'>";
+  html += "<input type='text' name='routeId' value='" + escapeHtml(routeId) + "' placeholder='Route ID'>";
   html += "<button type='submit'>Save Configuration</button>";
   html += "</form>";
   html += "<a href='/'>Back to Home</a>";
@@ -201,14 +213,30 @@ void handleConfig() {
 }
 
 void handleSaveConfig() {
+  // Validate and sanitize inputs
   if (server.hasArg("homeStation")) {
     homeStation = server.arg("homeStation");
+    // Limit length to prevent excessive storage use
+    if (homeStation.length() > 64) {
+      homeStation = homeStation.substring(0, 64);
+    }
   }
   if (server.hasArg("apiKey")) {
     apiKey = server.arg("apiKey");
+    // Limit length to prevent excessive storage use
+    if (apiKey.length() > 64) {
+      apiKey = apiKey.substring(0, 64);
+    }
   }
-  if (server.hasArg("routeId")) {
+  if (server.hasArg("routeId") && server.arg("routeId").length() > 0) {
     routeId = server.arg("routeId");
+    // Limit length to prevent excessive storage use
+    if (routeId.length() > 32) {
+      routeId = routeId.substring(0, 32);
+    }
+  } else {
+    // If routeId is empty or not provided, use default
+    routeId = DEFAULT_ROUTE_ID;
   }
   
   savePreferences();
@@ -241,15 +269,18 @@ void updateTrainPositions() {
   // HTTPS is used to protect the key in transit
   String url = String(API_BASE_URL) + "/trips-for-route/" + routeId + ".json?" + API_KEY_PARAM + "=" + apiKey;
   
+  http.setTimeout(10000); // 10 second timeout
   http.begin(url);
   int httpCode = http.GET();
   
   if (httpCode == HTTP_CODE_OK) {
-    String payload = http.getString();
+    // Parse JSON directly from stream to avoid double-buffering
+    WiFiClient* stream = http.getStreamPtr();
     
-    // Parse JSON response
-    JsonDocument doc;
-    DeserializationError error = deserializeJson(doc, payload);
+    // Use DynamicJsonDocument sized for expected response
+    // Adjust size based on actual API response
+    DynamicJsonDocument doc(8192);
+    DeserializationError error = deserializeJson(doc, *stream);
     
     if (error) {
       Serial.print("JSON parsing failed: ");

@@ -84,7 +84,7 @@ LinkLight/
 │
 ├── .github/workflows/
 │   └── build-release.yml     # CI/CD pipeline
-│       ├── Build job (on every push/tag)
+│       ├── Build job (on tag push matching v* and workflow_dispatch)
 │       ├── Release job (on tag push only)
 │       └── Artifacts: firmware.bin, firmware.elf
 │

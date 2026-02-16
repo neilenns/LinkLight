@@ -144,7 +144,7 @@ void setupLittleFS() {
   Serial.println("Setting up LittleFS...");
   
   if (!LittleFS.begin(true)) {
-    Serial.println("LittleFS mount failed");
+    Serial.println("LittleFS mount failed - web interface will not work");
     return;
   }
   
@@ -200,14 +200,19 @@ String processTemplate(String html) {
   // Replace placeholders with actual values
   html.replace("%IP_ADDRESS%", WiFi.localIP().toString());
   
-  // For display purposes (like home page), show "Not configured" if empty
-  // For form inputs (like config page), use empty string to avoid pre-filling with "Not configured"
-  if (html.indexOf("value='%HOME_STATION%'") != -1) {
-    // Config form - use actual value (escaped), or empty if not set
-    html.replace("%HOME_STATION%", escapeHtml(homeStation));
-  } else {
-    // Display text - show "Not configured" if empty
-    html.replace("%HOME_STATION%", homeStation.isEmpty() ? "Not configured" : escapeHtml(homeStation));
+  // For home station: use empty string for forms, "Not configured" for display
+  // Check if this appears in a form input (has both 'value=' and 'name=' nearby)
+  int homeStationPos = html.indexOf("%HOME_STATION%");
+  if (homeStationPos != -1) {
+    // Look backwards for 'value=' and 'name=' to determine if it's in a form input
+    String before = html.substring(max(0, homeStationPos - 100), homeStationPos);
+    bool isFormInput = (before.indexOf("value='") != -1 && before.indexOf("name='homeStation'") != -1);
+    
+    if (isFormInput) {
+      html.replace("%HOME_STATION%", escapeHtml(homeStation));
+    } else {
+      html.replace("%HOME_STATION%", homeStation.isEmpty() ? "Not configured" : escapeHtml(homeStation));
+    }
   }
   
   html.replace("%API_KEY%", escapeHtml(apiKey));
@@ -219,7 +224,7 @@ String processTemplate(String html) {
 void handleRoot() {
   String html = readFile("/index.html");
   if (html.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load index.html");
+    server.send(500, "text/plain", "Failed to load index.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
     return;
   }
   
@@ -230,7 +235,7 @@ void handleRoot() {
 void handleConfig() {
   String html = readFile("/config.html");
   if (html.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load config.html");
+    server.send(500, "text/plain", "Failed to load config.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
     return;
   }
   
@@ -272,7 +277,7 @@ void handleSaveConfig() {
   
   String html = readFile("/config_saved.html");
   if (html.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load config_saved.html");
+    server.send(500, "text/plain", "Failed to load config_saved.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
     return;
   }
   

@@ -39,6 +39,13 @@ struct TrainData {
   String tripHeadsign;
 };
 
+// Trip information structure
+struct TripInfo {
+  String directionId;
+  String routeId;
+  String tripHeadsign;
+};
+
 // Global train data storage
 std::vector<TrainData> trainDataList;
 
@@ -337,11 +344,6 @@ void updateTrainPositions() {
       JsonObject data = doc["data"];
       if (!data.isNull()) {
         // First, build a map of trip information
-        struct TripInfo {
-          String directionId;
-          String routeId;
-          String tripHeadsign;
-        };
         std::map<String, TripInfo> tripMap;
         JsonArray trips = data["references"]["trips"];
         if (!trips.isNull()) {

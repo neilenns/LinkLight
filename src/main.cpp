@@ -15,7 +15,7 @@
 WiFiManager wifiManager;
 WebServer server(WEB_SERVER_PORT);
 Preferences preferences;
-NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip(LED_COUNT, LED_PIN);
+NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2812xMethod> strip(LED_COUNT, LED_PIN);
 
 // Global variables
 String homeStation = "";
@@ -119,6 +119,27 @@ void setupLEDs() {
   
   strip.Begin();
   strip.Show(); // Initialize all pixels to 'off'
+  
+  // Basic startup self-test: full-strip RGB flashes
+  const RgbColor testColors[] = {
+    RgbColor(32, 0, 0),
+    RgbColor(0, 32, 0),
+    RgbColor(0, 0, 32)
+  };
+
+  for (const auto& color : testColors) {
+    for (int i = 0; i < LED_COUNT; i++) {
+      strip.SetPixelColor(i, color);
+    }
+    strip.Show();
+    delay(2000);
+  }
+
+  // Return LEDs to off state after test
+  for (int i = 0; i < LED_COUNT; i++) {
+    strip.SetPixelColor(i, RgbColor(0, 0, 0));
+  }
+  strip.Show();
   
   ESP_LOGI(TAG, "LEDs initialized");
 }

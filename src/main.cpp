@@ -8,6 +8,7 @@
 #include <NeoPixelBus.h>
 #include <LittleFS.h>
 #include <Ministache.h>
+#include <esp_log.h>
 #include "config.h"
 
 // Global objects
@@ -21,6 +22,8 @@ String homeStation = "";
 String apiKey = "";
 String routeId = DEFAULT_ROUTE_ID;
 unsigned long lastApiUpdate = 0;
+
+static const char* TAG = "LinkLight";
 
 // Function declarations
 void setupWiFi();
@@ -38,7 +41,10 @@ String readFile(const char* path);
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("\nLinkLight Starting...");
+  
+  delay(5000);
+
+  ESP_LOGI(TAG, "LinkLight Starting...");
 
   // Initialize LEDs first for visual feedback
   setupLEDs();
@@ -55,9 +61,8 @@ void setup() {
   // Setup web server
   setupWebServer();
   
-  Serial.println("LinkLight Ready!");
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
+  ESP_LOGI(TAG, "LinkLight Ready!");
+  ESP_LOGI(TAG, "IP Address: %s", WiFi.localIP().toString().c_str());
 }
 
 void loop() {
@@ -77,7 +82,7 @@ void loop() {
 }
 
 void setupWiFi() {
-  Serial.println("Setting up WiFi...");
+  ESP_LOGI(TAG, "Setting up WiFi...");
   
   // Set WiFi mode
   WiFi.mode(WIFI_STA);
@@ -87,18 +92,17 @@ void setupWiFi() {
   
   // Try to connect to WiFi
   if (!wifiManager.autoConnect("LinkLight-Setup")) {
-    Serial.println("Failed to connect to WiFi");
+    ESP_LOGE(TAG, "Failed to connect to WiFi");
     delay(3000);
     ESP.restart();
   }
   
-  Serial.println("Connected to WiFi");
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
+  ESP_LOGI(TAG, "Connected to WiFi");
+  ESP_LOGI(TAG, "IP Address: %s", WiFi.localIP().toString().c_str());
 }
 
 void setupWebServer() {
-  Serial.println("Setting up web server...");
+  ESP_LOGI(TAG, "Setting up web server...");
   
   // Register handlers
   server.on("/", HTTP_GET, handleRoot);
@@ -107,31 +111,31 @@ void setupWebServer() {
   
   // Start server
   server.begin();
-  Serial.println("Web server started");
+  ESP_LOGI(TAG, "Web server started");
 }
 
 void setupLEDs() {
-  Serial.println("Setting up LEDs...");
+  ESP_LOGI(TAG, "Setting up LEDs...");
   
   strip.Begin();
   strip.Show(); // Initialize all pixels to 'off'
   
-  Serial.println("LEDs initialized");
+  ESP_LOGI(TAG, "LEDs initialized");
 }
 
 void setupLittleFS() {
-  Serial.println("Setting up LittleFS...");
+  ESP_LOGI(TAG, "Setting up LittleFS...");
   
   if (!LittleFS.begin(true)) {
-    Serial.println("LittleFS mount failed - web interface will not work");
+    ESP_LOGE(TAG, "LittleFS mount failed - web interface will not work");
     return;
   }
   
-  Serial.println("LittleFS mounted successfully");
+  ESP_LOGI(TAG, "LittleFS mounted successfully");
 }
 
 void loadPreferences() {
-  Serial.println("Loading preferences...");
+  ESP_LOGI(TAG, "Loading preferences...");
   
   preferences.begin(PREF_NAMESPACE, true);
   
@@ -141,14 +145,12 @@ void loadPreferences() {
   
   preferences.end();
   
-  Serial.print("Home Station: ");
-  Serial.println(homeStation.isEmpty() ? "Not set" : homeStation);
-  Serial.print("Route ID: ");
-  Serial.println(routeId);
+  ESP_LOGI(TAG, "Home Station: %s", homeStation.isEmpty() ? "Not set" : homeStation.c_str());
+  ESP_LOGI(TAG, "Route ID: %s", routeId.c_str());
 }
 
 void savePreferences() {
-  Serial.println("Saving preferences...");
+  ESP_LOGI(TAG, "Saving preferences...");
   
   preferences.begin(PREF_NAMESPACE, false);
   
@@ -158,14 +160,13 @@ void savePreferences() {
   
   preferences.end();
   
-  Serial.println("Preferences saved");
+  ESP_LOGI(TAG, "Preferences saved");
 }
 
 String readFile(const char* path) {
   File file = LittleFS.open(path, "r");
   if (!file) {
-    Serial.print("Failed to open file: ");
-    Serial.println(path);
+    ESP_LOGE(TAG, "Failed to open file: %s", path);
     return String();
   }
   
@@ -193,6 +194,8 @@ void handleRoot() {
   
   String output = ministache::render(html, data);
   server.send(200, "text/html", output);
+
+  ESP_LOGI(TAG, "Served root page");
 }
 
 void handleConfig() {
@@ -256,11 +259,11 @@ void handleSaveConfig() {
 
 void updateTrainPositions() {
   if (apiKey.isEmpty()) {
-    Serial.println("API key not configured");
+    ESP_LOGW(TAG, "API key not configured");
     return;
   }
   
-  Serial.println("Updating train positions...");
+  ESP_LOGI(TAG, "Updating train positions...");
   
   HTTPClient http;
   // Note: API key is passed as URL parameter per OneBusAway API specification
@@ -276,7 +279,7 @@ void updateTrainPositions() {
     WiFiClient* stream = http.getStreamPtr();
     
     if (stream == nullptr) {
-      Serial.println("Failed to get HTTP stream");
+      ESP_LOGE(TAG, "Failed to get HTTP stream");
       http.end();
       return;
     }
@@ -287,16 +290,14 @@ void updateTrainPositions() {
     DeserializationError error = deserializeJson(doc, *stream);
     
     if (error) {
-      Serial.print("JSON parsing failed: ");
-      Serial.println(error.c_str());
+      ESP_LOGE(TAG, "JSON parsing failed: %s", error.c_str());
     } else {
-      Serial.println("Successfully retrieved train data");
+      ESP_LOGI(TAG, "Successfully retrieved train data");
       // TODO: Process train position data and update LED display
       // This will be implemented based on the actual API response structure
     }
   } else {
-    Serial.print("HTTP request failed: ");
-    Serial.println(httpCode);
+    ESP_LOGW(TAG, "HTTP request failed: %d", httpCode);
   }
   
   http.end();

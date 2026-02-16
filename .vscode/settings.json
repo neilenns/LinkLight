@@ -5,9 +5,13 @@
     "espressif",
     "Kbps",
     "linklight",
+    "LOGI",
+    "LOGW",
     "microcontroller",
+    "ministache",
     "onebusaway",
     "PSRAM",
-    "pugetsound"
+    "pugetsound",
+    "uploadfs"
   ]
 }

@@ -361,6 +361,16 @@ GitHub Actions will automatically:
 - Reference any related issues
 - Ensure builds pass in CI
 
+**Pull Request Labels**:
+
+All pull requests must have at least one label assigned:
+
+- `enhancement` - New features and improvements to existing features
+- `bug` - Bug fixes
+- `development` - Changes to build process/workflow/tooling
+- `dependencies` - Updates to dependencies
+- `documentation` - Documentation updates
+
 ## Additional Resources
 
 - **PlatformIO Docs**: https://docs.platformio.org/

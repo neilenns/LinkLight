@@ -337,12 +337,21 @@ void updateTrainPositions() {
       JsonObject data = doc["data"];
       if (!data.isNull()) {
         // First, build a map of trip information
-        std::map<String, JsonObject> tripMap;
+        struct TripInfo {
+          String directionId;
+          String routeId;
+          String tripHeadsign;
+        };
+        std::map<String, TripInfo> tripMap;
         JsonArray trips = data["references"]["trips"];
         if (!trips.isNull()) {
           for (JsonObject trip : trips) {
             String tripId = trip["id"].as<String>();
-            tripMap[tripId] = trip;
+            TripInfo info;
+            info.directionId = trip["directionId"].as<String>();
+            info.routeId = trip["routeId"].as<String>();
+            info.tripHeadsign = trip["tripHeadsign"].as<String>();
+            tripMap[tripId] = info;
           }
           ESP_LOGI(TAG, "Loaded %d trip references", tripMap.size());
         }
@@ -367,17 +376,17 @@ void updateTrainPositions() {
             
             // Merge trip information if available
             if (tripMap.find(train.tripId) != tripMap.end()) {
-              JsonObject tripInfo = tripMap[train.tripId];
-              train.directionId = tripInfo["directionId"].as<String>();
-              train.routeId = tripInfo["routeId"].as<String>();
-              train.tripHeadsign = tripInfo["tripHeadsign"].as<String>();
+              TripInfo& tripInfo = tripMap[train.tripId];
+              train.directionId = tripInfo.directionId;
+              train.routeId = tripInfo.routeId;
+              train.tripHeadsign = tripInfo.tripHeadsign;
             }
             
             // Add to the list
             trainDataList.push_back(train);
             
             // Log parsed data
-            ESP_LOGI(TAG, "Train: tripId=%s, closestStop=%s, offset=%d, nextStop=%s, offset=%d, direction=%s, route=%s, headsign=%s",
+            ESP_LOGI(TAG, "Train: tripId=%s, closestStop=%s, closestStopOffset=%d, nextStop=%s, nextStopOffset=%d, direction=%s, route=%s, headsign=%s",
               train.tripId.c_str(),
               train.closestStop.c_str(),
               train.closestStopTimeOffset,

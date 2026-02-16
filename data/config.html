@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LinkLight Configuration</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #0066cc; }
+    form { max-width: 400px; }
+    label { display: block; margin: 10px 0 5px; font-weight: bold; }
+    input { width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; }
+    button { padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #0052a3; }
+    a { display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>LinkLight Configuration</h1>
+  <form method='POST' action='/config'>
+    <label>Home Station:</label>
+    <input type='text' name='homeStation' value='%HOME_STATION%' placeholder='Enter station name'>
+    <label>API Key:</label>
+    <input type='text' name='apiKey' value='%API_KEY%' placeholder='Enter OneBusAway API key'>
+    <label>Route ID:</label>
+    <input type='text' name='routeId' value='%ROUTE_ID%' placeholder='Route ID'>
+    <button type='submit'>Save Configuration</button>
+  </form>
+  <a href='/'>Back to Home</a>
+</body>
+</html>

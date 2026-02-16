@@ -6,6 +6,8 @@
 #include <ArduinoJson.h>
 #include <Preferences.h>
 #include <NeoPixelBus.h>
+#include <LittleFS.h>
+#include <Ministache.h>
 #include "config.h"
 
 // Global objects
@@ -24,6 +26,7 @@ unsigned long lastApiUpdate = 0;
 void setupWiFi();
 void setupWebServer();
 void setupLEDs();
+void setupLittleFS();
 void loadPreferences();
 void savePreferences();
 void handleRoot();
@@ -31,27 +34,7 @@ void handleConfig();
 void handleSaveConfig();
 void updateTrainPositions();
 void displayTrainPositions();
-String escapeHtml(const String& str);
-
-// Helper function to escape HTML entities
-String escapeHtml(const String& str) {
-  String escaped;
-  escaped.reserve(str.length() * 2); // Pre-allocate to avoid multiple reallocations
-  
-  for (unsigned int i = 0; i < str.length(); i++) {
-    char c = str.charAt(i);
-    switch (c) {
-      case '&':  escaped += "&amp;"; break;
-      case '<':  escaped += "&lt;"; break;
-      case '>':  escaped += "&gt;"; break;
-      case '"':  escaped += "&quot;"; break;
-      case '\'': escaped += "&#39;"; break;
-      default:   escaped += c; break;
-    }
-  }
-  
-  return escaped;
-}
+String readFile(const char* path);
 
 void setup() {
   Serial.begin(115200);
@@ -59,6 +42,9 @@ void setup() {
 
   // Initialize LEDs first for visual feedback
   setupLEDs();
+  
+  // Initialize LittleFS
+  setupLittleFS();
   
   // Load saved preferences
   loadPreferences();
@@ -133,6 +119,17 @@ void setupLEDs() {
   Serial.println("LEDs initialized");
 }
 
+void setupLittleFS() {
+  Serial.println("Setting up LittleFS...");
+  
+  if (!LittleFS.begin(true)) {
+    Serial.println("LittleFS mount failed - web interface will not work");
+    return;
+  }
+  
+  Serial.println("LittleFS mounted successfully");
+}
+
 void loadPreferences() {
   Serial.println("Loading preferences...");
   
@@ -164,61 +161,56 @@ void savePreferences() {
   Serial.println("Preferences saved");
 }
 
-void handleRoot() {
-  String html = "<!DOCTYPE html><html><head>";
-  html += "<title>LinkLight</title>";
-  html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
-  html += "<style>";
-  html += "body { font-family: Arial, sans-serif; margin: 20px; }";
-  html += "h1 { color: #0066cc; }";
-  html += "a { display: inline-block; margin: 10px 0; padding: 10px 20px; ";
-  html += "background-color: #0066cc; color: white; text-decoration: none; border-radius: 4px; }";
-  html += "a:hover { background-color: #0052a3; }";
-  html += ".info { margin: 20px 0; padding: 10px; background-color: #f0f0f0; border-radius: 4px; }";
-  html += "</style>";
-  html += "</head><body>";
-  html += "<h1>LinkLight</h1>";
-  html += "<div class='info'>";
-  html += "<p><strong>Status:</strong> Running</p>";
-  html += "<p><strong>IP Address:</strong> " + WiFi.localIP().toString() + "</p>";
-  html += "<p><strong>Home Station:</strong> " + (homeStation.isEmpty() ? "Not configured" : escapeHtml(homeStation)) + "</p>";
-  html += "</div>";
-  html += "<a href='/config'>Configuration</a>";
-  html += "</body></html>";
+String readFile(const char* path) {
+  File file = LittleFS.open(path, "r");
+  if (!file) {
+    Serial.print("Failed to open file: ");
+    Serial.println(path);
+    return String();
+  }
   
-  server.send(200, "text/html", html);
+  String content = file.readString();
+  file.close();
+  
+  return content;
+}
+
+void handleRoot() {
+  String html = readFile("/index.html");
+  if (html.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load index.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
+  
+  // Create data for Ministache template
+  // StaticJsonDocument with size for: ipAddress (string ~15 chars) + homeStation (string ~64 chars)
+  StaticJsonDocument<256> data;
+  data["ipAddress"] = WiFi.localIP().toString();
+  // Only set homeStation if not empty, so Mustache {{^homeStation}} works
+  if (!homeStation.isEmpty()) {
+    data["homeStation"] = homeStation;
+  }
+  
+  String output = ministache::render(html, data);
+  server.send(200, "text/html", output);
 }
 
 void handleConfig() {
-  String html = "<!DOCTYPE html><html><head>";
-  html += "<title>LinkLight Configuration</title>";
-  html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
-  html += "<style>";
-  html += "body { font-family: Arial, sans-serif; margin: 20px; }";
-  html += "h1 { color: #0066cc; }";
-  html += "form { max-width: 400px; }";
-  html += "label { display: block; margin: 10px 0 5px; font-weight: bold; }";
-  html += "input { width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; }";
-  html += "button { padding: 10px 20px; background-color: #0066cc; color: white; ";
-  html += "border: none; border-radius: 4px; cursor: pointer; }";
-  html += "button:hover { background-color: #0052a3; }";
-  html += "a { display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; }";
-  html += "</style>";
-  html += "</head><body>";
-  html += "<h1>LinkLight Configuration</h1>";
-  html += "<form method='POST' action='/config'>";
-  html += "<label>Home Station:</label>";
-  html += "<input type='text' name='homeStation' value='" + escapeHtml(homeStation) + "' placeholder='Enter station name'>";
-  html += "<label>API Key:</label>";
-  html += "<input type='text' name='apiKey' value='" + escapeHtml(apiKey) + "' placeholder='Enter OneBusAway API key'>";
-  html += "<label>Route ID:</label>";
-  html += "<input type='text' name='routeId' value='" + escapeHtml(routeId) + "' placeholder='Route ID'>";
-  html += "<button type='submit'>Save Configuration</button>";
-  html += "</form>";
-  html += "<a href='/'>Back to Home</a>";
-  html += "</body></html>";
+  String html = readFile("/config.html");
+  if (html.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load config.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
   
-  server.send(200, "text/html", html);
+  // Create data for Ministache template
+  // StaticJsonDocument with size for: homeStation (64) + apiKey (64) + routeId (32) chars
+  StaticJsonDocument<256> data;
+  data["homeStation"] = homeStation;
+  data["apiKey"] = apiKey;
+  data["routeId"] = routeId;
+  
+  String output = ministache::render(html, data);
+  server.send(200, "text/html", output);
 }
 
 void handleSaveConfig() {
@@ -253,17 +245,11 @@ void handleSaveConfig() {
   
   savePreferences();
   
-  String html = "<!DOCTYPE html><html><head>";
-  html += "<title>Configuration Saved</title>";
-  html += "<meta http-equiv='refresh' content='2;url=/' />";
-  html += "<style>";
-  html += "body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }";
-  html += "h1 { color: #0066cc; }";
-  html += "</style>";
-  html += "</head><body>";
-  html += "<h1>Configuration Saved!</h1>";
-  html += "<p>Redirecting to home page...</p>";
-  html += "</body></html>";
+  String html = readFile("/config_saved.html");
+  if (html.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load config_saved.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
   
   server.send(200, "text/html", html);
 }

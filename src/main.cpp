@@ -34,28 +34,7 @@ void handleConfig();
 void handleSaveConfig();
 void updateTrainPositions();
 void displayTrainPositions();
-String escapeHtml(const String& str);
 String readFile(const char* path);
-
-// Helper function to escape HTML entities
-String escapeHtml(const String& str) {
-  String escaped;
-  escaped.reserve(str.length() * 2); // Pre-allocate to avoid multiple reallocations
-  
-  for (unsigned int i = 0; i < str.length(); i++) {
-    char c = str.charAt(i);
-    switch (c) {
-      case '&':  escaped += "&amp;"; break;
-      case '<':  escaped += "&lt;"; break;
-      case '>':  escaped += "&gt;"; break;
-      case '"':  escaped += "&quot;"; break;
-      case '\'': escaped += "&#39;"; break;
-      default:   escaped += c; break;
-    }
-  }
-  
-  return escaped;
-}
 
 void setup() {
   Serial.begin(115200);

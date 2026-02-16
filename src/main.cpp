@@ -35,12 +35,21 @@ String escapeHtml(const String& str);
 
 // Helper function to escape HTML entities
 String escapeHtml(const String& str) {
-  String escaped = str;
-  escaped.replace("&", "&amp;");
-  escaped.replace("<", "&lt;");
-  escaped.replace(">", "&gt;");
-  escaped.replace("\"", "&quot;");
-  escaped.replace("'", "&#39;");
+  String escaped = "";
+  escaped.reserve(str.length() * 2); // Pre-allocate to avoid multiple reallocations
+  
+  for (unsigned int i = 0; i < str.length(); i++) {
+    char c = str.charAt(i);
+    switch (c) {
+      case '&':  escaped += "&amp;"; break;
+      case '<':  escaped += "&lt;"; break;
+      case '>':  escaped += "&gt;"; break;
+      case '"':  escaped += "&quot;"; break;
+      case '\'': escaped += "&#39;"; break;
+      default:   escaped += c; break;
+    }
+  }
+  
   return escaped;
 }
 
@@ -277,9 +286,15 @@ void updateTrainPositions() {
     // Parse JSON directly from stream to avoid double-buffering
     WiFiClient* stream = http.getStreamPtr();
     
-    // Use DynamicJsonDocument sized for expected response
-    // Adjust size based on actual API response
-    DynamicJsonDocument doc(8192);
+    if (stream == nullptr) {
+      Serial.println("Failed to get HTTP stream");
+      http.end();
+      return;
+    }
+    
+    // Use JsonDocument for API response parsing
+    // Sized for expected OneBusAway API response structure
+    JsonDocument doc;
     DeserializationError error = deserializeJson(doc, *stream);
     
     if (error) {

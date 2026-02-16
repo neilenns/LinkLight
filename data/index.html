@@ -15,8 +15,8 @@
   <h1>LinkLight</h1>
   <div class='info'>
     <p><strong>Status:</strong> Running</p>
-    <p><strong>IP Address:</strong> %IP_ADDRESS%</p>
-    <p><strong>Home Station:</strong> %HOME_STATION%</p>
+    <p><strong>IP Address:</strong> {{ipAddress}}</p>
+    <p><strong>Home Station:</strong> {{#homeStation}}{{homeStation}}{{/homeStation}}{{^homeStation}}Not configured{{/homeStation}}</p>
   </div>
   <a href='/config'>Configuration</a>
 </body>

@@ -7,6 +7,7 @@
 #include <Preferences.h>
 #include <NeoPixelBus.h>
 #include <LittleFS.h>
+#include <Ministache.h>
 #include "config.h"
 
 // Global objects
@@ -35,7 +36,6 @@ void updateTrainPositions();
 void displayTrainPositions();
 String escapeHtml(const String& str);
 String readFile(const char* path);
-String processTemplate(String html);
 
 // Helper function to escape HTML entities
 String escapeHtml(const String& str) {
@@ -196,31 +196,6 @@ String readFile(const char* path) {
   return content;
 }
 
-String processTemplate(String html) {
-  // Replace placeholders with actual values
-  html.replace("%IP_ADDRESS%", WiFi.localIP().toString());
-  
-  // For home station: use empty string for forms, "Not configured" for display
-  // Check if this appears in a form input (has both 'value=' and 'name=' nearby)
-  int homeStationPos = html.indexOf("%HOME_STATION%");
-  if (homeStationPos != -1) {
-    // Look backwards for 'value=' and 'name=' to determine if it's in a form input
-    String before = html.substring(max(0, homeStationPos - 100), homeStationPos);
-    bool isFormInput = (before.indexOf("value='") != -1 && before.indexOf("name='homeStation'") != -1);
-    
-    if (isFormInput) {
-      html.replace("%HOME_STATION%", escapeHtml(homeStation));
-    } else {
-      html.replace("%HOME_STATION%", homeStation.isEmpty() ? "Not configured" : escapeHtml(homeStation));
-    }
-  }
-  
-  html.replace("%API_KEY%", escapeHtml(apiKey));
-  html.replace("%ROUTE_ID%", escapeHtml(routeId));
-  
-  return html;
-}
-
 void handleRoot() {
   String html = readFile("/index.html");
   if (html.isEmpty()) {
@@ -228,8 +203,16 @@ void handleRoot() {
     return;
   }
   
-  html = processTemplate(html);
-  server.send(200, "text/html", html);
+  // Create data for Ministache template
+  JsonDocument data;
+  data["ipAddress"] = WiFi.localIP().toString();
+  // Only set homeStation if not empty, so Mustache {{^homeStation}} works
+  if (!homeStation.isEmpty()) {
+    data["homeStation"] = homeStation;
+  }
+  
+  String output = ministache::render(html, data);
+  server.send(200, "text/html", output);
 }
 
 void handleConfig() {
@@ -239,8 +222,14 @@ void handleConfig() {
     return;
   }
   
-  html = processTemplate(html);
-  server.send(200, "text/html", html);
+  // Create data for Ministache template
+  JsonDocument data;
+  data["homeStation"] = homeStation;
+  data["apiKey"] = apiKey;
+  data["routeId"] = routeId;
+  
+  String output = ministache::render(html, data);
+  server.send(200, "text/html", output);
 }
 
 void handleSaveConfig() {

@@ -18,11 +18,11 @@
   <h1>LinkLight Configuration</h1>
   <form method='POST' action='/config'>
     <label>Home Station:</label>
-    <input type='text' name='homeStation' value='%HOME_STATION%' placeholder='Enter station name'>
+    <input type='text' name='homeStation' value='{{homeStation}}' placeholder='Enter station name'>
     <label>API Key:</label>
-    <input type='text' name='apiKey' value='%API_KEY%' placeholder='Enter OneBusAway API key'>
+    <input type='text' name='apiKey' value='{{apiKey}}' placeholder='Enter OneBusAway API key'>
     <label>Route ID:</label>
-    <input type='text' name='routeId' value='%ROUTE_ID%' placeholder='Route ID'>
+    <input type='text' name='routeId' value='{{routeId}}' placeholder='Route ID'>
     <button type='submit'>Save Configuration</button>
   </form>
   <a href='/'>Back to Home</a>

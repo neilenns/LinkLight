@@ -6,8 +6,6 @@
 .vscode/ipch
 
 # IDE
-.vscode/*
-!.vscode/extensions.json
 .idea
 *.swp
 *.swo

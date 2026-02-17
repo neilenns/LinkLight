@@ -52,19 +52,27 @@ void LEDController::setup() {
   // Initialize station maps
   initializeStationMaps();
   
-  // Basic startup self-test: full-strip RGB flashes
-  const RgbColor testColors[] = {
-    RgbColor(32, 0, 0),
-    RgbColor(0, 32, 0),
-    RgbColor(0, 0, 32)
-  };
+  // Basic startup self-test: flash each LED in sequence, blue then green
+  const RgbColor blueColor = RgbColor(0, 0, 32);
+  const RgbColor greenColor = RgbColor(0, 32, 0);
+  const int delayMs = 20;  // Delay between each LED
 
-  for (const auto& color : testColors) {
-    for (int i = 0; i < LED_COUNT; i++) {
-      strip.SetPixelColor(i, color);
-    }
+  // Flash blue
+  for (int i = 0; i < LED_COUNT; i++) {
+    strip.SetPixelColor(i, blueColor);
     strip.Show();
-    delay(2000);
+    delay(delayMs);
+  }
+  
+  // Turn all off briefly
+  clearAllLEDs();
+  delay(100);
+  
+  // Flash green
+  for (int i = 0; i < LED_COUNT; i++) {
+    strip.SetPixelColor(i, greenColor);
+    strip.Show();
+    delay(delayMs);
   }
 
   // Return LEDs to off state after test

@@ -15,15 +15,21 @@ void LogManager::setup() {
 }
 
 int LogManager::customVprintf(const char* format, va_list args) {
+  // Make a copy of args for our use since va_list can only be used once
+  va_list argsCopy;
+  va_copy(argsCopy, args);
+  
   // First, output to serial as normal
   int ret = vprintf(format, args);
   
-  // Parse the log message
+  // Parse the log message using our copy
   // ESP_LOG format: "level (timestamp) tag: message"
   // Example: "I (12345) WebServerManager: Setting up web server..."
   
   char buffer[512];
-  vsnprintf(buffer, sizeof(buffer), format, args);
+  vsnprintf(buffer, sizeof(buffer), format, argsCopy);
+  va_end(argsCopy);
+  
   String logLine = String(buffer);
   
   // Only process lines that start with a log level indicator

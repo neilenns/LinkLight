@@ -43,8 +43,6 @@ void WebServerManager::handleRoot() {
   
   String output = ministache::render(html, data);
   server.send(200, "text/html", output);
-
-  LINK_LOGI(TAG, "Served root page");
 }
 
 void WebServerManager::handleConfig() {

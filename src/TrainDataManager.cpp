@@ -13,7 +13,7 @@ TrainDataManager trainDataManager;
 
 // Trip information structure
 struct TripInfo {
-  String directionId;
+  TrainDirection directionId;
   String routeId;
   String tripHeadsign;
 };
@@ -33,7 +33,8 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     for (JsonObject trip : trips) {
       String tripId = trip["id"].as<String>();
       TripInfo info;
-      info.directionId = trip["directionId"].as<String>();
+      String directionStr = trip["directionId"].as<String>();
+      info.directionId = (directionStr == "1") ? TrainDirection::NORTHBOUND : TrainDirection::SOUTHBOUND;
       info.routeId = trip["routeId"].as<String>();
       info.tripHeadsign = trip["tripHeadsign"].as<String>();
       tripMap[tripId] = info;
@@ -59,6 +60,9 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     LINK_LOGW(TAG, "JSON response missing 'data.list' array");
     return false;
   }
+
+  // Reserve memory to avoid reallocations during push_back operations
+  trainDataList.reserve(list.size());
 
   for (JsonObject item : list) {
     TrainData train;
@@ -128,7 +132,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     auto tripIt = tripMap.find(train.tripId);
     if (tripIt != tripMap.end()) {
       TripInfo& tripInfo = tripIt->second;
-      train.directionId = tripInfo.directionId;
+      train.direction = tripInfo.directionId;
       train.routeId = tripInfo.routeId;
       train.tripHeadsign = tripInfo.tripHeadsign;
     }
@@ -149,7 +153,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     trainDataList.push_back(train);
 
     // Log parsed data
-    LINK_LOGI(TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%s, state=%s",
+    LINK_LOGD(TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%s, state=%s",
       train.tripId.c_str(),
       train.closestStop.c_str(),
       train.closestStopName.c_str(),
@@ -157,7 +161,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
       train.nextStop.c_str(),
       train.nextStopName.c_str(),
       train.nextStopTimeOffset,
-      train.directionId.c_str(),
+      train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
       train.routeId.c_str(),
       train.tripHeadsign.c_str(),
       train.line.c_str(),

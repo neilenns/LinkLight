@@ -4,21 +4,27 @@
     "devkitc",
     "espressif",
     "Kbps",
+    "LEDCONTROLLER",
     "linklight",
+    "LOGD",
     "LOGI",
+    "LOGV",
     "LOGW",
     "Lynnwood",
+    "Marymoor",
     "microcontroller",
     "ministache",
     "Moines",
     "Mountlake",
     "Northgate",
     "onebusaway",
+    "Overlake",
     "Pinehurst",
     "PSRAM",
     "pugetsound",
     "SODO",
     "Tukwila",
-    "uploadfs"
+    "uploadfs",
+    "Wilburton"
   ]
 }

@@ -1,3 +1,10 @@
+/*
+#2  0x42004a32 in LogManager::addLog(char const*, char const*, char const*) at src/LogManager.cpp:28 (discriminator 1)
+#3  0x42004bc5 in LogManager::log(char const*, char const*, char const*, ...) at src/LogManager.cpp:20
+#4  0x42008672 in TrainDataManager::parseTrainDataFromJson(ArduinoJson::V742PB22::JsonDocument&, String const&) at src/TrainDataManager.cpp:156 (discriminator 35)
+#5  0x42008eb9 in TrainDataManager::fetchTrainDataForRoute(String const&, String const&, String const&) at src/TrainDataManager.cpp:197
+#6  0x420095ea in TrainDataManager::updateTrainPositions() at src/TrainDataManager.cpp:244 (discriminator 3)
+  */
 #include "LogManager.h"
 
 static const char* TAG = "LogManager";
@@ -11,7 +18,7 @@ void LogManager::setup() {
 }
 
 void LogManager::log(const char* level, const char* tag, const char* format, ...) {
-  char buffer[256];
+  char buffer[512];
   va_list args;
   va_start(args, format);
   vsnprintf(buffer, sizeof(buffer), format, args);
@@ -21,18 +28,30 @@ void LogManager::log(const char* level, const char* tag, const char* format, ...
 }
 
 void LogManager::addLog(const char* level, const char* tag, const char* message) {
-  LogEntry entry;
-  entry.timestamp = millis();
-  entry.level = String(level);
-  entry.tag = String(tag);
-  entry.message = String(message);
+  return;
   
-  logBuffer.push_back(entry);
+  // Validate inputs to prevent crashes
+  if (!level || !tag || !message) {
+    Serial.println("[LogManager] Null parameter passed to addLog");
+    return;
+  }
   
-  // Keep only the most recent LOG_BUFFER_SIZE entries
-  // Using deque allows O(1) pop_front instead of O(n) erase(begin())
-  if (logBuffer.size() > LOG_BUFFER_SIZE) {
-    logBuffer.pop_front();
+  try {
+    LogEntry entry;
+    entry.timestamp = millis();
+    entry.level = String(level);
+    entry.tag = String(tag);
+    entry.message = String(message);
+    
+    logBuffer.push_back(entry);
+    
+    // Keep only the most recent LOG_BUFFER_SIZE entries
+    // Using deque allows O(1) pop_front instead of O(n) erase(begin())
+    if (logBuffer.size() > LOG_BUFFER_SIZE) {
+      logBuffer.pop_front();
+    }
+  } catch (...) {
+    Serial.println("[LogManager] Exception in addLog - likely memory allocation failure");
   }
 }
 

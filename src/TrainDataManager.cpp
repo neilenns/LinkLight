@@ -111,21 +111,24 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     }
 
     // Look up stop names from the stops map
-    if (stopsToNames.find(train.closestStop) != stopsToNames.end()) {
-      train.closestStopName = stopsToNames[train.closestStop];
+    auto closestStopIt = stopsToNames.find(train.closestStop);
+    if (closestStopIt != stopsToNames.end()) {
+      train.closestStopName = closestStopIt->second;
     } else {
       train.closestStopName = train.closestStop; // Fall back to ID if name not found
     }
 
-    if (stopsToNames.find(train.nextStop) != stopsToNames.end()) {
-      train.nextStopName = stopsToNames[train.nextStop];
+    auto nextStopIt = stopsToNames.find(train.nextStop);
+    if (nextStopIt != stopsToNames.end()) {
+      train.nextStopName = nextStopIt->second;
     } else {
       train.nextStopName = train.nextStop; // Fall back to ID if name not found
     }
 
     // Merge trip information if available
-    if (tripMap.find(train.tripId) != tripMap.end()) {
-      TripInfo& tripInfo = tripMap[train.tripId];
+    auto tripIt = tripMap.find(train.tripId);
+    if (tripIt != tripMap.end()) {
+      TripInfo& tripInfo = tripIt->second;
       train.directionId = tripInfo.directionId;
       train.routeId = tripInfo.routeId;
       train.tripHeadsign = tripInfo.tripHeadsign;

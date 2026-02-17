@@ -110,7 +110,7 @@ void WebServerManager::handleLogs() {
 
 void WebServerManager::handleLogsData() {
   // Get logs from LogManager
-  std::vector<LogEntry> logs = logManager.getLogs();
+  std::deque<LogEntry> logs = logManager.getLogs();
   
   // Create JSON response
   JsonDocument doc;

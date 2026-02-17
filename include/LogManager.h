@@ -2,7 +2,7 @@
 #define LOGMANAGER_H
 
 #include <Arduino.h>
-#include <vector>
+#include <deque>
 
 #define LOG_BUFFER_SIZE 100  // Number of log entries to keep in memory
 
@@ -17,11 +17,11 @@ class LogManager {
 public:
   void setup();
   void addLog(const char* level, const char* tag, const char* message);
-  std::vector<LogEntry> getLogs(int maxEntries = LOG_BUFFER_SIZE);
+  std::deque<LogEntry> getLogs(int maxEntries = LOG_BUFFER_SIZE);
   void clear();
   
 private:
-  std::vector<LogEntry> logBuffer;
+  std::deque<LogEntry> logBuffer;
   static int customVprintf(const char* format, va_list args);
   static LogManager* instance;
 };

@@ -68,18 +68,24 @@ void LogManager::addLog(const char* level, const char* tag, const char* message)
   logBuffer.push_back(entry);
   
   // Keep only the most recent LOG_BUFFER_SIZE entries
+  // Using deque allows O(1) pop_front instead of O(n) erase(begin())
   if (logBuffer.size() > LOG_BUFFER_SIZE) {
-    logBuffer.erase(logBuffer.begin());
+    logBuffer.pop_front();
   }
 }
 
-std::vector<LogEntry> LogManager::getLogs(int maxEntries) {
-  int startIndex = 0;
+std::deque<LogEntry> LogManager::getLogs(int maxEntries) {
+  // Validate maxEntries to prevent undefined behavior from negative values
+  if (maxEntries <= 0) {
+    maxEntries = LOG_BUFFER_SIZE;
+  }
+  
+  size_t startIndex = 0;
   if (logBuffer.size() > (size_t)maxEntries) {
     startIndex = logBuffer.size() - maxEntries;
   }
   
-  std::vector<LogEntry> result;
+  std::deque<LogEntry> result;
   for (size_t i = startIndex; i < logBuffer.size(); i++) {
     result.push_back(logBuffer[i]);
   }

@@ -45,12 +45,13 @@ void loop() {
   // Update train positions periodically
   if (millis() - lastApiUpdate > API_UPDATE_INTERVAL) {
     trainDataManager.updateTrainPositions();
+    
+    // Display current train positions on LEDs
+    ledController.displayTrainPositions();
+
     lastApiUpdate = millis();
   }
-  
-  // Display current train positions on LEDs
-  ledController.displayTrainPositions();
-  
+    
   delay(10);
 }
 

@@ -9,6 +9,7 @@
 #include "PreferencesManager.h"
 #include "FileSystemManager.h"
 #include "TrainDataManager.h"
+#include <esp_task_wdt.h>
 
 static const char* TAG = "LinkLight";
 unsigned long lastApiUpdate = -API_UPDATE_INTERVAL; // Initial value is a really large number to ensure the first update happens immediately.
@@ -47,6 +48,9 @@ void setup() {
 }
 
 void loop() {
+  // Feed the watchdog timer to prevent resets during normal operation
+  esp_task_wdt_reset();
+  
   // Handle OTA updates
   otaManager.handle();
   
@@ -62,6 +66,9 @@ void loop() {
 
     lastApiUpdate = millis();
   }
+  
+  // Feed watchdog again before delay
+  esp_task_wdt_reset();
     
   delay(10);
 }

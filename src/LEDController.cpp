@@ -103,11 +103,6 @@ void LEDController::setTrainLED(int ledIndex, const RgbColor& color) {
 int LEDController::getTrainLEDIndex(const TrainData& train) {
   int ledIndex = -1;
 
-  // Only handle Line 1 for now
-  if (train.line != LINE_1_NAME) {
-    return -1;
-  }
-  
   // Determine if train is northbound or southbound
   bool isNorthbound = (train.direction == TrainDirection::NORTHBOUND);
 
@@ -118,20 +113,24 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
     auto closestStationInfo = line1StationMap.find(train.closestStopName);
     if (closestStationInfo == line1StationMap.end()) {
       LINK_LOGW(TAG, "Closest station '%s' not found in Line 1 map", train.closestStopName.c_str());
-      return -1;
+      return 0; // Default to lighting the first LED if station not found, to at least indicate presence of train.
     }
 
     // Get the LED data for the closest station
     const StationLEDMapping& closestMapping = closestStationInfo->second;
 
-    ledIndex = isNorthbound ? closestMapping.northboundIndex : closestMapping.southboundIndex;
-  }    
+    if (isNorthbound) {  
+      ledIndex = closestMapping.northboundIndex - 1;  
+    } else {  
+      ledIndex = closestMapping.southboundIndex + 1;  
+    }
+  }
   // If train is moving between stations, light the LED that is one position closer to the next station.
   else if (train.state == TrainState::MOVING) {
     auto nextStationInfo = line1StationMap.find(train.nextStopName);
     if (nextStationInfo == line1StationMap.end()) {
       LINK_LOGW(TAG, "Next station '%s' not found in Line 1 map", train.nextStopName.c_str());
-      return -1;
+      return 0; // Default to lighting the first LED if station not found, to at least indicate presence of train.
     }
 
     const StationLEDMapping& nextMapping = nextStationInfo->second;

@@ -2,7 +2,16 @@
 #define LEDCONTROLLER_H
 
 #include <NeoPixelBus.h>
+#include <map>
 #include "config.h"
+
+// Station LED mapping structure: (southbound_index, leds_from_prev), (northbound_index, leds_from_prev)
+struct StationLEDMapping {
+  int southboundIndex;
+  int southboundLedsFromPrev;
+  int northboundIndex;
+  int northboundLedsFromPrev;
+};
 
 class LEDController {
 public:
@@ -11,6 +20,14 @@ public:
   
 private:
   NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2812xMethod> strip{LED_COUNT, LED_PIN};
+  
+  // Line 1 station to LED mapping
+  std::map<String, StationLEDMapping> line1StationMap;
+  
+  void initializeStationMaps();
+  void clearAllLEDs();
+  void setTrainLED(int ledIndex, const RgbColor& color);
+  int getTrainLEDIndex(const String& line, const String& direction, const String& closestStation, const String& nextStation, int closestStopTimeOffset, int nextStopTimeOffset);
 };
 
 extern LEDController ledController;

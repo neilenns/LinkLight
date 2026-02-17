@@ -28,6 +28,8 @@ void LogManager::log(const char* level, const char* tag, const char* format, ...
 }
 
 void LogManager::addLog(const char* level, const char* tag, const char* message) {
+  return;
+  
   // Validate inputs to prevent crashes
   if (!level || !tag || !message) {
     Serial.println("[LogManager] Null parameter passed to addLog");

@@ -2,6 +2,10 @@
 #include "TrainDataManager.h"
 #include <esp_log.h>
 
+// Thresholds for determining if a train is in transit between stations
+#define MIN_DEPARTED_TIME_SECONDS 30   // Min seconds since leaving closest station
+#define MAX_ARRIVAL_TIME_SECONDS 180   // Max seconds until arriving at next station
+
 static const char* TAG = "LEDController";
 
 LEDController ledController;
@@ -128,31 +132,30 @@ int LEDController::getTrainLEDIndex(const String& line, const String& direction,
     ledsToNext = nextMapping.southboundLedsFromPrev;
   }
   
-  // Determine train position:
-  // - If closestStopTimeOffset is negative (train has passed closest), it's moving toward next
-  // - If nextStopTimeOffset is positive and small, train is close to next station
-  // - Otherwise, train is at or near closest station
-  
-  // Calculate if train is between stations
-  // If closestStopTimeOffset is very negative or nextStopTimeOffset is close, train is in transit
-  if (closestStopTimeOffset < -30 && nextStopTimeOffset > 0 && nextStopTimeOffset < 180) {
-    // Train is between stations, calculate approximate position
+  // Determine train position based on time offsets
+  // If the train has departed the closest station and is approaching the next station,
+  // calculate its position between stations
+  if (closestStopTimeOffset < -MIN_DEPARTED_TIME_SECONDS && 
+      nextStopTimeOffset > 0 && 
+      nextStopTimeOffset < MAX_ARRIVAL_TIME_SECONDS) {
+    // Train is in transit between stations
     int totalTime = abs(closestStopTimeOffset) + nextStopTimeOffset;
+    
+    // Calculate progress from closest station to next station (0.0 to 1.0)
+    float progress = (float)abs(closestStopTimeOffset) / (float)totalTime;
+    
+    // Calculate LED offset based on progress and available LEDs between stations
+    // Note: Both northbound and southbound sections have decreasing indices as trains move
+    int ledOffset = 0;
     if (totalTime > 0 && ledsToNext > 1) {
-      // Interpolate position between stations
-      float progress = (float)abs(closestStopTimeOffset) / (float)totalTime;
-      int ledOffset = (int)(progress * (ledsToNext - 1));
-      
-      // LEDs are numbered sequentially between stations
-      if (isNorthbound) {
-        return stationIndex - ledOffset;
-      } else {
-        return stationIndex + ledOffset;
-      }
+      ledOffset = (int)(progress * (ledsToNext - 1));
     }
+    
+    // Both directions use decreasing indices, so we subtract the offset
+    return stationIndex - ledOffset;
   }
   
-  // Default: train is at the closest station
+  // Default: train is at or very close to the closest station
   return stationIndex;
 }
 

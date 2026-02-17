@@ -198,3 +198,17 @@ The build commands, file locations, and architectural details documented here
 have been validated. When working on this codebase, trust these instructions
 and only search for additional information if something is unclear or appears
 incorrect.
+
+## Code Style Guidelines
+
+### No Emojis
+
+Do not use emojis in any code, HTML, or user-facing text. This includes:
+- HTML headings and content
+- Button text
+- Code comments
+- Log messages
+- Configuration files
+
+Use clear, professional text instead of emojis for better accessibility and
+consistency across different platforms and devices.

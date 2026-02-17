@@ -403,4 +403,18 @@ All pull requests must have at least one label assigned:
 - `API_UPDATE_INTERVAL`: 30000ms (30s)
 - `WIFI_PORTAL_TIMEOUT`: 180s
 
+## Code Style Guidelines
+
+### No Emojis
+
+Do not use emojis in any code, HTML, or user-facing text. This includes:
+- HTML headings and content
+- Button text
+- Code comments
+- Log messages
+- Configuration files
+
+Use clear, professional text instead of emojis for better accessibility and
+consistency across different platforms and devices.
+
 This guide should help you understand the project structure and make effective contributions!

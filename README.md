@@ -90,7 +90,7 @@ After the initial upload, you can update the firmware wirelessly:
    - Click "Upload" in PlatformIO or press `Ctrl+Alt+U`
    - The firmware will be uploaded over WiFi instead of USB
 
-**Note:** OTA uploads only work for firmware. Filesystem uploads still require USB connection.
+**Note:** OTA uploads only work for firmware. Filesystem uploads still require a USB connection.
 
 ### First-Time Setup
 

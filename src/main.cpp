@@ -53,7 +53,7 @@ void setup() {
   });
   
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-    ESP_LOGI(TAG, "Progress: %u%%", (progress / (total / 100)));
+    ESP_LOGI(TAG, "Progress: %u%%", (progress * 100) / total);
   });
   
   ArduinoOTA.onError([](ota_error_t error) {

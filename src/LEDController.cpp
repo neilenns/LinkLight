@@ -83,10 +83,14 @@ void LEDController::setup() {
   LINK_LOGI(TAG, "LEDs initialized");
 }
 
-void LEDController::clearAllLEDs() {
+void LEDController::clearAllLEDsInMemory() {
   for (int i = 0; i < LED_COUNT; i++) {
     strip.SetPixelColor(i, RgbColor(0, 0, 0));
   }
+}
+
+void LEDController::clearAllLEDs() {
+  clearAllLEDsInMemory();
   strip.Show();
 }
 
@@ -144,9 +148,7 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
 
 void LEDController::displayTrainPositions() {
   // Set all LEDs to black in memory (without calling Show() to avoid flash)
-  for (int i = 0; i < LED_COUNT; i++) {
-    strip.SetPixelColor(i, RgbColor(0, 0, 0));
-  }
+  clearAllLEDsInMemory();
   
   // Get train data from TrainDataManager
   const std::vector<TrainData>& trains = trainDataManager.getTrainDataList();

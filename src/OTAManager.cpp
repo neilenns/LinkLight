@@ -1,6 +1,7 @@
 #include "OTAManager.h"
 #include <ArduinoOTA.h>
 #include "LogManager.h"
+#include "PreferencesManager.h"
 #include "config.h"
 
 static const char* TAG = "OTAManager";
@@ -10,8 +11,10 @@ OTAManager otaManager;
 void OTAManager::setup() {
   LINK_LOGI(TAG, "Setting up OTA...");
   
-  // Set hostname
-  ArduinoOTA.setHostname(OTA_HOSTNAME);
+  // Set hostname from preferences
+  String hostname = preferencesManager.getHostname();
+  ArduinoOTA.setHostname(hostname.c_str());
+  LINK_LOGI(TAG, "OTA hostname set to: %s", hostname.c_str());
   
   // Set password if configured
   if (strlen(OTA_PASSWORD) > 0) {

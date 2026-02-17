@@ -33,12 +33,12 @@ LinkLight is an ESP32-S3 firmware project that displays real-time SoundTransit L
 
 - `GET /` - Status page showing IP, home station
 - `GET /config` - Configuration form
-- `POST /config` - Save settings (home station, API key, route ID)
+- `POST /config` - Save settings (API key, hostname)
 
 #### Persistent Storage (Preferences)
 
 - Namespace: `linklight`
-- Keys: `homeStation`, `apiKey`, `routeId`
+- Keys: `apiKey`, `hostname`
 - Uses ESP32 NVS (Non-Volatile Storage)
 
 #### LED Control (NeoPixelBus)

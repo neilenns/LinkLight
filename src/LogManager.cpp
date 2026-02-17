@@ -31,16 +31,21 @@ int LogManager::customVprintf(const char* format, va_list args) {
   va_end(argsCopy);
   
   String logLine = String(buffer);
+  Serial.printf("[customVprintf] Raw buffer: %s\n", buffer);
+  Serial.printf("[customVprintf] logLine.length()=%d, instance=%p\n", logLine.length(), instance);
   
   // Only process lines that start with a log level indicator
   if (logLine.length() > 0 && instance != nullptr) {
     char level = logLine.charAt(0);
+    Serial.printf("[customVprintf] First char: '%c'\n", level);
     
     // Check if this is a log line (starts with level character)
     if (level == 'E' || level == 'W' || level == 'I' || level == 'D' || level == 'V') {
+      Serial.println("[customVprintf] Valid log level detected");
       // Extract tag and message
       int tagStart = logLine.indexOf(") ") + 2;
       int tagEnd = logLine.indexOf(": ", tagStart);
+      Serial.printf("[customVprintf] tagStart=%d, tagEnd=%d\n", tagStart, tagEnd);
       
       if (tagStart > 2 && tagEnd > tagStart) {
         String levelStr = String(level);
@@ -50,9 +55,17 @@ int LogManager::customVprintf(const char* format, va_list args) {
         // Remove trailing newline
         message.trim();
         
+        Serial.printf("[customVprintf] Adding log: level=%s, tag=%s, message=%s\n", 
+          levelStr.c_str(), tag.c_str(), message.c_str());
         instance->addLog(levelStr.c_str(), tag.c_str(), message.c_str());
+      } else {
+        Serial.println("[customVprintf] tagStart or tagEnd validation failed");
       }
+    } else {
+      Serial.printf("[customVprintf] Invalid log level: '%c'\n", level);
     }
+  } else {
+    Serial.println("[customVprintf] logLine empty or instance is nullptr");
   }
   
   return ret;
@@ -84,6 +97,9 @@ std::deque<LogEntry> LogManager::getLogs(int maxEntries) {
   if (logBuffer.size() > (size_t)maxEntries) {
     startIndex = logBuffer.size() - maxEntries;
   }
+  
+  ESP_LOGI(TAG, "getLogs called: maxEntries=%d, bufferSize=%d, startIndex=%d, returning %d entries", 
+    maxEntries, logBuffer.size(), startIndex, (logBuffer.size() - startIndex));
   
   std::deque<LogEntry> result;
   for (size_t i = startIndex; i < logBuffer.size(); i++) {

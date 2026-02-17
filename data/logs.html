@@ -1,276 +1,318 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>LinkLight - Logs</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <style>
-    body { 
-      font-family: 'Courier New', monospace; 
-      margin: 0;
-      padding: 20px;
-      background-color: #1e1e1e;
-      color: #d4d4d4;
-    }
-    h1 { 
-      color: #4ec9b0;
-      font-family: Arial, sans-serif;
-      margin-bottom: 10px;
-    }
-    .controls {
-      margin: 20px 0;
-      padding: 15px;
-      background-color: #252526;
-      border-radius: 4px;
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .controls label {
-      font-family: Arial, sans-serif;
-      margin-right: 5px;
-    }
-    .controls select, .controls button {
-      padding: 8px 12px;
-      background-color: #3c3c3c;
-      color: #d4d4d4;
-      border: 1px solid #555;
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: Arial, sans-serif;
-    }
-    .controls button:hover {
-      background-color: #505050;
-    }
-    .controls select:focus, .controls button:focus {
-      outline: 2px solid #0066cc;
-    }
-    a.home-link {
-      display: inline-block;
-      padding: 8px 16px;
-      background-color: #0066cc;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-      font-family: Arial, sans-serif;
-    }
-    a.home-link:hover {
-      background-color: #0052a3;
-    }
-    .log-container {
-      background-color: #1e1e1e;
-      border: 1px solid #3c3c3c;
-      border-radius: 4px;
-      padding: 15px;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-    .log-entry {
-      margin: 4px 0;
-      padding: 4px 8px;
-      border-radius: 3px;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-    .log-entry:hover {
-      background-color: #2d2d30;
-    }
-    .log-timestamp {
-      color: #858585;
-      font-size: 11px;
-      margin-right: 10px;
-    }
-    .log-tag {
-      font-weight: bold;
-      margin-right: 10px;
-    }
-    .log-level-I { color: #4ec9b0; }
-    .log-level-W { color: #dcdcaa; }
-    .log-level-E { color: #f48771; }
-    .log-level-D { color: #9cdcfe; }
-    .log-level-V { color: #c586c0; }
-    .status {
-      margin: 10px 0;
-      padding: 10px;
-      background-color: #252526;
-      border-radius: 4px;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-    .status.error {
-      background-color: #5a1d1d;
-      color: #f48771;
-    }
-    .auto-refresh-status {
-      color: #858585;
-      font-size: 12px;
-    }
-  </style>
-</head>
-<body>
-  <h1>LinkLight - System Logs</h1>
-  
-  <div class='controls'>
-    <a href='/' class='home-link'>← Home</a>
-    
-    <label for='levelFilter'>Filter Level:</label>
-    <select id='levelFilter' aria-label='Filter logs by level' onchange='filterLogs()'>
-      <option value='all'>All</option>
-      <option value='E'>Error</option>
-      <option value='W'>Warning</option>
-      <option value='I'>Info</option>
-      <option value='D'>Debug</option>
-      <option value='V'>Verbose</option>
-    </select>
-    
-    <label for='autoRefresh'>
-      <input type='checkbox' id='autoRefresh' checked onchange='toggleAutoRefresh()'>
-      Auto-refresh (5s)
-    </label>
-    
-    <button onclick='refreshLogs()'>Refresh Now</button>
-    <button onclick='clearDisplay()'>Clear Display</button>
-    
-    <span class='auto-refresh-status' id='refreshStatus'>Last updated: Never</span>
-  </div>
-  
-  <div id='status' class='status' style='display:none;'></div>
-  
-  <div class='log-container' id='logContainer'>
-    <div style='color: #858585; text-align: center; padding: 20px;'>Loading logs...</div>
-  </div>
+  <head>
+    <title>LinkLight - Logs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: "Courier New", monospace;
+        margin: 0;
+        padding: 20px;
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+      }
+      h1 {
+        color: #4ec9b0;
+        font-family: Arial, sans-serif;
+        margin-bottom: 10px;
+      }
+      .controls {
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #252526;
+        border-radius: 4px;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .controls label {
+        font-family: Arial, sans-serif;
+        margin-right: 5px;
+      }
+      .controls select,
+      .controls button {
+        padding: 8px 12px;
+        background-color: #3c3c3c;
+        color: #d4d4d4;
+        border: 1px solid #555;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+      }
+      .controls button:hover {
+        background-color: #505050;
+      }
+      .controls select:focus,
+      .controls button:focus {
+        outline: 2px solid #0066cc;
+      }
+      a.home-link {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #0066cc;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-family: Arial, sans-serif;
+      }
+      a.home-link:hover {
+        background-color: #0052a3;
+      }
+      .log-container {
+        background-color: #1e1e1e;
+        border: 1px solid #3c3c3c;
+        border-radius: 4px;
+        padding: 15px;
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+      .log-entry {
+        margin: 4px 0;
+        padding: 4px 8px;
+        border-radius: 3px;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .log-entry:hover {
+        background-color: #2d2d30;
+      }
+      .log-timestamp {
+        color: #858585;
+        font-size: 11px;
+        margin-right: 10px;
+      }
+      .log-tag {
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      .log-level-I {
+        color: #4ec9b0;
+      }
+      .log-level-W {
+        color: #dcdcaa;
+      }
+      .log-level-E {
+        color: #f48771;
+      }
+      .log-level-D {
+        color: #9cdcfe;
+      }
+      .log-level-V {
+        color: #c586c0;
+      }
+      .status {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #252526;
+        border-radius: 4px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+      }
+      .status.error {
+        background-color: #5a1d1d;
+        color: #f48771;
+      }
+      .auto-refresh-status {
+        color: #858585;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LinkLight - System Logs</h1>
 
-  <script>
-    let allLogs = [];
-    let autoRefreshEnabled = true;
-    let autoRefreshTimer = null;
-    
-    function formatTimestamp(ms) {
-      const seconds = Math.floor(ms / 1000);
-      const minutes = Math.floor(seconds / 60);
-      const hours = Math.floor(minutes / 60);
-      
-      const s = seconds % 60;
-      const m = minutes % 60;
-      const h = hours % 24;
-      
-      return String(h).padStart(2, '0') + ':' + 
-             String(m).padStart(2, '0') + ':' + 
-             String(s).padStart(2, '0');
-    }
-    
-    function getLevelClass(level) {
-      return 'log-level-' + level;
-    }
-    
-    function displayLogs() {
-      const container = document.getElementById('logContainer');
-      const filter = document.getElementById('levelFilter').value;
-      
-      let filteredLogs = allLogs;
-      if (filter !== 'all') {
-        filteredLogs = allLogs.filter(log => log.level === filter);
+    <div class="controls">
+      <a href="/" class="home-link">Home</a>
+
+      <label for="levelFilter">Filter Level:</label>
+      <select
+        id="levelFilter"
+        aria-label="Filter logs by level"
+        onchange="filterLogs()"
+      >
+        <option value="all">All</option>
+        <option value="E">Error</option>
+        <option value="W">Warning</option>
+        <option value="I">Info</option>
+        <option value="D">Debug</option>
+        <option value="V">Verbose</option>
+      </select>
+
+      <label for="autoRefresh">
+        <input
+          type="checkbox"
+          id="autoRefresh"
+          checked
+          onchange="toggleAutoRefresh()"
+        />
+        Auto-refresh (5s)
+      </label>
+
+      <button onclick="refreshLogs()">Refresh Now</button>
+      <button onclick="clearDisplay()">Clear Display</button>
+
+      <span class="auto-refresh-status" id="refreshStatus"
+        >Last updated: Never</span
+      >
+    </div>
+
+    <div id="status" class="status" style="display: none"></div>
+
+    <div class="log-container" id="logContainer">
+      <div style="color: #858585; text-align: center; padding: 20px">
+        Loading logs...
+      </div>
+    </div>
+
+    <script>
+      let allLogs = [];
+      let autoRefreshEnabled = true;
+      let autoRefreshTimer = null;
+
+      function formatTimestamp(ms) {
+        const seconds = Math.floor(ms / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+
+        const s = seconds % 60;
+        const m = minutes % 60;
+        const h = hours % 24;
+
+        return (
+          String(h).padStart(2, "0") +
+          ":" +
+          String(m).padStart(2, "0") +
+          ":" +
+          String(s).padStart(2, "0")
+        );
       }
-      
-      if (filteredLogs.length === 0) {
-        container.innerHTML = '<div style="color: #858585; text-align: center; padding: 20px;">No logs to display</div>';
-        return;
+
+      function getLevelClass(level) {
+        return "log-level-" + level;
       }
-      
-      let html = '';
-      filteredLogs.forEach(log => {
-        html += '<div class="log-entry">';
-        html += '<span class="log-timestamp">' + formatTimestamp(log.timestamp) + '</span>';
-        html += '<span class="log-tag ' + getLevelClass(log.level) + '">[' + log.level + '] ' + log.tag + ':</span>';
-        html += '<span class="log-message">' + escapeHtml(log.message) + '</span>';
-        html += '</div>';
-      });
-      
-      container.innerHTML = html;
-      // Scroll to bottom to show latest logs
-      container.scrollTop = container.scrollHeight;
-    }
-    
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-    
-    function filterLogs() {
-      displayLogs();
-    }
-    
-    function refreshLogs() {
-      fetch('/api/logs')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to fetch logs: ' + response.status);
-          }
-          return response.json();
-        })
-        .then(data => {
-          allLogs = data.logs || [];
-          displayLogs();
-          updateStatus('success', 'Logs updated successfully');
-          document.getElementById('refreshStatus').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
-        })
-        .catch(error => {
-          updateStatus('error', 'Error fetching logs: ' + error.message);
-          console.error('Error:', error);
+
+      function displayLogs() {
+        const container = document.getElementById("logContainer");
+        const filter = document.getElementById("levelFilter").value;
+
+        let filteredLogs = allLogs;
+        if (filter !== "all") {
+          filteredLogs = allLogs.filter((log) => log.level === filter);
+        }
+
+        if (filteredLogs.length === 0) {
+          container.innerHTML =
+            '<div style="color: #858585; text-align: center; padding: 20px;">No logs to display</div>';
+          return;
+        }
+
+        let html = "";
+        filteredLogs.forEach((log) => {
+          html += '<div class="log-entry">';
+          html +=
+            '<span class="log-timestamp">' +
+            formatTimestamp(log.timestamp) +
+            "</span>";
+          html +=
+            '<span class="log-tag ' +
+            getLevelClass(log.level) +
+            '">[' +
+            log.level +
+            "] " +
+            log.tag +
+            ":</span>";
+          html +=
+            '<span class="log-message">' + escapeHtml(log.message) + "</span>";
+          html += "</div>";
         });
-    }
-    
-    function clearDisplay() {
-      allLogs = [];
-      displayLogs();
-    }
-    
-    function updateStatus(type, message) {
-      const statusDiv = document.getElementById('status');
-      statusDiv.textContent = message;
-      statusDiv.className = 'status ' + (type === 'error' ? 'error' : '');
-      statusDiv.style.display = 'block';
-      
-      // Hide success messages after 3 seconds
-      if (type === 'success') {
-        setTimeout(() => {
-          statusDiv.style.display = 'none';
-        }, 3000);
+
+        container.innerHTML = html;
+        // Scroll to bottom to show latest logs
+        container.scrollTop = container.scrollHeight;
       }
-    }
-    
-    function toggleAutoRefresh() {
-      autoRefreshEnabled = document.getElementById('autoRefresh').checked;
-      
+
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function filterLogs() {
+        displayLogs();
+      }
+
+      function refreshLogs() {
+        fetch("/api/logs")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch logs: " + response.status);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            allLogs = data.logs || [];
+            displayLogs();
+            updateStatus("success", "Logs updated successfully");
+            document.getElementById("refreshStatus").textContent =
+              "Last updated: " + new Date().toLocaleTimeString();
+          })
+          .catch((error) => {
+            updateStatus("error", "Error fetching logs: " + error.message);
+            console.error("Error:", error);
+          });
+      }
+
+      function clearDisplay() {
+        allLogs = [];
+        displayLogs();
+      }
+
+      function updateStatus(type, message) {
+        const statusDiv = document.getElementById("status");
+        statusDiv.textContent = message;
+        statusDiv.className = "status " + (type === "error" ? "error" : "");
+        statusDiv.style.display = "block";
+
+        // Hide success messages after 3 seconds
+        if (type === "success") {
+          setTimeout(() => {
+            statusDiv.style.display = "none";
+          }, 3000);
+        }
+      }
+
+      function toggleAutoRefresh() {
+        autoRefreshEnabled = document.getElementById("autoRefresh").checked;
+
+        if (autoRefreshEnabled) {
+          startAutoRefresh();
+        } else {
+          stopAutoRefresh();
+        }
+      }
+
+      function startAutoRefresh() {
+        if (autoRefreshTimer) {
+          clearInterval(autoRefreshTimer);
+        }
+        autoRefreshTimer = setInterval(refreshLogs, 5000);
+      }
+
+      function stopAutoRefresh() {
+        if (autoRefreshTimer) {
+          clearInterval(autoRefreshTimer);
+          autoRefreshTimer = null;
+        }
+      }
+
+      // Initial load
+      refreshLogs();
+
+      // Start auto-refresh
       if (autoRefreshEnabled) {
         startAutoRefresh();
-      } else {
-        stopAutoRefresh();
       }
-    }
-    
-    function startAutoRefresh() {
-      if (autoRefreshTimer) {
-        clearInterval(autoRefreshTimer);
-      }
-      autoRefreshTimer = setInterval(refreshLogs, 5000);
-    }
-    
-    function stopAutoRefresh() {
-      if (autoRefreshTimer) {
-        clearInterval(autoRefreshTimer);
-        autoRefreshTimer = null;
-      }
-    }
-    
-    // Initial load
-    refreshLogs();
-    
-    // Start auto-refresh
-    if (autoRefreshEnabled) {
-      startAutoRefresh();
-    }
-  </script>
-</body>
+    </script>
+  </body>
 </html>

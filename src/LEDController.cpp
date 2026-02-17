@@ -2,10 +2,6 @@
 #include "TrainDataManager.h"
 #include <esp_log.h>
 
-// Thresholds for determining if a train is in transit between stations
-#define MIN_DEPARTED_TIME_SECONDS 30   // Min seconds since leaving closest station
-#define MAX_ARRIVAL_TIME_SECONDS 180   // Max seconds until arriving at next station
-
 static const char* TAG = "LEDController";
 
 LEDController ledController;
@@ -90,85 +86,40 @@ void LEDController::setTrainLED(int ledIndex, const RgbColor& color) {
   }
 }
 
-int LEDController::getTrainLEDIndex(const String& line, const String& direction, 
-                                     const String& closestStation, const String& nextStation, 
-                                     int closestStopTimeOffset, int nextStopTimeOffset) {
+int LEDController::getTrainLEDIndex(const TrainData& train) {
   // Only handle Line 1 for now
-  if (line != LINE_1_NAME) {
+  if (train.line != LINE_1_NAME) {
     return -1;
   }
   
   // Determine if train is northbound (direction "1") or southbound (direction "0")
-  bool isNorthbound = (direction == "1");
+  bool isNorthbound = (train.directionId == "1");
   
   // Check if closest station is in our map
-  auto closestIt = line1StationMap.find(closestStation);
+  auto closestIt = line1StationMap.find(train.closestStopName);
   if (closestIt == line1StationMap.end()) {
-    ESP_LOGW(TAG, "Closest station '%s' not found in Line 1 map", closestStation.c_str());
-    return -1;
-  }
-  
-  // Check if next station is in our map
-  auto nextIt = line1StationMap.find(nextStation);
-  if (nextIt == line1StationMap.end()) {
-    ESP_LOGW(TAG, "Next station '%s' not found in Line 1 map", nextStation.c_str());
+    ESP_LOGW(TAG, "Closest station '%s' not found in Line 1 map", train.closestStopName.c_str());
     return -1;
   }
   
   const StationLEDMapping& closestMapping = closestIt->second;
-  const StationLEDMapping& nextMapping = nextIt->second;
   
   int stationIndex;
-  int nextStationIndex;
-  int ledsToNext;
   
   if (isNorthbound) {
     stationIndex = closestMapping.northboundIndex;
-    nextStationIndex = nextMapping.northboundIndex;
-    ledsToNext = nextMapping.northboundLedsFromPrev;
   } else {
     stationIndex = closestMapping.southboundIndex;
-    nextStationIndex = nextMapping.southboundIndex;
-    ledsToNext = nextMapping.southboundLedsFromPrev;
   }
   
-  // Determine train position based on time offsets
-  // If the train has departed the closest station and is approaching the next station,
-  // calculate its position between stations
-  if (closestStopTimeOffset < -MIN_DEPARTED_TIME_SECONDS && 
-      nextStopTimeOffset > 0 && 
-      nextStopTimeOffset < MAX_ARRIVAL_TIME_SECONDS) {
-    // Train is in transit between stations
-    // closestStopTimeOffset is negative (train departed), so negate it to get elapsed time
-    int elapsedTime = -closestStopTimeOffset;
-    int totalTime = elapsedTime + nextStopTimeOffset;
-    
-    // Guard against edge case where stations are adjacent (no LEDs between them)
-    if (ledsToNext <= 1) {
-      return stationIndex;
-    }
-    
-    // Calculate progress from closest station to next station (0.0 to 1.0)
-    float progress = (float)elapsedTime / (float)totalTime;
-    
-    // Calculate LED offset based on progress and available LEDs between stations
-    // Note: Both northbound and southbound sections have decreasing indices as trains move
-    int ledOffset = (int)(progress * (ledsToNext - 1));
-    
-    // Both directions use decreasing indices, so we subtract the offset
-    int calculatedIndex = stationIndex - ledOffset;
-    
-    // Ensure the index is within valid LED range
-    if (calculatedIndex < 0 || calculatedIndex >= LED_COUNT) {
-      ESP_LOGW(TAG, "Calculated LED index %d out of bounds, using station index %d", 
-               calculatedIndex, stationIndex);
-      return stationIndex;
-    }
-    
-    return calculatedIndex;
+  // If train is moving between stations, light the LED between closest and next station
+  if (train.state == TrainState::MOVING) {
+    // The in-between LED is one position closer to the next station
+    // Both directions have decreasing indices, so subtract 1
+    return stationIndex - 1;
   }
   
-  // Default: train is at or very close to the closest station
+  // Train is at the station
   return stationIndex;
 }
 
@@ -181,17 +132,16 @@ void LEDController::displayTrainPositions() {
   
   // Process each train and set its LED
   for (const TrainData& train : trains) {
-    int ledIndex = getTrainLEDIndex(train.line, train.directionId, 
-                                     train.closestStopName, train.nextStopName,
-                                     train.closestStopTimeOffset, train.nextStopTimeOffset);
+    int ledIndex = getTrainLEDIndex(train);
     
     if (ledIndex >= 0) {
       // Use green color for Line 1
       setTrainLED(ledIndex, LINE_1_COLOR);
       
-      ESP_LOGD(TAG, "Train %s at LED %d (closest: %s, next: %s, dir: %s)", 
+      ESP_LOGD(TAG, "Train %s at LED %d (closest: %s, state: %s, dir: %s)", 
                train.tripId.c_str(), ledIndex, 
-               train.closestStopName.c_str(), train.nextStopName.c_str(),
+               train.closestStopName.c_str(),
+               train.state == TrainState::AT_STATION ? "AT_STATION" : "MOVING",
                train.directionId.c_str());
     }
   }

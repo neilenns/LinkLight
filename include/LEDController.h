@@ -5,6 +5,9 @@
 #include <map>
 #include "config.h"
 
+// Forward declaration
+struct TrainData;
+
 // Station LED mapping structure: (southbound_index, leds_from_prev), (northbound_index, leds_from_prev)
 struct StationLEDMapping {
   int southboundIndex;
@@ -27,7 +30,7 @@ private:
   void initializeStationMaps();
   void clearAllLEDs();
   void setTrainLED(int ledIndex, const RgbColor& color);
-  int getTrainLEDIndex(const String& line, const String& direction, const String& closestStation, const String& nextStation, int closestStopTimeOffset, int nextStopTimeOffset);
+  int getTrainLEDIndex(const TrainData& train);
 };
 
 extern LEDController ledController;

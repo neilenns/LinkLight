@@ -168,5 +168,6 @@ void LEDController::displayTrainPositions() {
   }
   
   // Update the LED strip once with all changes
+  // Update the LED strip once with all changes
   strip.Show();
 }

@@ -159,11 +159,10 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
 }
 
 void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const String& lineName, const String& apiKey) {
+  String url = String(API_BASE_URL) + "/trips-for-route/" + routeId + ".json?" + API_KEY_PARAM + "=" + apiKey;
   ESP_LOGI(TAG, "Fetching data for %s (route: %s)", lineName.c_str(), routeId.c_str());
   
   HTTPClient http;
-  String url = String(API_BASE_URL) + "/trips-for-route/" + routeId + ".json?" + API_KEY_PARAM + "=" + apiKey;
-
   http.setTimeout(10000);
   http.begin(url);
   int httpCode = http.GET();
@@ -172,20 +171,21 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const Strin
     WiFiClient* stream = http.getStreamPtr();
 
     if (stream == nullptr) {
-      ESP_LOGE(TAG, "Failed to get HTTP stream for %s", lineName.c_str());
+      ESP_LOGE(TAG, "Failed to get HTTP stream for %s. URL: %s", lineName.c_str(), url.c_str());
     } else {
       JsonDocument doc;
       DeserializationError error = deserializeJson(doc, *stream);
 
       if (error) {
-        ESP_LOGE(TAG, "JSON parsing failed for %s: %s", lineName.c_str(), error.c_str());
+        ESP_LOGE(TAG, "JSON parsing failed for %s: %s. URL: %s", lineName.c_str(), error.c_str(), url.c_str());
       } else {
         ESP_LOGI(TAG, "Successfully retrieved %s train data", lineName.c_str());
         parseTrainDataFromJson(doc, lineName);
       }
     }
   } else {
-    ESP_LOGW(TAG, "HTTP request failed for %s: %d", lineName.c_str(), httpCode);
+    ESP_LOGW(TAG, "HTTP request failed for %s with code %d. URL: %s. Will retry on next update cycle.", 
+             lineName.c_str(), httpCode, url.c_str());
   }
 
   http.end();
@@ -201,6 +201,7 @@ void TrainDataManager::updateTrainPositions() {
 
   if (apiKey.isEmpty()) {
     ESP_LOGW(TAG, "API key not configured, loading sample data from %s", SAMPLE_DATA_PATH);
+    ESP_LOGI(TAG, "Note: Sample data only contains Line 1 trains");
 
     File sampleFile = LittleFS.open(SAMPLE_DATA_PATH, "r");
     if (!sampleFile) {

@@ -20,6 +20,8 @@ struct TrainData {
 class TrainDataManager {
 public:
   void updateTrainPositions();
+  
+  // Returns the current list of train data parsed from the API or sample data
   const std::vector<TrainData>& getTrainDataList() const { return trainDataList; }
   
 private:

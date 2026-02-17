@@ -87,12 +87,11 @@ void WebServerManager::handleSaveConfig() {
   if (server.hasArg("routeId")) {
     String newRouteId = server.arg("routeId");
     if (newRouteId.length() > 0) {
-      String routeId = newRouteId;
       // Limit length to prevent excessive storage use
-      if (routeId.length() > 32) {
-        routeId = routeId.substring(0, 32);
+      if (newRouteId.length() > 32) {
+        newRouteId = newRouteId.substring(0, 32);
       }
-      preferencesManager.setRouteId(routeId);
+      preferencesManager.setRouteId(newRouteId);
     } else {
       // If routeId is empty, use default
       preferencesManager.setRouteId(DEFAULT_ROUTE_ID);

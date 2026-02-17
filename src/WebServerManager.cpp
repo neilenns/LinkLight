@@ -2,7 +2,7 @@
 #include <WiFi.h>
 #include <ArduinoJson.h>
 #include <Ministache.h>
-#include <esp_log.h>
+#include "LogManager.h"
 #include "FileSystemManager.h"
 #include "PreferencesManager.h"
 
@@ -11,16 +11,18 @@ static const char* TAG = "WebServerManager";
 WebServerManager webServerManager;
 
 void WebServerManager::setup() {
-  ESP_LOGI(TAG, "Setting up web server...");
+  LINK_LOGI(TAG, "Setting up web server...");
   
   // Register handlers
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
   server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });
+  server.on("/logs", HTTP_GET, [this]() { this->handleLogs(); });
+  server.on("/api/logs", HTTP_GET, [this]() { this->handleLogsData(); });
   
   // Start server
   server.begin();
-  ESP_LOGI(TAG, "Web server started");
+  LINK_LOGI(TAG, "Web server started");
 }
 
 void WebServerManager::handleClient() {
@@ -46,7 +48,7 @@ void WebServerManager::handleRoot() {
   String output = ministache::render(html, data);
   server.send(200, "text/html", output);
 
-  ESP_LOGI(TAG, "Served root page");
+  LINK_LOGI(TAG, "Served root page");
 }
 
 void WebServerManager::handleConfig() {
@@ -93,4 +95,36 @@ void WebServerManager::handleSaveConfig() {
   }
   
   server.send(200, "text/html", html);
+}
+
+void WebServerManager::handleLogs() {
+  String html = fileSystemManager.readFile("/logs.html");
+  if (html.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load logs.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
+  
+  server.send(200, "text/html", html);
+}
+
+void WebServerManager::handleLogsData() {
+  // Get logs from LogManager
+  std::deque<LogEntry> logs = logManager.getLogs();
+  
+  // Create JSON response
+  JsonDocument doc;
+  JsonArray logsArray = doc["logs"].to<JsonArray>();
+  
+  for (const auto& entry : logs) {
+    JsonObject logObj = logsArray.add<JsonObject>();
+    logObj["timestamp"] = entry.timestamp;
+    logObj["level"] = entry.level;
+    logObj["tag"] = entry.tag;
+    logObj["message"] = entry.message;
+  }
+  
+  String jsonResponse;
+  serializeJson(doc, jsonResponse);
+  
+  server.send(200, "application/json", jsonResponse);
 }

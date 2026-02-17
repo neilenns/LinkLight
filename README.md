@@ -9,6 +9,7 @@ LinkLight is a project to display the current position of SoundTransit Link ligh
 ## Features
 
 - **WiFi Provisioning**: Easy WiFi setup using WiFiManager with captive portal
+- **OTA Updates**: Over-the-air firmware updates via WiFi (no USB cable needed)
 - **LED Control**: WS2812 LED strip control using NeoPixelBus library
 - **Web Configuration**: Simple web interface to configure home station and API settings
 - **Persistent Storage**: Configuration saved to ESP32 flash memory
@@ -56,6 +57,8 @@ LinkLight is a project to display the current position of SoundTransit Link ligh
 
 ### Uploading to ESP32
 
+#### Initial Upload (via USB)
+
 1. Connect your ESP32-S3 board to your computer via USB
 
 2. Upload the firmware:
@@ -66,6 +69,28 @@ LinkLight is a project to display the current position of SoundTransit Link ligh
    - Under "Platform", click "Upload Filesystem Image"
    - Alternatively, run: `pio run --target uploadfs`
    - This uploads the HTML files from the `data` folder to the ESP32's LittleFS filesystem
+
+#### OTA Upload (Over-The-Air)
+
+After the initial upload, you can update the firmware wirelessly:
+
+1. Make sure your computer is on the same network as the ESP32
+
+2. Find your ESP32's IP address (displayed in serial monitor on boot or visible in your router)
+
+3. Edit `platformio.ini` and uncomment/update the OTA settings:
+   ```ini
+   upload_protocol = espota
+   upload_port = 192.168.1.100  ; Replace with your ESP32's IP address
+   upload_flags = 
+       --port=3232
+   ```
+
+4. Upload the firmware:
+   - Click "Upload" in PlatformIO or press `Ctrl+Alt+U`
+   - The firmware will be uploaded over WiFi instead of USB
+
+**Note:** OTA uploads only work for firmware. Filesystem uploads still require USB connection.
 
 ### First-Time Setup
 
@@ -122,7 +147,10 @@ LinkLight/
 # Build the project
 pio run
 
-# Upload to device
+# Upload to device via USB
+pio run --target upload
+
+# Upload to device via OTA (after configuring platformio.ini with ESP32 IP)
 pio run --target upload
 
 # Upload filesystem (HTML files)
@@ -134,6 +162,15 @@ pio device monitor
 # Build and upload and monitor
 pio run --target upload && pio device monitor
 ```
+
+### OTA Updates
+
+The device hostname for OTA is set to `LinkLight` by default. You can find the device on your network using:
+- mDNS: `LinkLight.local`
+- IP address shown in serial monitor on boot
+- Check your router's DHCP client list
+
+To enable password protection for OTA updates, edit `include/config.h` and set `OTA_PASSWORD` to a non-empty string.
 
 ### GitHub Actions
 

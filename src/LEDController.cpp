@@ -55,28 +55,26 @@ void LEDController::setup() {
   // Basic startup self-test: flash each LED in sequence, blue then green
   const RgbColor blueColor = RgbColor(0, 0, 32);
   const RgbColor greenColor = RgbColor(0, 32, 0);
-  const int delayMs = 20;  // Delay between each LED
+  const RgbColor offColor = RgbColor(0, 0, 0);
+  const int delayMs = 20;  // Delay between each color
 
-  // Flash blue
+  // Flash each LED: blue, then green, then off
   for (int i = 0; i < LED_COUNT; i++) {
+    // Show blue
     strip.SetPixelColor(i, blueColor);
     strip.Show();
     delay(delayMs);
-  }
-  
-  // Turn all off briefly
-  clearAllLEDs();
-  delay(100);
-  
-  // Flash green
-  for (int i = 0; i < LED_COUNT; i++) {
+    
+    // Show green
     strip.SetPixelColor(i, greenColor);
     strip.Show();
     delay(delayMs);
+    
+    // Turn off
+    strip.SetPixelColor(i, offColor);
+    strip.Show();
+    delay(delayMs);
   }
-
-  // Return LEDs to off state after test
-  clearAllLEDs();
   
   LINK_LOGI(TAG, "LEDs initialized");
 }

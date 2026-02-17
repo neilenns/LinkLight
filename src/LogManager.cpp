@@ -19,6 +19,8 @@ int LogManager::customVprintf(const char* format, va_list args) {
   va_list argsCopy;
   va_copy(argsCopy, args);
   
+  Serial.printf("[customVprintf] Intercepted log: format='%s'\n", format);
+  
   // First, output to serial as normal
   int ret = vprintf(format, args);
   

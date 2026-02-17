@@ -10,7 +10,7 @@
 
 // LED Configuration
 #define LED_PIN 8                 // GPIO pin for NeoPixel data
-#define LED_COUNT 55              // Number of LEDs in the strip
+#define LED_COUNT 110              // Number of LEDs in the strip
 
 // Web Server Configuration
 #define WEB_SERVER_PORT 80

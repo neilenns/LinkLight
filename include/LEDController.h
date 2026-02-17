@@ -8,12 +8,10 @@
 // Forward declaration
 struct TrainData;
 
-// Station LED mapping structure: (southbound_index, leds_from_prev), (northbound_index, leds_from_prev)
+// Station LED mapping structure
 struct StationLEDMapping {
-  int southboundIndex;
-  int southboundLedsFromPrev;
   int northboundIndex;
-  int northboundLedsFromPrev;
+  int southboundIndex;
 };
 
 class LEDController {

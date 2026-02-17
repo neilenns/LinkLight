@@ -11,6 +11,12 @@ enum class TrainState {
   MOVING
 };
 
+// Train direction enum
+enum class TrainDirection {
+  SOUTHBOUND = 0,
+  NORTHBOUND = 1
+};
+
 // Train data structure
 struct TrainData {
   String closestStop;
@@ -20,7 +26,7 @@ struct TrainData {
   String nextStopName;
   int nextStopTimeOffset;
   String tripId;
-  String directionId;
+  TrainDirection direction;
   String routeId;
   String tripHeadsign;
   String line;  // Line identifier (e.g., "Line 1", "Line 2")

@@ -80,16 +80,16 @@ void LEDController::startupAnimation() {
   }
 
   // Turn all LEDs off at the end of the self-test
-  clearAllLEDs();
+  setAllLEDs(COLOR_BLACK);
+  strip.Show();
 
   LINK_LOGI(TAG, "LEDs initialized");
 }
 
-void LEDController::clearAllLEDs() {
+void LEDController::setAllLEDs(const RgbColor& color) {
   for (int i = 0; i < LED_COUNT; i++) {
-    strip.SetPixelColor(i, RgbColor(0, 0, 0));
+    strip.SetPixelColor(i, color);
   }
-  strip.Show();
 }
 
 void LEDController::setTrainLED(int ledIndex, const RgbColor& color) {
@@ -145,8 +145,8 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
 }
 
 void LEDController::displayTrainPositions() {
-  // Clear all LEDs first
-  clearAllLEDs();
+  // Set all LEDs to black in memory (without calling Show() to avoid flash)
+  setAllLEDs(COLOR_BLACK);
   
   // Get train data from TrainDataManager
   const std::vector<TrainData>& trains = trainDataManager.getTrainDataList();
@@ -167,6 +167,7 @@ void LEDController::displayTrainPositions() {
     }
   }
   
-  // Update the LED strip
+  // Update the LED strip once with all changes
+  // Update the LED strip once with all changes
   strip.Show();
 }

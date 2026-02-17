@@ -11,13 +11,11 @@ void PreferencesManager::load() {
   
   preferences.begin(PREF_NAMESPACE, true);
   
-  homeStation = preferences.getString(PREF_HOME_STATION, "");
   apiKey = preferences.getString(PREF_API_KEY, "");
   hostname = preferences.getString(PREF_HOSTNAME, DEFAULT_HOSTNAME);
   
   preferences.end();
   
-  LINK_LOGI(TAG, "Home Station: %s", homeStation.isEmpty() ? "Not set" : homeStation.c_str());
   LINK_LOGI(TAG, "Hostname: %s", hostname.c_str());
 }
 
@@ -26,7 +24,6 @@ void PreferencesManager::save() {
   
   preferences.begin(PREF_NAMESPACE, false);
   
-  preferences.putString(PREF_HOME_STATION, homeStation);
   preferences.putString(PREF_API_KEY, apiKey);
   preferences.putString(PREF_HOSTNAME, hostname);
   

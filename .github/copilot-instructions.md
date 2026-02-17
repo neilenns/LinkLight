@@ -104,7 +104,7 @@ LinkLight/
   (180s timeout)
 - **Web Server**: Runs on port 80, provides `/` (status), `/config`
   (settings form), and POST handler
-- **Storage**: Preferences library stores homeStation, apiKey, routeId
+- **Storage**: Preferences library stores apiKey, hostname
   in ESP32 NVS
 - **LED Control**: NeoPixelBus controls 50 WS2812 LEDs on GPIO 8
 - **API Client**: Polls OneBusAway API every 30s for train positions

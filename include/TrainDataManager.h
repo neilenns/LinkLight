@@ -8,8 +8,10 @@
 // Train data structure
 struct TrainData {
   String closestStop;
+  String closestStopName;
   int closestStopTimeOffset;
   String nextStop;
+  String nextStopName;
   int nextStopTimeOffset;
   String tripId;
   String directionId;

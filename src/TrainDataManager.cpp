@@ -150,7 +150,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     trainDataList.push_back(train);
 
     // Log parsed data
-    LINK_LOGI(TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%s, state=%s",
+    LINK_LOGD(TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%s, state=%s",
       train.tripId.c_str(),
       train.closestStop.c_str(),
       train.closestStopName.c_str(),
@@ -239,7 +239,7 @@ void TrainDataManager::updateTrainPositions() {
 
   // Fetch data for both lines
   fetchTrainDataForRoute(LINE_1_ROUTE_ID, LINE_1_NAME, apiKey);
-  fetchTrainDataForRoute(LINE_2_ROUTE_ID, LINE_2_NAME, apiKey);
+  // fetchTrainDataForRoute(LINE_2_ROUTE_ID, LINE_2_NAME, apiKey);
   
   LINK_LOGI(TAG, "Total trains from both lines: %d", trainDataList.size());
 }

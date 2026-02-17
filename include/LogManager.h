@@ -31,7 +31,7 @@ extern LogManager logManager;
 // Custom logging macros that capture to buffer AND output to serial
 // These replace ESP_LOG macros to ensure logs are captured
 #undef LOG_LOCAL_LEVEL
-#define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
+#define LOG_LOCAL_LEVEL ESP_LOG_INFO
 
 #define LINK_LOG(level, tag, format, ...) do { \
   ESP_LOG##level(tag, format, ##__VA_ARGS__); \

@@ -7,6 +7,7 @@
 #include "PreferencesManager.h"
 
 static const char* TAG = "TrainDataManager";
+static const float MIN_SCHEDULED_DISTANCE_THRESHOLD = 0.001f;
 
 TrainDataManager trainDataManager;
 
@@ -43,6 +44,18 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     ESP_LOGI(TAG, "Loaded %d trip references", tripMap.size());
   }
 
+  // Build a map of stop IDs to stop names
+  std::map<String, String> stopIdToNameMap;
+  JsonArray stops = data["references"]["stops"];
+  if (!stops.isNull()) {
+    for (JsonObject stop : stops) {
+      String stopId = stop["id"].as<String>();
+      String stopName = stop["name"].as<String>();
+      stopIdToNameMap[stopId] = stopName;
+    }
+    ESP_LOGI(TAG, "Loaded %d stop references", stopIdToNameMap.size());
+  }
+
   // Process the list array
   JsonArray list = data["list"];
   if (list.isNull()) {
@@ -56,18 +69,68 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     // Extract tripId from the list item
     train.tripId = item["tripId"].as<String>();
 
-    // Extract data from status object
+    // Validate critical fields - skip trains with missing data
+    // Note: We skip trains missing critical position/timing data (status, nextStop, nextStopTimeOffset)
+    // but allow trains that haven't started yet (scheduledDistanceAlongTrip == 0)
     JsonObject status = item["status"];
-    if (!status.isNull()) {
-      train.closestStop = status["closestStop"].as<String>();
-      train.closestStopTimeOffset = status["closestStopTimeOffset"].as<int>();
-      train.nextStop = status["nextStop"].as<String>();
-      train.nextStopTimeOffset = status["nextStopTimeOffset"].as<int>();
+    if (status.isNull()) {
+      ESP_LOGW(TAG, "Status missing for trip %s", train.tripId.c_str());
+      continue;
+    }
+
+    // Check for nextStop
+    if (status["nextStop"].isNull()) {
+      ESP_LOGW(TAG, "No next stop for trip %s", train.tripId.c_str());
+      continue;
+    }
+    train.nextStop = status["nextStop"].as<String>();
+
+    // Check for nextStopTimeOffset
+    if (status["nextStopTimeOffset"].isNull()) {
+      ESP_LOGW(TAG, "No next stop time offset for trip %s", train.tripId.c_str());
+      continue;
+    }
+    train.nextStopTimeOffset = status["nextStopTimeOffset"].as<int>();
+
+    // Extract closestStop and offset
+    train.closestStop = status["closestStop"].as<String>();
+    train.closestStopTimeOffset = status["closestStopTimeOffset"].as<int>();
+
+    // Check if trip is in progress
+    // Note: We log warnings but don't skip trains that haven't started yet,
+    // as they are still valid and should be displayed
+    if (!status["scheduledDistanceAlongTrip"].isNull()) {
+      float scheduledDistance = status["scheduledDistanceAlongTrip"].as<float>();
+      if (scheduledDistance < MIN_SCHEDULED_DISTANCE_THRESHOLD) {
+        ESP_LOGW(TAG, "Trip %s not in progress yet, scheduledDistanceAlongTrip: %.2f", 
+                 train.tripId.c_str(), scheduledDistance);
+      }
+    } else {
+      ESP_LOGW(TAG, "Trip %s not in progress yet, no scheduledDistanceAlongTrip", 
+               train.tripId.c_str());
+    }
+
+    // Look up stop names from the stops map
+    auto closestStopIt = stopIdToNameMap.find(train.closestStop);
+    if (closestStopIt != stopIdToNameMap.end()) {
+      train.closestStopName = closestStopIt->second;
+    } else {
+      ESP_LOGW(TAG, "Stop name not found for closestStop ID: %s", train.closestStop.c_str());
+      train.closestStopName = train.closestStop; // Fall back to ID if name not found
+    }
+
+    auto nextStopIt = stopIdToNameMap.find(train.nextStop);
+    if (nextStopIt != stopIdToNameMap.end()) {
+      train.nextStopName = nextStopIt->second;
+    } else {
+      ESP_LOGW(TAG, "Stop name not found for nextStop ID: %s", train.nextStop.c_str());
+      train.nextStopName = train.nextStop; // Fall back to ID if name not found
     }
 
     // Merge trip information if available
-    if (tripMap.find(train.tripId) != tripMap.end()) {
-      TripInfo& tripInfo = tripMap[train.tripId];
+    auto tripIt = tripMap.find(train.tripId);
+    if (tripIt != tripMap.end()) {
+      TripInfo& tripInfo = tripIt->second;
       train.directionId = tripInfo.directionId;
       train.routeId = tripInfo.routeId;
       train.tripHeadsign = tripInfo.tripHeadsign;
@@ -77,11 +140,13 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     trainDataList.push_back(train);
 
     // Log parsed data
-    ESP_LOGI(TAG, "Train: tripId=%s, closestStop=%s, closestStopOffset=%d, nextStop=%s, nextStopOffset=%d, direction=%s, route=%s, headsign=%s",
+    ESP_LOGI(TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s",
       train.tripId.c_str(),
       train.closestStop.c_str(),
+      train.closestStopName.c_str(),
       train.closestStopTimeOffset,
       train.nextStop.c_str(),
+      train.nextStopName.c_str(),
       train.nextStopTimeOffset,
       train.directionId.c_str(),
       train.routeId.c_str(),

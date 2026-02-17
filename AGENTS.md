@@ -99,7 +99,7 @@ LinkLight/
 │
 ├── README.md                 # User-facing documentation
 ├── LICENSE                   # MIT License
-└── agent.md                  # This file
+└── AGENTS.md                 # This file
 ```
 
 ## Development Workflow

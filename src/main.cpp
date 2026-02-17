@@ -11,21 +11,19 @@
 #include "TrainDataManager.h"
 
 static const char* TAG = "LinkLight";
-unsigned long lastApiUpdate = 0;
+unsigned long lastApiUpdate = -API_UPDATE_INTERVAL;
 
 void setup() {
   Serial.begin(115200);
-  
-  delay(5000);
 
   // Initialize log manager early to capture all logs
   logManager.setup();
 
   LINK_LOGI(TAG, "LinkLight Starting...");
 
-  // Initialize LEDs first for visual feedback
+  // Initialize LEDs
   ledController.setup();
-  
+
   // Initialize LittleFS
   fileSystemManager.setup();
   
@@ -34,13 +32,16 @@ void setup() {
   
   // Setup WiFi
   wifiManagerComponent.setup();
-  
+
   // Setup OTA
   otaManager.setup();
   
   // Setup web server
   webServerManager.setup();
   
+  // Show the startup animation
+  ledController.startupAnimation();
+
   LINK_LOGI(TAG, "LinkLight Ready!");
   LINK_LOGI(TAG, "IP Address: %s", WiFi.localIP().toString().c_str());
 }

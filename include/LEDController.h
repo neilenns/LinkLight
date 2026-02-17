@@ -19,8 +19,9 @@ struct StationLEDMapping {
 class LEDController {
 public:
   void setup();
+  void startupAnimation();
   void displayTrainPositions();
-  
+
 private:
 // Setup for WS2812x LEDs.
 //  NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2812xMethod> strip{LED_COUNT, LED_PIN};

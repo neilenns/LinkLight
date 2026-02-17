@@ -6,8 +6,11 @@ static const char* TAG = "LEDController";
 
 LEDController ledController;
 
-// Green color for Line 1 trains
-static const RgbColor LINE_1_COLOR = RgbColor(0, 255, 0);
+static const RgbColor LINE_1_COLOR = RgbColor(0, 32, 0); // Green color for Line 1 trains
+static const RgbColor LINE_2_COLOR = RgbColor(0, 0, 32); // Blue color for Line 2 trains
+static const RgbColor COLOR_BLUE = RgbColor(0, 0, 32);
+static const RgbColor COLOR_GREEN = RgbColor(0, 32, 0);
+static const RgbColor COLOR_BLACK = RgbColor(0, 0, 0);
 
 void LEDController::initializeStationMaps() {
   // Line 1 station mapping based on the reference implementation
@@ -51,29 +54,27 @@ void LEDController::setup() {
   
   // Initialize station maps
   initializeStationMaps();
-  
-  // Basic startup self-test: flash each LED in sequence, blue then green
-  const RgbColor blueColor = RgbColor(0, 0, 32);
-  const RgbColor greenColor = RgbColor(0, 32, 0);
-  const RgbColor offColor = RgbColor(0, 0, 0);
+}
+
+void LEDController::startupAnimation() {
   const int delayMs = 20;  // Delay between each color
 
   // Flash each LED blue
   for (int i = 0; i < LED_COUNT; i++) {
     // Show blue
-    strip.SetPixelColor(i, blueColor);
+    strip.SetPixelColor(i, COLOR_BLUE);
     strip.Show();
     delay(delayMs);
-    strip.SetPixelColor(i, offColor);
+    strip.SetPixelColor(i, COLOR_BLACK);
     strip.Show();
   }
 
   // Flash each LED green in the opposite direction
   for (int i = LED_COUNT -1; i >= 0; i--) {
-    strip.SetPixelColor(i, greenColor);
+    strip.SetPixelColor(i, COLOR_GREEN);
     strip.Show();
     delay(delayMs);
-    strip.SetPixelColor(i, offColor);
+    strip.SetPixelColor(i, COLOR_BLACK);
     strip.Show();
   }
 

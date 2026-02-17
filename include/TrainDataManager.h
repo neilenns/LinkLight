@@ -17,6 +17,7 @@ struct TrainData {
   String directionId;
   String routeId;
   String tripHeadsign;
+  String line;  // Line identifier (e.g., "Line 1", "Line 2")
 };
 
 class TrainDataManager {
@@ -27,7 +28,7 @@ public:
   const std::vector<TrainData>& getTrainDataList() const { return trainDataList; }
   
 private:
-  bool parseTrainDataFromJson(JsonDocument& doc);
+  bool parseTrainDataFromJson(JsonDocument& doc, const String& line);
   std::vector<TrainData> trainDataList;
 };
 

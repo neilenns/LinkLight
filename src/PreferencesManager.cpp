@@ -13,12 +13,10 @@ void PreferencesManager::load() {
   
   homeStation = preferences.getString(PREF_HOME_STATION, "");
   apiKey = preferences.getString(PREF_API_KEY, "");
-  routeId = preferences.getString(PREF_ROUTE_ID, DEFAULT_ROUTE_ID);
   
   preferences.end();
   
   ESP_LOGI(TAG, "Home Station: %s", homeStation.isEmpty() ? "Not set" : homeStation.c_str());
-  ESP_LOGI(TAG, "Route ID: %s", routeId.c_str());
 }
 
 void PreferencesManager::save() {
@@ -28,7 +26,6 @@ void PreferencesManager::save() {
   
   preferences.putString(PREF_HOME_STATION, homeStation);
   preferences.putString(PREF_API_KEY, apiKey);
-  preferences.putString(PREF_ROUTE_ID, routeId);
   
   preferences.end();
   

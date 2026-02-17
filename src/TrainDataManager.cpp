@@ -45,15 +45,15 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
   }
 
   // Build a map of stop IDs to stop names
-  std::map<String, String> stopsToNames;
+  std::map<String, String> stopIdToNameMap;
   JsonArray stops = data["references"]["stops"];
   if (!stops.isNull()) {
     for (JsonObject stop : stops) {
       String stopId = stop["id"].as<String>();
       String stopName = stop["name"].as<String>();
-      stopsToNames[stopId] = stopName;
+      stopIdToNameMap[stopId] = stopName;
     }
-    ESP_LOGI(TAG, "Loaded %d stop references", stopsToNames.size());
+    ESP_LOGI(TAG, "Loaded %d stop references", stopIdToNameMap.size());
   }
 
   // Process the list array
@@ -100,10 +100,10 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     // Note: We log warnings but don't skip trains that haven't started yet,
     // as they are still valid and should be displayed
     if (!status["scheduledDistanceAlongTrip"].isNull()) {
-      float schedDist = status["scheduledDistanceAlongTrip"].as<float>();
-      if (schedDist < MIN_SCHEDULED_DISTANCE_THRESHOLD) {
+      float scheduledDistance = status["scheduledDistanceAlongTrip"].as<float>();
+      if (scheduledDistance < MIN_SCHEDULED_DISTANCE_THRESHOLD) {
         ESP_LOGW(TAG, "Trip %s not in progress yet, scheduledDistanceAlongTrip: %.2f", 
-                 train.tripId.c_str(), schedDist);
+                 train.tripId.c_str(), scheduledDistance);
       }
     } else {
       ESP_LOGW(TAG, "Trip %s not in progress yet, no scheduledDistanceAlongTrip", 
@@ -111,16 +111,16 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     }
 
     // Look up stop names from the stops map
-    auto closestStopIt = stopsToNames.find(train.closestStop);
-    if (closestStopIt != stopsToNames.end()) {
+    auto closestStopIt = stopIdToNameMap.find(train.closestStop);
+    if (closestStopIt != stopIdToNameMap.end()) {
       train.closestStopName = closestStopIt->second;
     } else {
       ESP_LOGW(TAG, "Stop name not found for closestStop ID: %s", train.closestStop.c_str());
       train.closestStopName = train.closestStop; // Fall back to ID if name not found
     }
 
-    auto nextStopIt = stopsToNames.find(train.nextStop);
-    if (nextStopIt != stopsToNames.end()) {
+    auto nextStopIt = stopIdToNameMap.find(train.nextStop);
+    if (nextStopIt != stopIdToNameMap.end()) {
       train.nextStopName = nextStopIt->second;
     } else {
       ESP_LOGW(TAG, "Stop name not found for nextStop ID: %s", train.nextStop.c_str());

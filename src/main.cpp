@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include <esp_log.h>
 #include "config.h"
 #include "LogManager.h"
 #include "WiFiManager_Component.h"
@@ -22,7 +21,7 @@ void setup() {
   // Initialize log manager early to capture all logs
   logManager.setup();
 
-  ESP_LOGI(TAG, "LinkLight Starting...");
+  LINK_LOGI(TAG, "LinkLight Starting...");
 
   // Initialize LEDs first for visual feedback
   ledController.setup();
@@ -42,8 +41,8 @@ void setup() {
   // Setup web server
   webServerManager.setup();
   
-  ESP_LOGI(TAG, "LinkLight Ready!");
-  ESP_LOGI(TAG, "IP Address: %s", WiFi.localIP().toString().c_str());
+  LINK_LOGI(TAG, "LinkLight Ready!");
+  LINK_LOGI(TAG, "IP Address: %s", WiFi.localIP().toString().c_str());
 }
 
 void loop() {

@@ -1,6 +1,6 @@
 #include "OTAManager.h"
 #include <ArduinoOTA.h>
-#include <esp_log.h>
+#include "LogManager.h"
 #include "config.h"
 
 static const char* TAG = "OTAManager";
@@ -8,7 +8,7 @@ static const char* TAG = "OTAManager";
 OTAManager otaManager;
 
 void OTAManager::setup() {
-  ESP_LOGI(TAG, "Setting up OTA...");
+  LINK_LOGI(TAG, "Setting up OTA...");
   
   // Set hostname
   ArduinoOTA.setHostname(OTA_HOSTNAME);
@@ -26,16 +26,16 @@ void OTAManager::setup() {
     } else {  // U_SPIFFS or U_LittleFS
       type = "filesystem";
     }
-    ESP_LOGI(TAG, "Start updating %s", type.c_str());
+    LINK_LOGI(TAG, "Start updating %s", type.c_str());
   });
   
   ArduinoOTA.onEnd([]() {
-    ESP_LOGI(TAG, "OTA Update Complete");
+    LINK_LOGI(TAG, "OTA Update Complete");
   });
   
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
     if (total > 0) {
-      ESP_LOGI(TAG, "Progress: %u%%", (progress * 100) / total);
+      LINK_LOGI(TAG, "Progress: %u%%", (progress * 100) / total);
     }
   });
   
@@ -47,13 +47,13 @@ void OTAManager::setup() {
     else if (error == OTA_RECEIVE_ERROR) errorMsg = "Receive Failed";
     else if (error == OTA_END_ERROR) errorMsg = "End Failed";
     else errorMsg = "Unknown Error";
-    ESP_LOGE(TAG, "OTA Error[%u]: %s", error, errorMsg.c_str());
+    LINK_LOGE(TAG, "OTA Error[%u]: %s", error, errorMsg.c_str());
   });
   
   // Start OTA service
   ArduinoOTA.begin();
   
-  ESP_LOGI(TAG, "OTA Ready");
+  LINK_LOGI(TAG, "OTA Ready");
 }
 
 void OTAManager::handle() {

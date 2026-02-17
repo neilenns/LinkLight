@@ -2,17 +2,16 @@
 #include <WiFi.h>
 #include <ArduinoJson.h>
 #include <Ministache.h>
-#include <esp_log.h>
+#include "LogManager.h"
 #include "FileSystemManager.h"
 #include "PreferencesManager.h"
-#include "LogManager.h"
 
 static const char* TAG = "WebServerManager";
 
 WebServerManager webServerManager;
 
 void WebServerManager::setup() {
-  ESP_LOGI(TAG, "Setting up web server...");
+  LINK_LOGI(TAG, "Setting up web server...");
   
   // Register handlers
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
@@ -23,7 +22,7 @@ void WebServerManager::setup() {
   
   // Start server
   server.begin();
-  ESP_LOGI(TAG, "Web server started");
+  LINK_LOGI(TAG, "Web server started");
 }
 
 void WebServerManager::handleClient() {
@@ -49,7 +48,7 @@ void WebServerManager::handleRoot() {
   String output = ministache::render(html, data);
   server.send(200, "text/html", output);
 
-  ESP_LOGI(TAG, "Served root page");
+  LINK_LOGI(TAG, "Served root page");
 }
 
 void WebServerManager::handleConfig() {

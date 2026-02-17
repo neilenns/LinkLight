@@ -1,5 +1,5 @@
 #include "PreferencesManager.h"
-#include <esp_log.h>
+#include "LogManager.h"
 #include "config.h"
 
 static const char* TAG = "PreferencesManager";
@@ -7,7 +7,7 @@ static const char* TAG = "PreferencesManager";
 PreferencesManager preferencesManager;
 
 void PreferencesManager::load() {
-  ESP_LOGI(TAG, "Loading preferences...");
+  LINK_LOGI(TAG, "Loading preferences...");
   
   preferences.begin(PREF_NAMESPACE, true);
   
@@ -16,11 +16,11 @@ void PreferencesManager::load() {
   
   preferences.end();
   
-  ESP_LOGI(TAG, "Home Station: %s", homeStation.isEmpty() ? "Not set" : homeStation.c_str());
+  LINK_LOGI(TAG, "Home Station: %s", homeStation.isEmpty() ? "Not set" : homeStation.c_str());
 }
 
 void PreferencesManager::save() {
-  ESP_LOGI(TAG, "Saving preferences...");
+  LINK_LOGI(TAG, "Saving preferences...");
   
   preferences.begin(PREF_NAMESPACE, false);
   
@@ -29,5 +29,5 @@ void PreferencesManager::save() {
   
   preferences.end();
   
-  ESP_LOGI(TAG, "Preferences saved");
+  LINK_LOGI(TAG, "Preferences saved");
 }

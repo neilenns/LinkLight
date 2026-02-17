@@ -1,6 +1,6 @@
 #include "LEDController.h"
 #include "TrainDataManager.h"
-#include <esp_log.h>
+#include "LogManager.h"
 
 static const char* TAG = "LEDController";
 
@@ -40,11 +40,11 @@ void LEDController::initializeStationMaps() {
   line1StationMap["Mountlake Terrace"] =       {99, 3, 110, 2};
   line1StationMap["Lynnwood City Center"] =    {103, 1, 106, 3};
   
-  ESP_LOGI(TAG, "Initialized Line 1 station map with %d stations", line1StationMap.size());
+  LINK_LOGI(TAG, "Initialized Line 1 station map with %d stations", line1StationMap.size());
 }
 
 void LEDController::setup() {
-  ESP_LOGI(TAG, "Setting up LEDs...");
+  LINK_LOGI(TAG, "Setting up LEDs...");
   
   strip.Begin();
   strip.Show(); // Initialize all pixels to 'off'
@@ -70,7 +70,7 @@ void LEDController::setup() {
   // Return LEDs to off state after test
   clearAllLEDs();
   
-  ESP_LOGI(TAG, "LEDs initialized");
+  LINK_LOGI(TAG, "LEDs initialized");
 }
 
 void LEDController::clearAllLEDs() {
@@ -98,7 +98,7 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
   // Check if closest station is in our map
   auto closestIt = line1StationMap.find(train.closestStopName);
   if (closestIt == line1StationMap.end()) {
-    ESP_LOGW(TAG, "Closest station '%s' not found in Line 1 map", train.closestStopName.c_str());
+    LINK_LOGW(TAG, "Closest station '%s' not found in Line 1 map", train.closestStopName.c_str());
     return -1;
   }
   
@@ -120,7 +120,7 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
     
     // Ensure the index is within valid bounds
     if (betweenIndex < 0 || betweenIndex >= LED_COUNT) {
-      ESP_LOGW(TAG, "In-between LED index %d out of bounds for train %s, using station index %d", 
+      LINK_LOGW(TAG, "In-between LED index %d out of bounds for train %s, using station index %d", 
                betweenIndex, train.tripId.c_str(), stationIndex);
       return stationIndex;
     }
@@ -147,7 +147,7 @@ void LEDController::displayTrainPositions() {
       // Use green color for Line 1
       setTrainLED(ledIndex, LINE_1_COLOR);
       
-      ESP_LOGD(TAG, "Train %s at LED %d (closest: %s, state: %s, dir: %s)", 
+      LINK_LOGD(TAG, "Train %s at LED %d (closest: %s, state: %s, dir: %s)", 
                train.tripId.c_str(), ledIndex, 
                train.closestStopName.c_str(),
                train.state == TrainState::AT_STATION ? "AT_STATION" : "MOVING",

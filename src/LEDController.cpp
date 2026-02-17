@@ -15,38 +15,46 @@ static const RgbColor LINE_1_COLOR = COLOR_GREEN;
 static const RgbColor LINE_2_COLOR = COLOR_BLUE;
 
 void LEDController::initializeStationMaps() {
-  // Line 1 station mapping based on the reference implementation
-  // Format: (northbound_index, southbound_index)
   // Indexes are origin 0.
-  line1StationMap["Federal Way Downtown"] =    {1, 108};
-  line1StationMap["Star Lake"] =               {3, 106};
-  line1StationMap["Kent Des Moines"] =         {5, 104};
-  line1StationMap["Angle Lake"] =              {7, 102};
-  line1StationMap["SeaTac/Airport"] =          {9, 100};
-  line1StationMap["Tukwila Int'l Blvd"] =      {11, 98};
-  line1StationMap["Rainier Beach"] =           {13, 96};
-  line1StationMap["Othello"] =                 {15, 94};
-  line1StationMap["Columbia City"] =           {17, 92};
-  line1StationMap["Mount Baker"] =             {19, 90};
-  line1StationMap["Beacon Hill"] =             {21, 88};
-  line1StationMap["SODO"] =                    {23, 86};
-  line1StationMap["Stadium"] =                 {25, 84};
-  line1StationMap["Int'l Dist/Chinatown"] =    {27, 82};
-  line1StationMap["Pioneer Square"] =          {29, 80};
-  line1StationMap["Symphony"] =                {31, 78};
-  line1StationMap["Westlake"] =                {33, 76};
-  line1StationMap["Capitol Hill"] =            {35, 74};
-  line1StationMap["Univ of Washington"] =      {37, 72};
-  line1StationMap["U District"] =              {39, 70};
-  line1StationMap["Roosevelt"] =               {41, 68};
-  line1StationMap["Northgate"] =               {43, 66};
-  line1StationMap["Pinehurst"] =               {45, 64};
-  line1StationMap["Shoreline South/148th"] =   {47, 62};
-  line1StationMap["Shoreline North/185th"] =   {49, 60};
-  line1StationMap["Mountlake Terrace"] =       {51, 58};
-  line1StationMap["Lynnwood City Center"] =    {53, 56};
-  
-  LINK_LOGI(TAG, "Initialized Line 1 station map with %d stations", line1StationMap.size());
+  stationMap["Federal Way Downtown"] =    {1, 108};
+  stationMap["Star Lake"] =               {3, 106};
+  stationMap["Kent Des Moines"] =         {5, 104};
+  stationMap["Angle Lake"] =              {7, 102};
+  stationMap["SeaTac/Airport"] =          {9, 100};
+  stationMap["Tukwila Int'l Blvd"] =      {11, 98};
+  stationMap["Rainier Beach"] =           {13, 96};
+  stationMap["Othello"] =                 {15, 94};
+  stationMap["Columbia City"] =           {17, 92};
+  stationMap["Mount Baker"] =             {19, 90};
+  stationMap["Beacon Hill"] =             {21, 88};
+  stationMap["SODO"] =                    {23, 86};
+  stationMap["Stadium"] =                 {25, 84};
+  stationMap["Int'l Dist/Chinatown"] =    {27, 82};
+  stationMap["Pioneer Square"] =          {29, 80};
+  stationMap["Symphony"] =                {31, 78};
+  stationMap["Westlake"] =                {33, 76};
+  stationMap["Capitol Hill"] =            {35, 74};
+  stationMap["Univ of Washington"] =      {37, 72};
+  stationMap["U District"] =              {39, 70};
+  stationMap["Roosevelt"] =               {41, 68};
+  stationMap["Northgate"] =               {43, 66};
+  stationMap["Pinehurst"] =               {45, 64};
+  stationMap["Shoreline South/148th"] =   {47, 62};
+  stationMap["Shoreline North/185th"] =   {49, 60};
+  stationMap["Mountlake Terrace"] =       {51, 58};
+  stationMap["Lynnwood City Center"] =    {53, 56};
+  stationMap["Downtown Redmond"] =        {111, 112};
+  stationMap["Marymoor Village"] =        {111, 112};
+  stationMap["Redmond Technology"] =      {111, 112};
+  stationMap["Overlake Village"] =        {111, 112};
+  stationMap["BelRed"] =                  {111, 112};
+  stationMap["Spring District"] =         {111, 112};
+  stationMap["Wilburton"] =               {111, 112};
+  stationMap["Bellevue Downtown"] =       {111, 112};
+  stationMap["East Main"] =               {111, 112};
+  stationMap["South Bellevue"] =          {111, 112};
+
+  LINK_LOGI(TAG, "Initialized Line 1 station map with %d stations", stationMap.size());
 }
 
 void LEDController::setup() {
@@ -110,8 +118,8 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
   // find it in the station map, then light the corresponding LED based on the direction of travel.
   if (train.state == TrainState::AT_STATION)
   {
-    auto closestStationInfo = line1StationMap.find(train.closestStopName);
-    if (closestStationInfo == line1StationMap.end()) {
+    auto closestStationInfo = stationMap.find(train.closestStopName);
+    if (closestStationInfo == stationMap.end()) {
       LINK_LOGW(TAG, "Closest station '%s' not found in Line 1 map", train.closestStopName.c_str());
       return 0; // Default to lighting the first LED if station not found, to at least indicate presence of train.
     }
@@ -123,8 +131,8 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
   }    
   // If train is moving between stations, light the LED that is one position closer to the next station.
   else if (train.state == TrainState::MOVING) {
-    auto nextStationInfo = line1StationMap.find(train.nextStopName);
-    if (nextStationInfo == line1StationMap.end()) {
+    auto nextStationInfo = stationMap.find(train.nextStopName);
+    if (nextStationInfo == stationMap.end()) {
       LINK_LOGW(TAG, "Next station '%s' not found in Line 1 map", train.nextStopName.c_str());
       return 0; // Default to lighting the first LED if station not found, to at least indicate presence of train.
     }

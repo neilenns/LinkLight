@@ -28,8 +28,8 @@ private:
 // that's the one that's closest in timing and works.
 NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Method> strip{LED_COUNT, LED_PIN};
   
-  // Line 1 station to LED mapping
-  std::map<String, StationLEDMapping> line1StationMap;
+  // Station to LED mappings
+  std::map<String, StationLEDMapping> stationMap;
   
   void initializeStationMaps();
   void setAllLEDs(const RgbColor& color);

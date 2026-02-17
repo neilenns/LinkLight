@@ -7,6 +7,7 @@
 #include "PreferencesManager.h"
 
 static const char* TAG = "TrainDataManager";
+static const float MIN_DISTANCE_THRESHOLD = 0.001f;
 
 TrainDataManager trainDataManager;
 
@@ -96,7 +97,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     // Check if trip is in progress
     if (!status["scheduledDistanceAlongTrip"].isNull()) {
       float schedDist = status["scheduledDistanceAlongTrip"].as<float>();
-      if (schedDist < 0.001f) {
+      if (schedDist < MIN_DISTANCE_THRESHOLD) {
         ESP_LOGW(TAG, "Trip %s not in progress yet, scheduledDistanceAlongTrip: %.2f", 
                  train.tripId.c_str(), schedDist);
       }

@@ -5,6 +5,12 @@
 #include <ArduinoJson.h>
 #include <vector>
 
+// Train state enum
+enum class TrainState {
+  AT_STATION,
+  MOVING
+};
+
 // Train data structure
 struct TrainData {
   String closestStop;
@@ -18,6 +24,7 @@ struct TrainData {
   String routeId;
   String tripHeadsign;
   String line;  // Line identifier (e.g., "Line 1", "Line 2")
+  TrainState state;  // Whether the train is at a station or moving between stations
 };
 
 class TrainDataManager {

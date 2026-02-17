@@ -136,11 +136,20 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     // Set the line identifier
     train.line = line;
 
+    // Determine train state: AT_STATION or MOVING
+    // If closestStopTimeOffset is negative (train has left the station) and significant,
+    // the train is moving between stations. Otherwise, it's at a station.
+    if (train.closestStopTimeOffset < -MIN_DEPARTED_SECONDS) {
+      train.state = TrainState::MOVING;
+    } else {
+      train.state = TrainState::AT_STATION;
+    }
+
     // Add to the list
     trainDataList.push_back(train);
 
     // Log parsed data
-    ESP_LOGI(TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%s",
+    ESP_LOGI(TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%s, state=%s",
       train.tripId.c_str(),
       train.closestStop.c_str(),
       train.closestStopName.c_str(),
@@ -151,7 +160,8 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
       train.directionId.c_str(),
       train.routeId.c_str(),
       train.tripHeadsign.c_str(),
-      train.line.c_str());
+      train.line.c_str(),
+      train.state == TrainState::AT_STATION ? "AT_STATION" : "MOVING");
   }
 
   ESP_LOGI(TAG, "Processed %d train positions", trainDataList.size());

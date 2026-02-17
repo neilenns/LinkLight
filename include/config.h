@@ -22,6 +22,9 @@
 #define LINE_1_NAME "Line 1"
 #define LINE_2_NAME "Line 2"
 
+// Train State Threshold
+#define MIN_DEPARTED_SECONDS 30  // Minimum seconds after departure to consider train as "moving"
+
 // Preferences Keys
 #define PREF_NAMESPACE "linklight"
 #define PREF_HOME_STATION "homeStation"

@@ -28,7 +28,7 @@ a custom PCB with 50 LED indicators.
 **ALWAYS run these commands from the repository root directory.**
 
 ```bash
-# Build firmware (first build may take 60-120 seconds depending on system)
+# Build firmware (initial build downloads dependencies and may take a few minutes)
 pio run
 
 # Clean build artifacts before rebuilding

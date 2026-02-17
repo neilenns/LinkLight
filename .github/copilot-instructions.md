@@ -2,14 +2,19 @@
 
 ## Project Overview
 
-LinkLight is an ESP32-S3 embedded firmware project that displays real-time SoundTransit Link light rail train positions on a WS2812 LED strip. The system fetches train data from the OneBusAway API and visualizes train locations using a custom PCB with 50 LED indicators.
+LinkLight is an ESP32-S3 embedded firmware project that displays real-time
+SoundTransit Link light rail train positions on a WS2812 LED strip. The system
+fetches train data from the OneBusAway API and visualizes train locations using
+a custom PCB with 50 LED indicators.
 
 **Technology Stack:**
+
 - Hardware: ESP32-S3 microcontroller (DevKitC-1), WS2812 LED strip
 - Framework: Arduino-ESP32
 - Build System: PlatformIO
 - Languages: C++ (Arduino)
-- Key Libraries: WiFiManager 2.0.17, NeoPixelBus 2.8.4, ArduinoJson 7.2.0, Preferences (built-in)
+- Key Libraries: WiFiManager 2.0.17, NeoPixelBus 2.8.4, ArduinoJson 7.2.0,
+  Preferences (built-in)
 
 ## Building and Testing
 
@@ -37,19 +42,24 @@ pio device monitor -b 115200
 ```
 
 **Build Success Indicators:**
+
 - Exit code 0
 - Message: `[SUCCESS] Took XX.XX seconds`
-- Firmware files created: `.pio/build/esp32-s3-devkitc-1/firmware.bin` and `firmware.elf`
+- Firmware files created: `.pio/build/esp32-s3-devkitc-1/firmware.bin`
+  and `firmware.elf`
 
 **Network Requirements:**
+
 The build process requires internet access to:
+
 - `api.registry.platformio.org` - PlatformIO registry
 - `github.com` / `raw.githubusercontent.com` - Library downloads
 - `dl.espressif.com` - ESP32 toolchain
 
 ### Testing
 
-**No automated tests currently exist in this project.** Testing is performed manually on hardware:
+**No automated tests currently exist in this project.** Testing is performed
+manually on hardware:
 
 1. Build and upload firmware: `pio run --target upload`
 2. Connect to "LinkLight-Setup" WiFi AP and configure network
@@ -61,7 +71,7 @@ The build process requires internet access to:
 
 ### Key Files and Directories
 
-```
+```text
 LinkLight/
 ├── src/main.cpp              # Main application code (281 lines)
 │                             # Contains setup(), loop(), and all core functions
@@ -83,17 +93,24 @@ LinkLight/
 ### Core Architecture
 
 **Boot Sequence:**
-1. LED initialization → 2. Load config from NVS → 3. WiFi setup (captive portal) → 4. Start web server → 5. Main loop (API polling + LED updates)
+
+1. LED initialization → 2. Load config from NVS → 3. WiFi setup
+   (captive portal) → 4. Start web server → 5. Main loop
+   (API polling + LED updates)
 
 **Main Components:**
 
-- **WiFi**: WiFiManager creates "LinkLight-Setup" AP on first boot (180s timeout)
-- **Web Server**: Runs on port 80, provides `/` (status), `/config` (settings form), and POST handler
-- **Storage**: Preferences library stores homeStation, apiKey, routeId in ESP32 NVS
+- **WiFi**: WiFiManager creates "LinkLight-Setup" AP on first boot
+  (180s timeout)
+- **Web Server**: Runs on port 80, provides `/` (status), `/config`
+  (settings form), and POST handler
+- **Storage**: Preferences library stores homeStation, apiKey, routeId
+  in ESP32 NVS
 - **LED Control**: NeoPixelBus controls 50 WS2812 LEDs on GPIO 8
 - **API Client**: Polls OneBusAway API every 30s for train positions
 
 **Key Functions in src/main.cpp:**
+
 - `setup()` - Initialization sequence
 - `loop()` - Main event loop
 - `setupWiFi()` - WiFiManager setup
@@ -105,19 +122,26 @@ LinkLight/
 
 ### Adding Configuration Parameters
 
-1. Add constant to `include/config.h`: `#define PREF_NEW_PARAM "newParam"`
+1. Add constant to `include/config.h`:
+   `#define PREF_NEW_PARAM "newParam"`
 2. Add global variable in `src/main.cpp`: `String newParam = "";`
-3. Update `loadPreferences()` to read from NVS: `newParam = preferences.getString(PREF_NEW_PARAM, "default");`
-4. Update `savePreferences()` to write to NVS: `preferences.putString(PREF_NEW_PARAM, newParam);`
-5. Add form field to web interface in `handleConfig()` and `handleSaveConfig()`
+3. Update `loadPreferences()` to read from NVS:
+   `newParam = preferences.getString(PREF_NEW_PARAM, "default");`
+4. Update `savePreferences()` to write to NVS:
+   `preferences.putString(PREF_NEW_PARAM, newParam);`
+5. Add form field to web interface in `handleConfig()` and
+   `handleSaveConfig()`
 
 ### Modifying LED Behavior
 
-Edit `displayTrainPositions()` function in `src/main.cpp`. Currently shows animated rainbow pattern. To implement train display, parse positions in `updateTrainPositions()` and map to LED indices.
+Edit `displayTrainPositions()` function in `src/main.cpp`. Currently shows
+animated rainbow pattern. To implement train display, parse positions in
+`updateTrainPositions()` and map to LED indices.
 
 ### Adding Dependencies
 
-Update `lib_deps` section in `platformio.ini`. PlatformIO auto-downloads on next build:
+Update `lib_deps` section in `platformio.ini`. PlatformIO auto-downloads on
+next build:
 
 ```ini
 lib_deps =
@@ -128,6 +152,7 @@ lib_deps =
 ## Pull Request Requirements
 
 **All PRs must have at least one label:**
+
 - `enhancement` - New features and improvements
 - `bug` - Bug fixes
 - `development` - Build process/workflow/tooling changes
@@ -135,30 +160,41 @@ lib_deps =
 - `documentation` - Documentation updates
 
 **CI Checks:**
-- Build verification runs on all PRs (see `.github/workflows/pr-build.yml`)
-- Label requirement enforced (see `.github/workflows/pr-label-required.yml`)
+
+- Build verification runs on all PRs
+  (see `.github/workflows/pr-build.yml`)
+- Label requirement enforced
+  (see `.github/workflows/pr-label-required.yml`)
 - Markdown linting with markdownlint-cli2
 
 ## Important Constraints
 
 ### Memory Management
+
 - ESP32-S3 has PSRAM enabled (`-DBOARD_HAS_PSRAM`)
 - NeoPixelBus requires continuous memory for 50 LEDs
 - ArduinoJson uses dynamic allocation - size JsonDocument appropriately
 - NVS has limited write cycles - minimize preference saves
 
 ### API and Networking
-- API endpoint: `https://api.pugetsound.onebusaway.org/api/where/trips-for-route/{routeId}.json`
+
+- API endpoint:
+  `https://api.pugetsound.onebusaway.org/api/where/trips-for-route/{routeId}.json`
 - Default route: `40_102574` (Link Light Rail)
 - Polling interval: 30 seconds
 - API key required (stored in NVS, no encryption)
 
 ### Hardware Specifics
+
 - 50 WS2812 LEDs on GPIO 8
-- LED current draw: up to 3A at full brightness (ensure adequate 5V supply)
+- LED current draw: up to 3A at full brightness
+  (ensure adequate 5V supply)
 - Serial monitor baud rate: 115200
 - Web server has no authentication (suitable for home networks only)
 
 ## Trust These Instructions
 
-The build commands, file locations, and architectural details documented here have been validated. When working on this codebase, trust these instructions and only search for additional information if something is unclear or appears incorrect.
+The build commands, file locations, and architectural details documented here
+have been validated. When working on this codebase, trust these instructions
+and only search for additional information if something is unclear or appears
+incorrect.

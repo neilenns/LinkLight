@@ -11,7 +11,7 @@ void LogManager::setup() {
 }
 
 void LogManager::log(const char* level, const char* tag, const char* format, ...) {
-  char buffer[256];
+  char buffer[512];
   va_list args;
   va_start(args, format);
   vsnprintf(buffer, sizeof(buffer), format, args);
@@ -21,18 +21,28 @@ void LogManager::log(const char* level, const char* tag, const char* format, ...
 }
 
 void LogManager::addLog(const char* level, const char* tag, const char* message) {
-  LogEntry entry;
-  entry.timestamp = millis();
-  entry.level = String(level);
-  entry.tag = String(tag);
-  entry.message = String(message);
+  // Validate inputs to prevent crashes
+  if (!level || !tag || !message) {
+    Serial.println("[LogManager] Null parameter passed to addLog");
+    return;
+  }
   
-  logBuffer.push_back(entry);
-  
-  // Keep only the most recent LOG_BUFFER_SIZE entries
-  // Using deque allows O(1) pop_front instead of O(n) erase(begin())
-  if (logBuffer.size() > LOG_BUFFER_SIZE) {
-    logBuffer.pop_front();
+  try {
+    LogEntry entry;
+    entry.timestamp = millis();
+    entry.level = String(level);
+    entry.tag = String(tag);
+    entry.message = String(message);
+    
+    logBuffer.push_back(entry);
+    
+    // Keep only the most recent LOG_BUFFER_SIZE entries
+    // Using deque allows O(1) pop_front instead of O(n) erase(begin())
+    if (logBuffer.size() > LOG_BUFFER_SIZE) {
+      logBuffer.pop_front();
+    }
+  } catch (...) {
+    Serial.println("[LogManager] Exception in addLog - likely memory allocation failure");
   }
 }
 

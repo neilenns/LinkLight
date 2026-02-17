@@ -139,20 +139,33 @@ int LEDController::getTrainLEDIndex(const String& line, const String& direction,
       nextStopTimeOffset > 0 && 
       nextStopTimeOffset < MAX_ARRIVAL_TIME_SECONDS) {
     // Train is in transit between stations
-    int totalTime = abs(closestStopTimeOffset) + nextStopTimeOffset;
+    // closestStopTimeOffset is negative (train departed), so negate it to get elapsed time
+    int elapsedTime = -closestStopTimeOffset;
+    int totalTime = elapsedTime + nextStopTimeOffset;
+    
+    // Guard against division by zero
+    if (totalTime <= 0 || ledsToNext <= 1) {
+      return stationIndex;
+    }
     
     // Calculate progress from closest station to next station (0.0 to 1.0)
-    float progress = (float)abs(closestStopTimeOffset) / (float)totalTime;
+    float progress = (float)elapsedTime / (float)totalTime;
     
     // Calculate LED offset based on progress and available LEDs between stations
     // Note: Both northbound and southbound sections have decreasing indices as trains move
-    int ledOffset = 0;
-    if (totalTime > 0 && ledsToNext > 1) {
-      ledOffset = (int)(progress * (ledsToNext - 1));
-    }
+    int ledOffset = (int)(progress * (ledsToNext - 1));
     
     // Both directions use decreasing indices, so we subtract the offset
-    return stationIndex - ledOffset;
+    int calculatedIndex = stationIndex - ledOffset;
+    
+    // Ensure the index is within valid LED range
+    if (calculatedIndex < 0 || calculatedIndex >= LED_COUNT) {
+      ESP_LOGW(TAG, "Calculated LED index %d out of bounds, using station index %d", 
+               calculatedIndex, stationIndex);
+      return stationIndex;
+    }
+    
+    return calculatedIndex;
   }
   
   // Default: train is at or very close to the closest station

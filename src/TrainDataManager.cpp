@@ -242,7 +242,7 @@ void TrainDataManager::updateTrainPositions() {
 
   // Fetch data for both lines
   fetchTrainDataForRoute(LINE_1_ROUTE_ID, LINE_1_NAME, apiKey);
-  // fetchTrainDataForRoute(LINE_2_ROUTE_ID, LINE_2_NAME, apiKey);
+  fetchTrainDataForRoute(LINE_2_ROUTE_ID, LINE_2_NAME, apiKey);
   
   LINK_LOGI(TAG, "Total trains from both lines: %d", trainDataList.size());
 }

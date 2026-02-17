@@ -159,15 +159,14 @@ void LEDController::displayTrainPositions() {
     int ledIndex = getTrainLEDIndex(train);
     
     if (ledIndex >= 0) {
-      // Use green color for Line 1
-      setTrainLED(ledIndex, train.state == TrainState::AT_STATION ? LINE_1_COLOR : COLOR_YELLOW);
-
       if (train.state == TrainState::AT_STATION) {
+        setTrainLED(ledIndex, train.line == LINE_1_NAME ? LINE_1_COLOR : LINE_2_COLOR);
         LINK_LOGD(TAG, "Train %s at LED %d (closest: %s, state: AT_STATION, dir: %s)", 
                  train.tripId.c_str(), ledIndex, 
                  train.closestStopName.c_str(),
                  train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound");
       } else {
+        setTrainLED(ledIndex, COLOR_YELLOW);
         LINK_LOGD(TAG, "Train %s at LED %d (next: %s, state: MOVING, dir: %s)", 
                  train.tripId.c_str(), ledIndex, 
                  train.nextStopName.c_str(),

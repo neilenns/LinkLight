@@ -11,17 +11,14 @@ public:
   
   String getHomeStation() const { return homeStation; }
   String getApiKey() const { return apiKey; }
-  String getRouteId() const { return routeId; }
   
   void setHomeStation(const String& value) { homeStation = value; }
   void setApiKey(const String& value) { apiKey = value; }
-  void setRouteId(const String& value) { routeId = value; }
   
 private:
   Preferences preferences;
   String homeStation;
   String apiKey;
-  String routeId;
 };
 
 extern PreferencesManager preferencesManager;

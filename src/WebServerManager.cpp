@@ -60,7 +60,6 @@ void WebServerManager::handleConfig() {
   JsonDocument data;
   data["homeStation"] = preferencesManager.getHomeStation();
   data["apiKey"] = preferencesManager.getApiKey();
-  data["routeId"] = preferencesManager.getRouteId();
   
   String output = ministache::render(html, data);
   server.send(200, "text/html", output);
@@ -83,19 +82,6 @@ void WebServerManager::handleSaveConfig() {
       apiKey = apiKey.substring(0, 64);
     }
     preferencesManager.setApiKey(apiKey);
-  }
-  if (server.hasArg("routeId")) {
-    String newRouteId = server.arg("routeId");
-    if (newRouteId.length() > 0) {
-      // Limit length to prevent excessive storage use
-      if (newRouteId.length() > 32) {
-        newRouteId = newRouteId.substring(0, 32);
-      }
-      preferencesManager.setRouteId(newRouteId);
-    } else {
-      // If routeId is empty, use default
-      preferencesManager.setRouteId(DEFAULT_ROUTE_ID);
-    }
   }
   
   preferencesManager.save();

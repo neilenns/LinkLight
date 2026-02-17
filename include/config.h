@@ -16,13 +16,15 @@
 #define API_KEY_PARAM "key"       // API key parameter name
 #define API_UPDATE_INTERVAL (30 * 1000) // Update interval in milliseconds (30 seconds)
 
+// Route IDs
+#define LINE_1_ROUTE_ID "40_100479"  // Link Light Rail Line 1
+#define LINE_2_ROUTE_ID "40_2LINE"   // Link Light Rail Line 2
+#define LINE_1_NAME "Line 1"
+#define LINE_2_NAME "Line 2"
+
 // Preferences Keys
 #define PREF_NAMESPACE "linklight"
 #define PREF_HOME_STATION "homeStation"
 #define PREF_API_KEY "apiKey"
-#define PREF_ROUTE_ID "routeId"
-
-// Default values
-#define DEFAULT_ROUTE_ID "40_102574"  // Link Light Rail route ID
 
 #endif // CONFIG_H

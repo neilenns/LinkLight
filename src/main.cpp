@@ -53,16 +53,20 @@ void setup() {
   });
   
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-    ESP_LOGI(TAG, "Progress: %u%%", (progress * 100) / total);
+    if (total > 0) {
+      ESP_LOGI(TAG, "Progress: %u%%", (progress * 100) / total);
+    }
   });
   
   ArduinoOTA.onError([](ota_error_t error) {
-    ESP_LOGE(TAG, "OTA Error[%u]: ", error);
-    if (error == OTA_AUTH_ERROR) ESP_LOGE(TAG, "Auth Failed");
-    else if (error == OTA_BEGIN_ERROR) ESP_LOGE(TAG, "Begin Failed");
-    else if (error == OTA_CONNECT_ERROR) ESP_LOGE(TAG, "Connect Failed");
-    else if (error == OTA_RECEIVE_ERROR) ESP_LOGE(TAG, "Receive Failed");
-    else if (error == OTA_END_ERROR) ESP_LOGE(TAG, "End Failed");
+    String errorMsg;
+    if (error == OTA_AUTH_ERROR) errorMsg = "Auth Failed";
+    else if (error == OTA_BEGIN_ERROR) errorMsg = "Begin Failed";
+    else if (error == OTA_CONNECT_ERROR) errorMsg = "Connect Failed";
+    else if (error == OTA_RECEIVE_ERROR) errorMsg = "Receive Failed";
+    else if (error == OTA_END_ERROR) errorMsg = "End Failed";
+    else errorMsg = "Unknown Error";
+    ESP_LOGE(TAG, "OTA Error[%u]: %s", error, errorMsg.c_str());
   });
   
   ArduinoOTA.begin();

@@ -119,12 +119,8 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
     // Get the LED data for the closest station
     const StationLEDMapping& closestMapping = closestStationInfo->second;
 
-    if (isNorthbound) {  
-      ledIndex = closestMapping.northboundIndex - 1;  
-    } else {  
-      ledIndex = closestMapping.southboundIndex + 1;  
-    }
-  }
+    ledIndex = isNorthbound ? closestMapping.northboundIndex : closestMapping.southboundIndex;
+  }    
   // If train is moving between stations, light the LED that is one position closer to the next station.
   else if (train.state == TrainState::MOVING) {
     auto nextStationInfo = line1StationMap.find(train.nextStopName);
@@ -134,7 +130,13 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
     }
 
     const StationLEDMapping& nextMapping = nextStationInfo->second;
-    ledIndex = (isNorthbound ? nextMapping.northboundIndex : nextMapping.southboundIndex) - 1;
+    if (isNorthbound) {
+      // For northbound trains, the LED index should be one less than the next station's northbound index
+      ledIndex = nextMapping.northboundIndex - 1;
+    } else {
+      // For southbound trains, the LED index should be one more than the next station's southbound index
+      ledIndex = nextMapping.southboundIndex + 1;
+    }    
   }
 
   // Ensure the index is within valid bounds
@@ -174,6 +176,7 @@ void LEDController::displayTrainPositions() {
     }
   }
   
+  // Update the LED strip once with all changes
   // Update the LED strip once with all changes
   strip.Show();
 }

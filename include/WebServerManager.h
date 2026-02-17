@@ -13,6 +13,8 @@ private:
   void handleRoot();
   void handleConfig();
   void handleSaveConfig();
+  void handleLogs();
+  void handleLogsData();
   
   WebServer server{WEB_SERVER_PORT};
 };

@@ -5,6 +5,7 @@
 #include <esp_log.h>
 #include "FileSystemManager.h"
 #include "PreferencesManager.h"
+#include "LogManager.h"
 
 static const char* TAG = "WebServerManager";
 
@@ -17,6 +18,8 @@ void WebServerManager::setup() {
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
   server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });
+  server.on("/logs", HTTP_GET, [this]() { this->handleLogs(); });
+  server.on("/api/logs", HTTP_GET, [this]() { this->handleLogsData(); });
   
   // Start server
   server.begin();
@@ -93,4 +96,36 @@ void WebServerManager::handleSaveConfig() {
   }
   
   server.send(200, "text/html", html);
+}
+
+void WebServerManager::handleLogs() {
+  String html = fileSystemManager.readFile("/logs.html");
+  if (html.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load logs.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
+  
+  server.send(200, "text/html", html);
+}
+
+void WebServerManager::handleLogsData() {
+  // Get logs from LogManager
+  std::vector<LogEntry> logs = logManager.getLogs();
+  
+  // Create JSON response
+  JsonDocument doc;
+  JsonArray logsArray = doc["logs"].to<JsonArray>();
+  
+  for (const auto& entry : logs) {
+    JsonObject logObj = logsArray.add<JsonObject>();
+    logObj["timestamp"] = entry.timestamp;
+    logObj["level"] = entry.level;
+    logObj["tag"] = entry.tag;
+    logObj["message"] = entry.message;
+  }
+  
+  String jsonResponse;
+  serializeJson(doc, jsonResponse);
+  
+  server.send(200, "application/json", jsonResponse);
 }

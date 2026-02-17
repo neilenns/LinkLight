@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <esp_log.h>
 #include "config.h"
+#include "LogManager.h"
 #include "WiFiManager_Component.h"
 #include "OTAManager.h"
 #include "WebServerManager.h"
@@ -17,6 +18,9 @@ void setup() {
   Serial.begin(115200);
   
   delay(5000);
+
+  // Initialize log manager early to capture all logs
+  logManager.setup();
 
   ESP_LOGI(TAG, "LinkLight Starting...");
 

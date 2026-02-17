@@ -96,7 +96,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     // Check if trip is in progress
     if (!status["scheduledDistanceAlongTrip"].isNull()) {
       float schedDist = status["scheduledDistanceAlongTrip"].as<float>();
-      if (schedDist == 0.0) {
+      if (schedDist < 0.001f) {
         ESP_LOGW(TAG, "Trip %s not in progress yet, scheduledDistanceAlongTrip: %.2f", 
                  train.tripId.c_str(), schedDist);
       }

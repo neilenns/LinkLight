@@ -74,28 +74,40 @@ void WebServerManager::handleSaveConfig() {
   if (server.hasArg("homeStation")) {
     String homeStation = server.arg("homeStation");
     // Limit length to prevent excessive storage use
-    if (homeStation.length() > 64) {
-      homeStation = homeStation.substring(0, 64);
+    if (homeStation.length() > MAX_PREFERENCE_LENGTH) {
+      homeStation = homeStation.substring(0, MAX_PREFERENCE_LENGTH);
     }
     preferencesManager.setHomeStation(homeStation);
   }
   if (server.hasArg("apiKey")) {
     String apiKey = server.arg("apiKey");
     // Limit length to prevent excessive storage use
-    if (apiKey.length() > 64) {
-      apiKey = apiKey.substring(0, 64);
+    if (apiKey.length() > MAX_PREFERENCE_LENGTH) {
+      apiKey = apiKey.substring(0, MAX_PREFERENCE_LENGTH);
     }
     preferencesManager.setApiKey(apiKey);
   }
   if (server.hasArg("hostname")) {
     String hostname = server.arg("hostname");
     // Limit length to prevent excessive storage use
-    if (hostname.length() > 64) {
-      hostname = hostname.substring(0, 64);
+    if (hostname.length() > MAX_PREFERENCE_LENGTH) {
+      hostname = hostname.substring(0, MAX_PREFERENCE_LENGTH);
     }
     // Use default if empty
     if (hostname.isEmpty()) {
       hostname = DEFAULT_HOSTNAME;
+    } else {
+      // Validate RFC 1123 compliance: only alphanumeric and hyphens, no leading/trailing hyphens
+      String validHostname = "";
+      for (size_t i = 0; i < hostname.length(); i++) {
+        char c = hostname.charAt(i);
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || 
+            (c >= '0' && c <= '9') || (c == '-' && i > 0 && i < hostname.length() - 1)) {
+          validHostname += c;
+        }
+      }
+      // Use the validated hostname or default if nothing valid
+      hostname = validHostname.isEmpty() ? DEFAULT_HOSTNAME : validHostname;
     }
     preferencesManager.setHostname(hostname);
   }

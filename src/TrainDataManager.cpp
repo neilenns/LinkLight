@@ -7,7 +7,7 @@
 #include "PreferencesManager.h"
 
 static const char* TAG = "TrainDataManager";
-static const float MIN_DISTANCE_THRESHOLD = 0.001f;
+static const float MIN_SCHEDULED_DISTANCE_THRESHOLD = 0.001f;
 
 TrainDataManager trainDataManager;
 
@@ -101,7 +101,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     // as they are still valid and should be displayed
     if (!status["scheduledDistanceAlongTrip"].isNull()) {
       float schedDist = status["scheduledDistanceAlongTrip"].as<float>();
-      if (schedDist < MIN_DISTANCE_THRESHOLD) {
+      if (schedDist < MIN_SCHEDULED_DISTANCE_THRESHOLD) {
         ESP_LOGW(TAG, "Trip %s not in progress yet, scheduledDistanceAlongTrip: %.2f", 
                  train.tripId.c_str(), schedDist);
       }
@@ -115,6 +115,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     if (closestStopIt != stopsToNames.end()) {
       train.closestStopName = closestStopIt->second;
     } else {
+      ESP_LOGW(TAG, "Stop name not found for closestStop ID: %s", train.closestStop.c_str());
       train.closestStopName = train.closestStop; // Fall back to ID if name not found
     }
 
@@ -122,6 +123,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     if (nextStopIt != stopsToNames.end()) {
       train.nextStopName = nextStopIt->second;
     } else {
+      ESP_LOGW(TAG, "Stop name not found for nextStop ID: %s", train.nextStop.c_str());
       train.nextStopName = train.nextStop; // Fall back to ID if name not found
     }
 

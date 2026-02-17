@@ -69,7 +69,9 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     // Extract tripId from the list item
     train.tripId = item["tripId"].as<String>();
 
-    // Extract data from status object
+    // Validate critical fields - skip trains with missing data
+    // Note: We skip trains missing critical position/timing data (status, nextStop, nextStopTimeOffset)
+    // but allow trains that haven't started yet (scheduledDistanceAlongTrip == 0)
     JsonObject status = item["status"];
     if (status.isNull()) {
       ESP_LOGW(TAG, "Status missing for trip %s", train.tripId.c_str());
@@ -95,6 +97,8 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc) {
     train.closestStopTimeOffset = status["closestStopTimeOffset"].as<int>();
 
     // Check if trip is in progress
+    // Note: We log warnings but don't skip trains that haven't started yet,
+    // as they are still valid and should be displayed
     if (!status["scheduledDistanceAlongTrip"].isNull()) {
       float schedDist = status["scheduledDistanceAlongTrip"].as<float>();
       if (schedDist < MIN_DISTANCE_THRESHOLD) {

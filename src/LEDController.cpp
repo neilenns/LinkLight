@@ -143,8 +143,8 @@ int LEDController::getTrainLEDIndex(const String& line, const String& direction,
     int elapsedTime = -closestStopTimeOffset;
     int totalTime = elapsedTime + nextStopTimeOffset;
     
-    // Guard against division by zero
-    if (totalTime <= 0 || ledsToNext <= 1) {
+    // Guard against edge case where stations are adjacent (no LEDs between them)
+    if (ledsToNext <= 1) {
       return stationIndex;
     }
     

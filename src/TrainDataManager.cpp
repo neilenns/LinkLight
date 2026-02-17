@@ -158,6 +158,39 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
   return true;
 }
 
+void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const String& lineName, const String& apiKey) {
+  ESP_LOGI(TAG, "Fetching data for %s (route: %s)", lineName.c_str(), routeId.c_str());
+  
+  HTTPClient http;
+  String url = String(API_BASE_URL) + "/trips-for-route/" + routeId + ".json?" + API_KEY_PARAM + "=" + apiKey;
+
+  http.setTimeout(10000);
+  http.begin(url);
+  int httpCode = http.GET();
+
+  if (httpCode == HTTP_CODE_OK) {
+    WiFiClient* stream = http.getStreamPtr();
+
+    if (stream == nullptr) {
+      ESP_LOGE(TAG, "Failed to get HTTP stream for %s", lineName.c_str());
+    } else {
+      JsonDocument doc;
+      DeserializationError error = deserializeJson(doc, *stream);
+
+      if (error) {
+        ESP_LOGE(TAG, "JSON parsing failed for %s: %s", lineName.c_str(), error.c_str());
+      } else {
+        ESP_LOGI(TAG, "Successfully retrieved %s train data", lineName.c_str());
+        parseTrainDataFromJson(doc, lineName);
+      }
+    }
+  } else {
+    ESP_LOGW(TAG, "HTTP request failed for %s: %d", lineName.c_str(), httpCode);
+  }
+
+  http.end();
+}
+
 void TrainDataManager::updateTrainPositions() {
   static const char* SAMPLE_DATA_PATH = "/data.json";
 
@@ -192,67 +225,9 @@ void TrainDataManager::updateTrainPositions() {
 
   ESP_LOGI(TAG, "Updating train positions...");
 
-  // Fetch data for Line 1
-  ESP_LOGI(TAG, "Fetching data for Line 1 (route: %s)", LINE_1_ROUTE_ID);
-  HTTPClient http1;
-  String url1 = String(API_BASE_URL) + "/trips-for-route/" + LINE_1_ROUTE_ID + ".json?" + API_KEY_PARAM + "=" + apiKey;
-
-  http1.setTimeout(10000);
-  http1.begin(url1);
-  int httpCode1 = http1.GET();
-
-  if (httpCode1 == HTTP_CODE_OK) {
-    WiFiClient* stream1 = http1.getStreamPtr();
-
-    if (stream1 == nullptr) {
-      ESP_LOGE(TAG, "Failed to get HTTP stream for Line 1");
-    } else {
-      JsonDocument doc1;
-      DeserializationError error1 = deserializeJson(doc1, *stream1);
-
-      if (error1) {
-        ESP_LOGE(TAG, "JSON parsing failed for Line 1: %s", error1.c_str());
-      } else {
-        ESP_LOGI(TAG, "Successfully retrieved Line 1 train data");
-        parseTrainDataFromJson(doc1, "Line 1");
-      }
-    }
-  } else {
-    ESP_LOGW(TAG, "HTTP request failed for Line 1: %d", httpCode1);
-  }
-
-  http1.end();
-
-  // Fetch data for Line 2
-  ESP_LOGI(TAG, "Fetching data for Line 2 (route: %s)", LINE_2_ROUTE_ID);
-  HTTPClient http2;
-  String url2 = String(API_BASE_URL) + "/trips-for-route/" + LINE_2_ROUTE_ID + ".json?" + API_KEY_PARAM + "=" + apiKey;
-
-  http2.setTimeout(10000);
-  http2.begin(url2);
-  int httpCode2 = http2.GET();
-
-  if (httpCode2 == HTTP_CODE_OK) {
-    WiFiClient* stream2 = http2.getStreamPtr();
-
-    if (stream2 == nullptr) {
-      ESP_LOGE(TAG, "Failed to get HTTP stream for Line 2");
-    } else {
-      JsonDocument doc2;
-      DeserializationError error2 = deserializeJson(doc2, *stream2);
-
-      if (error2) {
-        ESP_LOGE(TAG, "JSON parsing failed for Line 2: %s", error2.c_str());
-      } else {
-        ESP_LOGI(TAG, "Successfully retrieved Line 2 train data");
-        parseTrainDataFromJson(doc2, "Line 2");
-      }
-    }
-  } else {
-    ESP_LOGW(TAG, "HTTP request failed for Line 2: %d", httpCode2);
-  }
-
-  http2.end();
+  // Fetch data for both lines
+  fetchTrainDataForRoute(LINE_1_ROUTE_ID, "Line 1", apiKey);
+  fetchTrainDataForRoute(LINE_2_ROUTE_ID, "Line 2", apiKey);
   
   ESP_LOGI(TAG, "Total trains from both lines: %d", trainDataList.size());
 }

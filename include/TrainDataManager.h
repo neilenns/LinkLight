@@ -29,6 +29,7 @@ public:
   
 private:
   bool parseTrainDataFromJson(JsonDocument& doc, const String& line);
+  void fetchTrainDataForRoute(const String& routeId, const String& lineName, const String& apiKey);
   std::vector<TrainData> trainDataList;
 };
 

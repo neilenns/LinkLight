@@ -116,7 +116,16 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
   if (train.state == TrainState::MOVING) {
     // The in-between LED is one position closer to the next station
     // Both directions have decreasing indices, so subtract 1
-    return stationIndex - 1;
+    int betweenIndex = stationIndex - 1;
+    
+    // Ensure the index is within valid bounds
+    if (betweenIndex < 0 || betweenIndex >= LED_COUNT) {
+      ESP_LOGW(TAG, "In-between LED index %d out of bounds for train %s, using station index %d", 
+               betweenIndex, train.tripId.c_str(), stationIndex);
+      return stationIndex;
+    }
+    
+    return betweenIndex;
   }
   
   // Train is at the station

@@ -139,7 +139,6 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     // Determine train state: AT_STATION or MOVING
     // If closestStopTimeOffset is negative (train has left the station) and significant,
     // the train is moving between stations. Otherwise, it's at a station.
-    const int MIN_DEPARTED_SECONDS = 30;  // Train must be at least 30 seconds away to be considered "moving"
     if (train.closestStopTimeOffset < -MIN_DEPARTED_SECONDS) {
       train.state = TrainState::MOVING;
     } else {

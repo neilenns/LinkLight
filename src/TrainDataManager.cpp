@@ -61,6 +61,9 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     return false;
   }
 
+  // Reserve memory to avoid reallocations during push_back operations
+  trainDataList.reserve(list.size());
+
   for (JsonObject item : list) {
     TrainData train;
 

@@ -19,6 +19,8 @@
 // Route IDs
 #define LINE_1_ROUTE_ID "40_100479"  // Link Light Rail Line 1
 #define LINE_2_ROUTE_ID "40_2LINE"   // Link Light Rail Line 2
+#define LINE_1_NAME "Line 1"
+#define LINE_2_NAME "Line 2"
 
 // Preferences Keys
 #define PREF_NAMESPACE "linklight"

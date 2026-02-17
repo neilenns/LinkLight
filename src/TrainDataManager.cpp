@@ -216,7 +216,7 @@ void TrainDataManager::updateTrainPositions() {
       return;
     }
 
-    if (parseTrainDataFromJson(doc, "Line 1")) {
+    if (parseTrainDataFromJson(doc, LINE_1_NAME)) {
       ESP_LOGI(TAG, "Successfully loaded sample train data from LittleFS");
     }
 
@@ -226,8 +226,8 @@ void TrainDataManager::updateTrainPositions() {
   ESP_LOGI(TAG, "Updating train positions...");
 
   // Fetch data for both lines
-  fetchTrainDataForRoute(LINE_1_ROUTE_ID, "Line 1", apiKey);
-  fetchTrainDataForRoute(LINE_2_ROUTE_ID, "Line 2", apiKey);
+  fetchTrainDataForRoute(LINE_1_ROUTE_ID, LINE_1_NAME, apiKey);
+  fetchTrainDataForRoute(LINE_2_ROUTE_ID, LINE_2_NAME, apiKey);
   
   ESP_LOGI(TAG, "Total trains from both lines: %d", trainDataList.size());
 }

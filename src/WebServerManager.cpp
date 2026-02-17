@@ -39,6 +39,7 @@ void WebServerManager::handleRoot() {
   // Create data for Ministache template
   JsonDocument data;
   data["ipAddress"] = WiFi.localIP().toString();
+  data["hostname"] = preferencesManager.getHostname();
   // Only set homeStation if not empty, so Mustache {{^homeStation}} works
   String homeStation = preferencesManager.getHomeStation();
   if (!homeStation.isEmpty()) {
@@ -62,6 +63,7 @@ void WebServerManager::handleConfig() {
   JsonDocument data;
   data["homeStation"] = preferencesManager.getHomeStation();
   data["apiKey"] = preferencesManager.getApiKey();
+  data["hostname"] = preferencesManager.getHostname();
   
   String output = ministache::render(html, data);
   server.send(200, "text/html", output);
@@ -84,6 +86,18 @@ void WebServerManager::handleSaveConfig() {
       apiKey = apiKey.substring(0, 64);
     }
     preferencesManager.setApiKey(apiKey);
+  }
+  if (server.hasArg("hostname")) {
+    String hostname = server.arg("hostname");
+    // Limit length to prevent excessive storage use
+    if (hostname.length() > 64) {
+      hostname = hostname.substring(0, 64);
+    }
+    // Use default if empty
+    if (hostname.isEmpty()) {
+      hostname = DEFAULT_HOSTNAME;
+    }
+    preferencesManager.setHostname(hostname);
   }
   
   preferencesManager.save();

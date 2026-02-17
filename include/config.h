@@ -33,5 +33,9 @@
 #define PREF_NAMESPACE "linklight"
 #define PREF_HOME_STATION "homeStation"
 #define PREF_API_KEY "apiKey"
+#define PREF_HOSTNAME "hostname"
+
+// Default Values
+#define DEFAULT_HOSTNAME "LinkLight"
 
 #endif // CONFIG_H

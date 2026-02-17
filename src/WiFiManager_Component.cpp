@@ -1,6 +1,7 @@
 #include "WiFiManager_Component.h"
 #include <WiFi.h>
 #include "LogManager.h"
+#include "PreferencesManager.h"
 #include "config.h"
 
 static const char* TAG = "WiFiManager_Component";
@@ -9,6 +10,11 @@ WiFiManager_Component wifiManagerComponent;
 
 void WiFiManager_Component::setup() {
   LINK_LOGI(TAG, "Setting up WiFi...");
+  
+  // Set hostname for the device (must be set before WiFi.mode)
+  String hostname = preferencesManager.getHostname();
+  WiFi.setHostname(hostname.c_str());
+  LINK_LOGI(TAG, "Hostname set to: %s", hostname.c_str());
   
   // Set WiFi mode
   WiFi.mode(WIFI_STA);

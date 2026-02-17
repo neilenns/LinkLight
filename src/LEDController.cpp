@@ -6,11 +6,12 @@ static const char* TAG = "LEDController";
 
 LEDController ledController;
 
-static const RgbColor LINE_1_COLOR = RgbColor(0, 32, 0); // Green color for Line 1 trains
-static const RgbColor LINE_2_COLOR = RgbColor(0, 0, 32); // Blue color for Line 2 trains
 static const RgbColor COLOR_BLUE = RgbColor(0, 0, 32);
 static const RgbColor COLOR_GREEN = RgbColor(0, 32, 0);
 static const RgbColor COLOR_BLACK = RgbColor(0, 0, 0);
+
+static const RgbColor LINE_1_COLOR = COLOR_GREEN;
+static const RgbColor LINE_2_COLOR = COLOR_BLUE;
 
 void LEDController::initializeStationMaps() {
   // Line 1 station mapping based on the reference implementation

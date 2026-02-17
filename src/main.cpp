@@ -11,7 +11,7 @@
 #include "TrainDataManager.h"
 
 static const char* TAG = "LinkLight";
-unsigned long lastApiUpdate = -API_UPDATE_INTERVAL;
+unsigned long lastApiUpdate = -API_UPDATE_INTERVAL; // Initial value is a really large number to ensure the first update happens immediately.
 
 void setup() {
   Serial.begin(115200);

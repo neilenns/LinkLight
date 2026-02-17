@@ -1,17 +1,17 @@
 #include "LEDController.h"
 #include "TrainDataManager.h"
 #include "LogManager.h"
+#include "PreferencesManager.h"
 
 static const char* TAG = "LEDController";
 
 LEDController ledController;
 
-static const RgbColor COLOR_BLUE = RgbColor(0, 0, 32);
-static const RgbColor COLOR_GREEN = RgbColor(0, 32, 0);
 static const RgbColor COLOR_BLACK = RgbColor(0, 0, 0);
 
-static const RgbColor LINE_1_COLOR = COLOR_GREEN;
-static const RgbColor LINE_2_COLOR = COLOR_BLUE;
+// These will be updated from preferences
+static RgbColor LINE_1_COLOR = RgbColor(0, 32, 0);  // Default green
+static RgbColor LINE_2_COLOR = RgbColor(0, 0, 32);  // Default blue
 
 void LEDController::initializeStationMaps() {
   // Line 1 station mapping based on the reference implementation
@@ -55,24 +55,26 @@ void LEDController::setup() {
   
   // Initialize station maps
   initializeStationMaps();
+  
+  // Load colors from preferences
+  updateColors();
 }
 
 void LEDController::startupAnimation() {
   const int delayMs = 20;  // Delay between each color
 
-  // Flash each LED blue
+  // Flash each LED with Line 2 color
   for (int i = 0; i < LED_COUNT; i++) {
-    // Show blue
-    strip.SetPixelColor(i, COLOR_BLUE);
+    strip.SetPixelColor(i, LINE_2_COLOR);
     strip.Show();
     delay(delayMs);
     strip.SetPixelColor(i, COLOR_BLACK);
     strip.Show();
   }
 
-  // Flash each LED green in the opposite direction
+  // Flash each LED with Line 1 color in the opposite direction
   for (int i = LED_COUNT -1; i >= 0; i--) {
-    strip.SetPixelColor(i, COLOR_GREEN);
+    strip.SetPixelColor(i, LINE_1_COLOR);
     strip.Show();
     delay(delayMs);
     strip.SetPixelColor(i, COLOR_BLACK);
@@ -156,8 +158,9 @@ void LEDController::displayTrainPositions() {
     int ledIndex = getTrainLEDIndex(train);
     
     if (ledIndex >= 0) {
-      // Use green color for Line 1
-      setTrainLED(ledIndex, LINE_1_COLOR);
+      // Use appropriate color based on line
+      RgbColor trainColor = (train.line == LINE_1_NAME) ? LINE_1_COLOR : LINE_2_COLOR;
+      setTrainLED(ledIndex, trainColor);
       
       LINK_LOGD(TAG, "Train %s at LED %d (closest: %s, state: %s, dir: %s)", 
                train.tripId.c_str(), ledIndex, 
@@ -168,6 +171,49 @@ void LEDController::displayTrainPositions() {
   }
   
   // Update the LED strip once with all changes
-  // Update the LED strip once with all changes
   strip.Show();
+}
+
+void LEDController::updateColors() {
+  // Helper function to convert hex string to RgbColor
+  auto hexToRgb = [](const String& hex) -> RgbColor {
+    // Remove # if present
+    String cleanHex = hex;
+    if (cleanHex.startsWith("#")) {
+      cleanHex = cleanHex.substring(1);
+    }
+    
+    // Parse hex string (format: RRGGBB)
+    unsigned long value = strtoul(cleanHex.c_str(), nullptr, 16);
+    uint8_t r = (value >> 16) & 0xFF;
+    uint8_t g = (value >> 8) & 0xFF;
+    uint8_t b = value & 0xFF;
+    
+    return RgbColor(r, g, b);
+  };
+  
+  // Load colors from preferences
+  String line1Hex = preferencesManager.getLine1Color();
+  String line2Hex = preferencesManager.getLine2Color();
+  uint8_t brightness = preferencesManager.getBrightness();
+  
+  // Convert hex to RGB and apply brightness
+  RgbColor line1Base = hexToRgb(line1Hex);
+  RgbColor line2Base = hexToRgb(line2Hex);
+  
+  // Scale colors by brightness (brightness is 0-255)
+  float brightnessFactor = brightness / 255.0f;
+  LINE_1_COLOR = RgbColor(
+    (uint8_t)(line1Base.R * brightnessFactor),
+    (uint8_t)(line1Base.G * brightnessFactor),
+    (uint8_t)(line1Base.B * brightnessFactor)
+  );
+  LINE_2_COLOR = RgbColor(
+    (uint8_t)(line2Base.R * brightnessFactor),
+    (uint8_t)(line2Base.G * brightnessFactor),
+    (uint8_t)(line2Base.B * brightnessFactor)
+  );
+  
+  LINK_LOGI(TAG, "Updated colors - Line 1: #%s, Line 2: #%s, Brightness: %d", 
+           line1Hex.c_str(), line2Hex.c_str(), brightness);
 }

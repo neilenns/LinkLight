@@ -21,6 +21,7 @@ public:
   void setup();
   void startupAnimation();
   void displayTrainPositions();
+  void updateColors();
 
 private:
 // Setup for WS2812x LEDs.

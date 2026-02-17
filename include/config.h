@@ -33,9 +33,15 @@
 #define PREF_NAMESPACE "linklight"
 #define PREF_API_KEY "apiKey"
 #define PREF_HOSTNAME "hostname"
+#define PREF_LINE1_COLOR "line1Color"
+#define PREF_LINE2_COLOR "line2Color"
+#define PREF_BRIGHTNESS "brightness"
 #define MAX_PREFERENCE_LENGTH 64  // Maximum length for preference strings
 
 // Default Values
 #define DEFAULT_HOSTNAME "LinkLight"
+#define DEFAULT_LINE1_COLOR "00FF00"  // Green
+#define DEFAULT_LINE2_COLOR "0000FF"  // Blue
+#define DEFAULT_BRIGHTNESS 32         // Range 0-255
 
 #endif // CONFIG_H

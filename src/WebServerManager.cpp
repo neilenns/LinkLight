@@ -5,6 +5,7 @@
 #include "LogManager.h"
 #include "FileSystemManager.h"
 #include "PreferencesManager.h"
+#include "LEDController.h"
 
 static const char* TAG = "WebServerManager";
 
@@ -58,6 +59,9 @@ void WebServerManager::handleConfig() {
   JsonDocument data;
   data["apiKey"] = preferencesManager.getApiKey();
   data["hostname"] = preferencesManager.getHostname();
+  data["line1Color"] = preferencesManager.getLine1Color();
+  data["line2Color"] = preferencesManager.getLine2Color();
+  data["brightness"] = preferencesManager.getBrightness();
   
   String output = ministache::render(html, data);
   server.send(200, "text/html", output);
@@ -97,8 +101,61 @@ void WebServerManager::handleSaveConfig() {
     }
     preferencesManager.setHostname(hostname);
   }
+  if (server.hasArg("line1Color")) {
+    String line1Color = server.arg("line1Color");
+    // Remove # if present and validate hex format
+    if (line1Color.startsWith("#")) {
+      line1Color = line1Color.substring(1);
+    }
+    // Ensure it's a valid 6-character hex string
+    if (line1Color.length() == 6) {
+      bool validHex = true;
+      for (size_t i = 0; i < line1Color.length(); i++) {
+        char c = line1Color.charAt(i);
+        if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))) {
+          validHex = false;
+          break;
+        }
+      }
+      if (validHex) {
+        preferencesManager.setLine1Color(line1Color);
+      }
+    }
+  }
+  if (server.hasArg("line2Color")) {
+    String line2Color = server.arg("line2Color");
+    // Remove # if present and validate hex format
+    if (line2Color.startsWith("#")) {
+      line2Color = line2Color.substring(1);
+    }
+    // Ensure it's a valid 6-character hex string
+    if (line2Color.length() == 6) {
+      bool validHex = true;
+      for (size_t i = 0; i < line2Color.length(); i++) {
+        char c = line2Color.charAt(i);
+        if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))) {
+          validHex = false;
+          break;
+        }
+      }
+      if (validHex) {
+        preferencesManager.setLine2Color(line2Color);
+      }
+    }
+  }
+  if (server.hasArg("brightness")) {
+    String brightnessStr = server.arg("brightness");
+    int brightnessValue = brightnessStr.toInt();
+    // Validate range 0-255
+    if (brightnessValue >= 0 && brightnessValue <= 255) {
+      preferencesManager.setBrightness((uint8_t)brightnessValue);
+    }
+  }
   
   preferencesManager.save();
+  
+  // Update LED colors after saving
+  ledController.updateColors();
   
   String html = fileSystemManager.readFile("/config_saved.html");
   if (html.isEmpty()) {

@@ -4,25 +4,273 @@
   <title>LinkLight Configuration</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { color: #0066cc; }
-    form { max-width: 400px; }
-    label { display: block; margin: 10px 0 5px; font-weight: bold; }
-    input { width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; }
-    button { padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
-    button:hover { background-color: #0052a3; }
-    a { display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 30px;
+    }
+    h1 { 
+      color: #333;
+      margin-top: 0;
+      font-size: 28px;
+      font-weight: 600;
+    }
+    form { 
+      margin-top: 25px;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    label { 
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #444;
+      font-size: 14px;
+    }
+    input[type='text'] { 
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e1e4e8;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    input[type='text']:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    .color-picker-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: #f6f8fa;
+      border-radius: 8px;
+      border: 2px solid #e1e4e8;
+    }
+    .color-picker-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+    input[type='color'] {
+      width: 60px;
+      height: 60px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: none;
+    }
+    input[type='color']::-webkit-color-swatch-wrapper {
+      padding: 0;
+      border-radius: 8px;
+    }
+    input[type='color']::-webkit-color-swatch {
+      border: 3px solid white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    input[type='color']::-moz-color-swatch {
+      border: 3px solid white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .color-info {
+      flex-grow: 1;
+    }
+    .color-label {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    .color-value {
+      font-family: 'Courier New', monospace;
+      color: #666;
+      font-size: 13px;
+    }
+    .slider-group {
+      padding: 12px;
+      background: #f6f8fa;
+      border-radius: 8px;
+      border: 2px solid #e1e4e8;
+    }
+    input[type='range'] {
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+      -webkit-appearance: none;
+      margin: 10px 0;
+    }
+    input[type='range']::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #667eea;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    input[type='range']::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #667eea;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .brightness-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .brightness-value {
+      font-weight: 600;
+      color: #667eea;
+      font-size: 18px;
+    }
+    .brightness-percent {
+      color: #666;
+      font-size: 14px;
+    }
+    button { 
+      width: 100%;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    button:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    a { 
+      display: inline-block;
+      margin-top: 20px;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h1>LinkLight Configuration</h1>
-  <form method='POST' action='/config'>
-    <label>Hostname:</label>
-    <input type='text' name='hostname' value='{{hostname}}' placeholder='LinkLight'>
-    <label>API Key:</label>
-    <input type='text' name='apiKey' value='{{apiKey}}' placeholder='Enter OneBusAway API key'>
-    <button type='submit'>Save Configuration</button>
-  </form>
-  <a href='/'>Back to Home</a>
+  <div class="container">
+    <h1>🚇 LinkLight Configuration</h1>
+    <form method='POST' action='/config'>
+      <div class="form-group">
+        <label>Hostname:</label>
+        <input type='text' name='hostname' value='{{hostname}}' placeholder='LinkLight'>
+      </div>
+      
+      <div class="form-group">
+        <label>API Key:</label>
+        <input type='text' name='apiKey' value='{{apiKey}}' placeholder='Enter OneBusAway API key'>
+      </div>
+      
+      <div class="form-group">
+        <label>Line 1 Color:</label>
+        <div class="color-picker-group">
+          <div class="color-picker-wrapper">
+            <input type='color' id='line1ColorPicker' value='#{{line1Color}}'>
+          </div>
+          <div class="color-info">
+            <div class="color-label">Line 1 Train Color</div>
+            <div class="color-value" id="line1ColorValue">#{{line1Color}}</div>
+          </div>
+        </div>
+        <input type='hidden' name='line1Color' id='line1Color' value='{{line1Color}}'>
+      </div>
+      
+      <div class="form-group">
+        <label>Line 2 Color:</label>
+        <div class="color-picker-group">
+          <div class="color-picker-wrapper">
+            <input type='color' id='line2ColorPicker' value='#{{line2Color}}'>
+          </div>
+          <div class="color-info">
+            <div class="color-label">Line 2 Train Color</div>
+            <div class="color-value" id="line2ColorValue">#{{line2Color}}</div>
+          </div>
+        </div>
+        <input type='hidden' name='line2Color' id='line2Color' value='{{line2Color}}'>
+      </div>
+      
+      <div class="form-group">
+        <label>LED Brightness:</label>
+        <div class="slider-group">
+          <input type='range' name='brightness' id='brightnessSlider' min='0' max='255' value='{{brightness}}'>
+          <div class="brightness-display">
+            <span class="brightness-percent">Brightness</span>
+            <span class="brightness-value"><span id="brightnessValue">{{brightness}}</span>/255</span>
+          </div>
+        </div>
+      </div>
+      
+      <button type='submit'>💾 Save Configuration</button>
+    </form>
+    <a href='/'>← Back to Home</a>
+  </div>
+  
+  <script>
+    // Update Line 1 color
+    const line1Picker = document.getElementById('line1ColorPicker');
+    const line1Hidden = document.getElementById('line1Color');
+    const line1Value = document.getElementById('line1ColorValue');
+    
+    line1Picker.addEventListener('input', function() {
+      const color = this.value.toUpperCase();
+      line1Hidden.value = color.substring(1); // Remove #
+      line1Value.textContent = color;
+    });
+    
+    // Update Line 2 color
+    const line2Picker = document.getElementById('line2ColorPicker');
+    const line2Hidden = document.getElementById('line2Color');
+    const line2Value = document.getElementById('line2ColorValue');
+    
+    line2Picker.addEventListener('input', function() {
+      const color = this.value.toUpperCase();
+      line2Hidden.value = color.substring(1); // Remove #
+      line2Value.textContent = color;
+    });
+    
+    // Update brightness display
+    const brightnessSlider = document.getElementById('brightnessSlider');
+    const brightnessValue = document.getElementById('brightnessValue');
+    
+    brightnessSlider.addEventListener('input', function() {
+      brightnessValue.textContent = this.value;
+    });
+  </script>
 </body>
 </html>

@@ -16,6 +16,8 @@ private:
   void handleLogs();
   void handleLogsData();
   
+  bool isValidHexColor(const String& color);
+  
   WebServer server{WEB_SERVER_PORT};
 };
 

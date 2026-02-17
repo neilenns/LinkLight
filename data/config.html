@@ -242,15 +242,20 @@
   </div>
   
   <script>
+    // Helper function to update color picker values
+    function updateColorPicker(picker, hidden, display) {
+      const color = picker.value.toUpperCase();
+      hidden.value = color.substring(1); // Remove #
+      display.textContent = color;
+    }
+    
     // Update Line 1 color
     const line1Picker = document.getElementById('line1ColorPicker');
     const line1Hidden = document.getElementById('line1Color');
     const line1Value = document.getElementById('line1ColorValue');
     
     line1Picker.addEventListener('input', function() {
-      const color = this.value.toUpperCase();
-      line1Hidden.value = color.substring(1); // Remove #
-      line1Value.textContent = color;
+      updateColorPicker(this, line1Hidden, line1Value);
     });
     
     // Update Line 2 color
@@ -259,9 +264,7 @@
     const line2Value = document.getElementById('line2ColorValue');
     
     line2Picker.addEventListener('input', function() {
-      const color = this.value.toUpperCase();
-      line2Hidden.value = color.substring(1); // Remove #
-      line2Value.textContent = color;
+      updateColorPicker(this, line2Hidden, line2Value);
     });
     
     // Update brightness display

@@ -68,6 +68,20 @@ void WebServerManager::handleConfig() {
 }
 
 void WebServerManager::handleSaveConfig() {
+  // Helper function to validate and sanitize hex color
+  auto validateColor = [this](const String& color) -> String {
+    String cleanColor = color;
+    // Remove # if present
+    if (cleanColor.startsWith("#")) {
+      cleanColor = cleanColor.substring(1);
+    }
+    // Validate hex format
+    if (cleanColor.length() == 6 && isValidHexColor(cleanColor)) {
+      return cleanColor;
+    }
+    return ""; // Return empty string if invalid
+  };
+  
   // Validate and sanitize inputs
   if (server.hasArg("apiKey")) {
     String apiKey = server.arg("apiKey");
@@ -102,45 +116,15 @@ void WebServerManager::handleSaveConfig() {
     preferencesManager.setHostname(hostname);
   }
   if (server.hasArg("line1Color")) {
-    String line1Color = server.arg("line1Color");
-    // Remove # if present and validate hex format
-    if (line1Color.startsWith("#")) {
-      line1Color = line1Color.substring(1);
-    }
-    // Ensure it's a valid 6-character hex string
-    if (line1Color.length() == 6) {
-      bool validHex = true;
-      for (size_t i = 0; i < line1Color.length(); i++) {
-        char c = line1Color.charAt(i);
-        if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))) {
-          validHex = false;
-          break;
-        }
-      }
-      if (validHex) {
-        preferencesManager.setLine1Color(line1Color);
-      }
+    String validColor = validateColor(server.arg("line1Color"));
+    if (!validColor.isEmpty()) {
+      preferencesManager.setLine1Color(validColor);
     }
   }
   if (server.hasArg("line2Color")) {
-    String line2Color = server.arg("line2Color");
-    // Remove # if present and validate hex format
-    if (line2Color.startsWith("#")) {
-      line2Color = line2Color.substring(1);
-    }
-    // Ensure it's a valid 6-character hex string
-    if (line2Color.length() == 6) {
-      bool validHex = true;
-      for (size_t i = 0; i < line2Color.length(); i++) {
-        char c = line2Color.charAt(i);
-        if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))) {
-          validHex = false;
-          break;
-        }
-      }
-      if (validHex) {
-        preferencesManager.setLine2Color(line2Color);
-      }
+    String validColor = validateColor(server.arg("line2Color"));
+    if (!validColor.isEmpty()) {
+      preferencesManager.setLine2Color(validColor);
     }
   }
   if (server.hasArg("brightness")) {
@@ -196,4 +180,14 @@ void WebServerManager::handleLogsData() {
   serializeJson(doc, jsonResponse);
   
   server.send(200, "application/json", jsonResponse);
+}
+
+bool WebServerManager::isValidHexColor(const String& color) {
+  for (size_t i = 0; i < color.length(); i++) {
+    char c = color.charAt(i);
+    if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))) {
+      return false;
+    }
+  }
+  return true;
 }

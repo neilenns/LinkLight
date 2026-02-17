@@ -34,6 +34,7 @@ NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Method> strip{LED_COUNT, LED_PIN};
   std::map<String, StationLEDMapping> line1StationMap;
   
   void initializeStationMaps();
+  void clearAllLEDsInMemory();
   void clearAllLEDs();
   void setTrainLED(int ledIndex, const RgbColor& color);
   int getTrainLEDIndex(const TrainData& train);

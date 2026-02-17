@@ -1,6 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// OTA Configuration
+#define OTA_HOSTNAME "LinkLight"
+#define OTA_PASSWORD ""  // Empty by default, can be set for security
+
 // WiFi Configuration
 #define WIFI_PORTAL_TIMEOUT 180  // Timeout for WiFi portal in seconds
 

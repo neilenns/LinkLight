@@ -3,6 +3,7 @@
 #include <esp_log.h>
 #include "config.h"
 #include "WiFiManager_Component.h"
+#include "OTAManager.h"
 #include "WebServerManager.h"
 #include "LEDController.h"
 #include "PreferencesManager.h"
@@ -31,6 +32,9 @@ void setup() {
   // Setup WiFi
   wifiManagerComponent.setup();
   
+  // Setup OTA
+  otaManager.setup();
+  
   // Setup web server
   webServerManager.setup();
   
@@ -39,6 +43,9 @@ void setup() {
 }
 
 void loop() {
+  // Handle OTA updates
+  otaManager.handle();
+  
   // Handle web server requests
   webServerManager.handleClient();
   

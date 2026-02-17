@@ -1,0 +1,61 @@
+#include "OTAManager.h"
+#include <ArduinoOTA.h>
+#include <esp_log.h>
+#include "config.h"
+
+static const char* TAG = "OTAManager";
+
+OTAManager otaManager;
+
+void OTAManager::setup() {
+  ESP_LOGI(TAG, "Setting up OTA...");
+  
+  // Set hostname
+  ArduinoOTA.setHostname(OTA_HOSTNAME);
+  
+  // Set password if configured
+  if (strlen(OTA_PASSWORD) > 0) {
+    ArduinoOTA.setPassword(OTA_PASSWORD);
+  }
+  
+  // Configure callbacks
+  ArduinoOTA.onStart([]() {
+    String type;
+    if (ArduinoOTA.getCommand() == U_FLASH) {
+      type = "sketch";
+    } else {  // U_SPIFFS or U_LittleFS
+      type = "filesystem";
+    }
+    ESP_LOGI(TAG, "Start updating %s", type.c_str());
+  });
+  
+  ArduinoOTA.onEnd([]() {
+    ESP_LOGI(TAG, "OTA Update Complete");
+  });
+  
+  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+    if (total > 0) {
+      ESP_LOGI(TAG, "Progress: %u%%", (progress * 100) / total);
+    }
+  });
+  
+  ArduinoOTA.onError([](ota_error_t error) {
+    String errorMsg;
+    if (error == OTA_AUTH_ERROR) errorMsg = "Auth Failed";
+    else if (error == OTA_BEGIN_ERROR) errorMsg = "Begin Failed";
+    else if (error == OTA_CONNECT_ERROR) errorMsg = "Connect Failed";
+    else if (error == OTA_RECEIVE_ERROR) errorMsg = "Receive Failed";
+    else if (error == OTA_END_ERROR) errorMsg = "End Failed";
+    else errorMsg = "Unknown Error";
+    ESP_LOGE(TAG, "OTA Error[%u]: %s", error, errorMsg.c_str());
+  });
+  
+  // Start OTA service
+  ArduinoOTA.begin();
+  
+  ESP_LOGI(TAG, "OTA Ready");
+}
+
+void OTAManager::handle() {
+  ArduinoOTA.handle();
+}

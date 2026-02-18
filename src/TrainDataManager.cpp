@@ -98,7 +98,6 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
         // If no underscore found, use the whole tripId as fallback
         train.vehicleId = train.tripId;
       }
-      LINK_LOGD(LOG_TAG, "Vehicle ID missing, using fallback from tripId: %s", train.vehicleId.c_str());
     }
 
     // Check for nextStop

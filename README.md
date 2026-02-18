@@ -116,6 +116,23 @@ After the initial upload, you can update the firmware wirelessly:
 
 The project is configured for the **Seeed Studio XIAO ESP32-S3** with 8MB PSRAM. The PSRAM is automatically detected and reported at startup in the serial monitor.
 
+#### PSRAM Heap Usage
+
+ESP32-S3 maintains separate memory pools:
+- **Internal RAM** (~320KB): Fast, always available via `malloc()` and `ESP.getFreeHeap()`
+- **PSRAM** (8MB): Slower but much larger, available via `ps_malloc()` and `ESP.getFreePsram()`
+
+To allocate from PSRAM explicitly:
+```cpp
+// Allocate from PSRAM
+void* buffer = ps_malloc(size);
+
+// Or use heap_caps for automatic selection
+void* buffer = heap_caps_malloc(size, MALLOC_CAP_SPIRAM);
+```
+
+The `huge_app.csv` partition scheme is used to maximize available flash for the application while supporting PSRAM allocation.
+
 If you're using a different ESP32-S3 board:
 1. Update the `board` setting in `platformio.ini`
 2. Adjust the `board_build.arduino.memory_type` setting for your board's PSRAM configuration

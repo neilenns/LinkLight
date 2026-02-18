@@ -21,11 +21,14 @@ void setup() {
 
   LINK_LOGI(TAG, "LinkLight Starting...");
   
-  // Check PSRAM availability
+  // Check PSRAM availability and heap sizes
   if (psramFound()) {
     LINK_LOGI(TAG, "PSRAM found: %d bytes total, %d bytes free", ESP.getPsramSize(), ESP.getFreePsram());
+    LINK_LOGI(TAG, "Internal RAM heap: %d bytes free", ESP.getFreeHeap());
+    LINK_LOGI(TAG, "Total free heap (RAM + PSRAM): %d bytes", ESP.getFreeHeap() + ESP.getFreePsram());
   } else {
     LINK_LOGW(TAG, "PSRAM not found!");
+    LINK_LOGI(TAG, "Internal RAM heap: %d bytes free", ESP.getFreeHeap());
   }
 
   // Initialize LEDs

@@ -8,11 +8,21 @@
     h1 { color: #0066cc; }
     form { max-width: 400px; }
     label { display: block; margin: 10px 0 5px; font-weight: bold; }
-    input { width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; }
+    input, select { width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; }
     button { padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
     button:hover { background-color: #0052a3; }
     a { display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; }
   </style>
+  <script>
+    // Set the selected timezone on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      var savedTimezone = '{{timezone}}';
+      var select = document.querySelector('select[name="timezone"]');
+      if (select && savedTimezone) {
+        select.value = savedTimezone;
+      }
+    });
+  </script>
 </head>
 <body>
   <h1>LinkLight Configuration</h1>
@@ -21,6 +31,18 @@
     <input type='text' name='hostname' value='{{hostname}}' placeholder='LinkLight'>
     <label>API Key:</label>
     <input type='text' name='apiKey' value='{{apiKey}}' placeholder='Enter OneBusAway API key'>
+    <label>Timezone:</label>
+    <select name='timezone'>
+      <option value='PST8PDT,M3.2.0,M11.1.0'>Pacific Time (with DST)</option>
+      <option value='PST8'>Pacific Standard Time (no DST)</option>
+      <option value='MST7MDT,M3.2.0,M11.1.0'>Mountain Time (with DST)</option>
+      <option value='MST7'>Mountain Standard Time (no DST)</option>
+      <option value='CST6CDT,M3.2.0,M11.1.0'>Central Time (with DST)</option>
+      <option value='CST6'>Central Standard Time (no DST)</option>
+      <option value='EST5EDT,M3.2.0,M11.1.0'>Eastern Time (with DST)</option>
+      <option value='EST5'>Eastern Standard Time (no DST)</option>
+      <option value='UTC0'>UTC</option>
+    </select>
     <button type='submit'>Save Configuration</button>
   </form>
   <a href='/'>Back to Home</a>

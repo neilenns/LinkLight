@@ -33,10 +33,12 @@
 #define PREF_API_KEY "apiKey"
 #define PREF_HOSTNAME "hostname"
 #define PREF_TIMEZONE "timezone"
+#define PREF_UPDATE_INTERVAL "updateInterval"
 #define MAX_PREFERENCE_LENGTH 64  // Maximum length for preference strings
 
 // Default Values
 #define DEFAULT_HOSTNAME "LinkLight"
 #define DEFAULT_TIMEZONE "PST8PDT,M3.2.0,M11.1.0"  // Pacific Time with DST
+#define DEFAULT_UPDATE_INTERVAL 30  // Default update interval in seconds
 
 #endif // CONFIG_H

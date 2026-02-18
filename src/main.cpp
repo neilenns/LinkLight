@@ -12,7 +12,7 @@
 #include "NTPManager.h"
 
 static const char* LOG_TAG = "LinkLight";
-unsigned long lastApiUpdate = -API_UPDATE_INTERVAL; // Initial value is a really large number to ensure the first update happens immediately.
+unsigned long lastApiUpdate = 0; // Start at 0 to trigger immediate first update
 
 void setup() {
   Serial.begin(115200);
@@ -69,7 +69,8 @@ void loop() {
   webServerManager.handleClient();
   
   // Update train positions periodically
-  if (millis() - lastApiUpdate > API_UPDATE_INTERVAL) {
+  unsigned long updateIntervalMs = preferencesManager.getUpdateInterval() * 1000;
+  if (millis() - lastApiUpdate > updateIntervalMs) {
     dumpMemoryStats();
     
     trainDataManager.updateTrainPositions();

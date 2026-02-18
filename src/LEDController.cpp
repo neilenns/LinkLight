@@ -1,18 +1,11 @@
 #include "LEDController.h"
 #include "TrainDataManager.h"
 #include "LogManager.h"
+#include "colors.h"
 
 static const char* LOG_TAG = "LEDController";
 
 LEDController ledController;
-
-static const RgbColor COLOR_BLUE = RgbColor(0, 0, 32);
-static const RgbColor COLOR_GREEN = RgbColor(0, 32, 0);
-static const RgbColor COLOR_YELLOW = RgbColor(32, 32, 0);
-static const RgbColor COLOR_BLACK = RgbColor(0, 0, 0);
-
-static const RgbColor LINE_1_COLOR = COLOR_GREEN;
-static const RgbColor LINE_2_COLOR = COLOR_BLUE;
 
 void LEDController::initializeStationMaps() {
   // Indexes are origin 0.
@@ -102,12 +95,6 @@ void LEDController::setAllLEDs(const RgbColor& color) {
   }
 }
 
-void LEDController::setTrainLED(int ledIndex, const RgbColor& color) {
-  if (ledIndex >= 0 && ledIndex < LED_COUNT) {
-    strip.SetPixelColor(ledIndex, color);
-  }
-}
-
 int LEDController::getTrainLEDIndex(const TrainData& train) {
   int ledIndex = -1;
 
@@ -150,40 +137,47 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
   // Ensure the index is within valid bounds
   if (ledIndex < 0 || ledIndex >= LED_COUNT) {
     LINK_LOGW(LOG_TAG, "LED index %d out of bounds for train %s", ledIndex, train.tripId.c_str());
+    ledIndex = 0; // Default to first LED if out of bounds, to at least indicate presence of train.
   }
 
   return ledIndex;
 }
 
 void LEDController::displayTrainPositions() {
-  // Set all LEDs to black in memory (without calling Show() to avoid flash)
-  setAllLEDs(COLOR_BLACK);
+  // Reset train counts
+  trainTracker.reset();
   
   // Get train data from TrainDataManager
   const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   
-  // Process each train and set its LED
+  // Process each train and update the tracker
   for (const TrainData& train : trains) {
     int ledIndex = getTrainLEDIndex(train);
     
     if (ledIndex >= 0) {
+      // Increment the count for this train's line at this LED
+      trainTracker.incrementTrainCount(ledIndex, train.line);
+      
+      // Log with closest or next station depending on state
       if (train.state == TrainState::AT_STATION) {
-        setTrainLED(ledIndex, train.line == LINE_1_NAME ? LINE_1_COLOR : LINE_2_COLOR);
-        LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, state: AT_STATION, dir: %s)", 
+        LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, state: AT_STATION, dir: %s, line: %s)", 
                  train.tripId.c_str(), ledIndex, 
                  train.closestStopName.c_str(),
-                 train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound");
+                 train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
+                 train.line.c_str());
       } else {
-        setTrainLED(ledIndex, COLOR_YELLOW);
-        LINK_LOGD(LOG_TAG, "Train %s at LED %d (next: %s, state: MOVING, dir: %s)", 
+        LINK_LOGD(LOG_TAG, "Train %s at LED %d (next: %s, state: MOVING, dir: %s, line: %s)", 
                  train.tripId.c_str(), ledIndex, 
                  train.nextStopName.c_str(),
-                 train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound");
-      }  
+                 train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
+                 train.line.c_str());
+      }
     }
   }
   
-  // Update the LED strip once with all changes
-  // Update the LED strip once with all changes
-  strip.Show();
+  // Log train counts for debugging
+  trainTracker.logTrainCounts();
+  
+  // Display all trains on the LED strip
+  trainTracker.display(strip);
 }

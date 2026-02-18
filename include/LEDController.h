@@ -4,6 +4,7 @@
 #include <NeoPixelBus.h>
 #include <map>
 #include "config.h"
+#include "LEDTrainTracker.h"
 
 // Forward declaration
 struct TrainData;
@@ -31,9 +32,11 @@ NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Method> strip{LED_COUNT, LED_PIN};
   // Station to LED mappings
   std::map<String, StationLEDMapping> stationMap;
   
+  // Train tracker for handling multiple trains at same LED
+  LEDTrainTracker trainTracker;
+  
   void initializeStationMaps();
   void setAllLEDs(const RgbColor& color);
-  void setTrainLED(int ledIndex, const RgbColor& color);
   int getTrainLEDIndex(const TrainData& train);
 };
 

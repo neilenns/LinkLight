@@ -11,33 +11,38 @@ LEDController ledController;
 void LEDController::initializeStationMaps() {
   // Indexes are origin 0.
   // {northboundIndex, northboundEnrouteIndex, southboundIndex, southboundEnrouteIndex}
-  stationMap["Federal Way Downtown"] =    {53, 52, 56, 55};
-  stationMap["Star Lake"] =               {51, 50, 58, 57};
-  stationMap["Kent Des Moines"] =         {49, 48, 60, 59};
-  stationMap["Angle Lake"] =              {47, 46, 62, 61};
-  stationMap["SeaTac/Airport"] =          {45, 44, 64, 63};
-  stationMap["Tukwila Int'l Blvd"] =      {43, 42, 66, 65};
-  stationMap["Rainier Beach"] =           {41, 40, 68, 67};
-  stationMap["Othello"] =                 {39, 38, 70, 69};
-  stationMap["Columbia City"] =           {37, 36, 72, 71};
-  stationMap["Mount Baker"] =             {35, 34, 74, 73};
-  stationMap["Beacon Hill"] =             {33, 32, 76, 75};
-  stationMap["SODO"] =                    {31, 30, 78, 77};
-  stationMap["Stadium"] =                 {29, 28, 80, 79};
-  stationMap["Int'l Dist/Chinatown"] =    {27, 26, 82, 81};
-  stationMap["Pioneer Square"] =          {25, 24, 84, 83};
-  stationMap["Symphony"] =                {23, 22, 86, 85};
-  stationMap["Westlake"] =                {21, 20, 88, 87};
-  stationMap["Capitol Hill"] =            {19, 18, 90, 89};
-  stationMap["Univ of Washington"] =      {17, 16, 92, 91};
-  stationMap["U District"] =              {15, 14, 94, 93};
-  stationMap["Roosevelt"] =               {13, 12, 96, 95};
-  stationMap["Northgate"] =               {11, 10, 98, 97};
-  stationMap["Pinehurst"] =               {9, 8, 100, 99};
-  stationMap["Shoreline South/148th"] =   {7, 6, 102, 101};
-  stationMap["Shoreline North/185th"] =   {5, 4, 104, 103};
-  stationMap["Mountlake Terrace"] =       {3, 2, 106, 105};
+  // 1 and 2 Line stations
   stationMap["Lynnwood City Center"] =    {1, 0, 108, 107};
+  stationMap["Mountlake Terrace"] =       {3, 2, 106, 105};
+  stationMap["Shoreline North/185th"] =   {5, 4, 104, 103};
+  stationMap["Shoreline South/148th"] =   {7, 6, 102, 101};
+  stationMap["Pinehurst"] =               {9, 8, 100, 99};
+  stationMap["Northgate"] =               {11, 10, 98, 97};
+  stationMap["Roosevelt"] =               {13, 12, 96, 95};
+  stationMap["U District"] =              {15, 14, 94, 93};
+  stationMap["Univ of Washington"] =      {17, 16, 92, 91};
+  stationMap["Capitol Hill"] =            {19, 18, 90, 89};
+  stationMap["Westlake"] =                {21, 20, 88, 87};
+  stationMap["Symphony"] =                {23, 22, 86, 85};
+  stationMap["Pioneer Square"] =          {25, 24, 84, 83};
+  stationMap["Int'l Dist/Chinatown"] =    {27, 26, 82, 81};
+
+  // 1 Line stations
+  stationMap["Stadium"] =                 {29, 28, 80, 79};
+  stationMap["SODO"] =                    {31, 30, 78, 77};
+  stationMap["Beacon Hill"] =             {33, 32, 76, 75};
+  stationMap["Mount Baker"] =             {35, 34, 74, 73};
+  stationMap["Columbia City"] =           {37, 36, 72, 71};
+  stationMap["Othello"] =                 {39, 38, 70, 69};
+  stationMap["Rainier Beach"] =           {41, 40, 68, 67};
+  stationMap["Tukwila Int'l Blvd"] =      {43, 42, 66, 65};
+  stationMap["SeaTac/Airport"] =          {45, 44, 64, 63};
+  stationMap["Angle Lake"] =              {47, 46, 62, 61};
+  stationMap["Kent Des Moines"] =         {49, 48, 60, 59};
+  stationMap["Star Lake"] =               {51, 50, 58, 57};
+  stationMap["Federal Way Downtown"] =    {53, 52, 56, 55};
+
+  // 2 Line stations
   stationMap["Downtown Redmond"] =        {111, 110, 158, 157};
   stationMap["Marymoor Village"] =        {113, 112, 156, 155};
   stationMap["Redmond Technology"] =      {115, 114, 154, 153};
@@ -213,7 +218,7 @@ void LEDController::testStationLEDs(const String& stationName) {
 
   if (mapping.southboundEnrouteIndex >= 0 && mapping.southboundEnrouteIndex < LED_COUNT) {
     strip.SetPixelColor(mapping.southboundEnrouteIndex, COLOR_YELLOW);
-    LINK_LOGD(LOG_TAG, "Southbound LED at index %d", mapping.southboundEnrouteIndex);
+    LINK_LOGD(LOG_TAG, "Southbound enroute LED at index %d", mapping.southboundEnrouteIndex);
   }
 
   // Update the strip

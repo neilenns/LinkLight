@@ -11,8 +11,10 @@ struct TrainData;
 
 // Station LED mapping structure
 struct StationLEDMapping {
-  int northboundIndex;
-  int southboundIndex;
+  int northboundIndex; // LED index for northbound trains at the station
+  int northboundEnrouteIndex; // LED index for northbound trains heading to this station
+  int southboundIndex; // LED index for southbound trains at the station
+  int southboundEnrouteIndex; // LED index for southbound trains heading to this station
 };
 
 class LEDController {

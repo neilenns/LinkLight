@@ -43,7 +43,7 @@
 #define DEFAULT_HOSTNAME "LinkLight"
 #define DEFAULT_TIMEZONE "PST8PDT,M3.2.0,M11.1.0"  // Pacific Time with DST
 #define DEFAULT_UPDATE_INTERVAL 30  // Default update interval in seconds
-#define DEFAULT_LINE1_COLOR "#002300"  // Green for Line 1
+#define DEFAULT_LINE1_COLOR "#001000"  // Green for Line 1
 #define DEFAULT_LINE2_COLOR "#000023"  // Blue for Line 2
 #define DEFAULT_SHARED_COLOR "#232300"  // Yellow for shared/overlap
 

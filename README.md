@@ -18,9 +18,10 @@ LinkLight is a project to display the current position of SoundTransit Link ligh
 
 ## Hardware Requirements
 
-- ESP32-S3 development board (e.g., ESP32-S3-DevKitC-1)
-- WS2812 LED strip (up to 50 LEDs)
-- 5V power supply (adequate for LED strip)
+- **Seeed Studio XIAO ESP32-S3** (8MB PSRAM) - Primary supported board
+  - Or other ESP32-S3 development board with PSRAM
+- WS2812 LED strip (configurable count, default 114 LEDs)
+- 5V power supply (adequate for LED strip - up to 3A for 50 LEDs at full brightness)
 - Level shifter (if needed for LED data line)
 
 ## Software Stack
@@ -110,6 +111,17 @@ After the initial upload, you can update the firmware wirelessly:
    - Route ID (default is for Link Light Rail)
 
 ## Configuration
+
+### Board Configuration
+
+The project is configured for the **Seeed Studio XIAO ESP32-S3** with 8MB PSRAM. The PSRAM is automatically detected and reported at startup in the serial monitor.
+
+If you're using a different ESP32-S3 board:
+1. Update the `board` setting in `platformio.ini`
+2. Adjust the `board_build.arduino.memory_type` setting for your board's PSRAM configuration
+   - `qio_opi` for OPI PSRAM (Seeed XIAO ESP32S3)
+   - `qio_qspi` for QSPI PSRAM
+   - Consult your board's documentation for the correct setting
 
 ### LED Configuration
 

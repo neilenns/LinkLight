@@ -7,7 +7,7 @@
 #include "esp32-psram/VectorPSRAM.h"
 #include "esp32-psram/TypedRingBuffer.h"
 
-#define LOG_BUFFER_SIZE 250  // Number of log entries to keep in memory
+#define LOG_BUFFER_SIZE 100  // Number of log entries to keep in memory
 
 struct LogEntry {
   unsigned long timestamp;  // millis() when log was created
@@ -34,6 +34,7 @@ extern LogManager logManager;
 // These replace ESP_LOG macros to ensure logs are captured
 #define LINK_LOG(level, tag, format, ...) do { \
   ESP_LOG##level(tag, format, ##__VA_ARGS__); \
+  logManager.log(#level, tag, format, ##__VA_ARGS__); \
 } while(0)
 
 #define LINK_LOGI(tag, format, ...) LINK_LOG(I, tag, format, ##__VA_ARGS__)

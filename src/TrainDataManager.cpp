@@ -7,6 +7,7 @@
 #include "PreferencesManager.h"
 #include "PSRAMJsonAllocator.h"
 #include "PSRAMString.h"
+#include "StopData.h"
 
 static const char* LOG_TAG = "TrainDataManager";
 static const float MIN_SCHEDULED_DISTANCE_THRESHOLD = 0.001f;
@@ -48,18 +49,9 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     }
   }
 
-  // Build a map of stop IDs to stop names using PSRAM allocator
-  PSRAMMap<String, String> stopIdToNameMap;
-  JsonArray stops = data["references"]["stops"];
-  if (!stops.isNull()) {
-    for (JsonObject stop : stops) {
-      String stopId = stop["id"].as<String>();
-      String stopName = stop["name"].as<String>();
-      stopIdToNameMap[stopId] = stopName;
-    }
-  }
-
-  LINK_LOGI(LOG_TAG, "Loaded %u trips and %u stops for %d Line", tripMap.size(), stopIdToNameMap.size(), static_cast<int>(line));
+  // Use hardcoded stop data instead of parsing from JSON
+  // Stop information is now defined in StopData.h and never changes
+  LINK_LOGI(LOG_TAG, "Loaded %u trips for %d Line", tripMap.size(), static_cast<int>(line));
 
   // Process the list array
   JsonArray list = data["list"];
@@ -132,17 +124,17 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
                train.vehicleId.c_str());
     }
 
-    // Look up stop names from the stops map
-    auto closestStopIt = stopIdToNameMap.find(train.closestStop);
-    if (closestStopIt != stopIdToNameMap.end()) {
+    // Look up stop names from the hardcoded stop data
+    auto closestStopIt = STOP_ID_TO_NAME.find(train.closestStop);
+    if (closestStopIt != STOP_ID_TO_NAME.end()) {
       train.closestStopName = closestStopIt->second;
     } else {
       LINK_LOGW(LOG_TAG, "Stop name not found for closestStop ID: %s", train.closestStop.c_str());
       train.closestStopName = train.closestStop; // Fall back to ID if name not found
     }
 
-    auto nextStopIt = stopIdToNameMap.find(train.nextStop);
-    if (nextStopIt != stopIdToNameMap.end()) {
+    auto nextStopIt = STOP_ID_TO_NAME.find(train.nextStop);
+    if (nextStopIt != STOP_ID_TO_NAME.end()) {
       train.nextStopName = nextStopIt->second;
     } else {
       LINK_LOGW(LOG_TAG, "Stop name not found for nextStop ID: %s", train.nextStop.c_str());

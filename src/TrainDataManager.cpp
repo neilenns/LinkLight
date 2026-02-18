@@ -46,7 +46,6 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
       info.tripHeadsign = trip["tripHeadsign"].as<String>();
       tripMap[tripId] = info;
     }
-    LINK_LOGI(LOG_TAG, "Loaded %d trip references", tripMap.size());
   }
 
   // Build a map of stop IDs to stop names using PSRAM allocator
@@ -58,8 +57,9 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
       String stopName = stop["name"].as<String>();
       stopIdToNameMap[stopId] = stopName;
     }
-    LINK_LOGI(LOG_TAG, "Loaded %d stop references", stopIdToNameMap.size());
   }
+
+  LINK_LOGI(LOG_TAG, "Loaded %d trips and %d stops for %s", tripMap.size(), stopIdToNameMap.size(), line.c_str());
 
   // Process the list array
   JsonArray list = data["list"];
@@ -175,7 +175,6 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
       train.state == TrainState::AT_STATION ? "AT_STATION" : "MOVING");
   }
 
-  LINK_LOGI(LOG_TAG, "Processed %d train positions", trainDataList.size());
   return true;
 }
 
@@ -185,7 +184,7 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const Strin
   snprintf(url, sizeof(url), "%s/trips-for-route/%s.json?%s=%s", 
            API_BASE_URL, routeId.c_str(), API_KEY_PARAM, apiKey.c_str());
   
-  LINK_LOGI(LOG_TAG, "Fetching data for %s (route: %s)", lineName.c_str(), routeId.c_str());
+  LINK_LOGD(LOG_TAG, "Fetching data for %s (route: %s)", lineName.c_str(), routeId.c_str());
   
   HTTPClient http;
   http.setTimeout(10000);
@@ -204,7 +203,7 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const Strin
       if (error) {
         LINK_LOGE(LOG_TAG, "JSON parsing failed for %s: %s. URL: %s", lineName.c_str(), error.c_str(), url);
       } else {
-        LINK_LOGI(LOG_TAG, "Successfully retrieved %s train data", lineName.c_str());
+        LINK_LOGD(LOG_TAG, "Successfully retrieved %s train data", lineName.c_str());
         parseTrainDataFromJson(doc, lineName);
       }
     }
@@ -226,7 +225,6 @@ void TrainDataManager::updateTrainPositions() {
 
   if (apiKey.isEmpty()) {
     LINK_LOGW(LOG_TAG, "API key not configured, loading sample data from %s", SAMPLE_DATA_PATH);
-    LINK_LOGI(LOG_TAG, "Note: Sample data only contains Line 1 trains");
 
     File sampleFile = LittleFS.open(SAMPLE_DATA_PATH, "r");
     if (!sampleFile) {
@@ -249,11 +247,9 @@ void TrainDataManager::updateTrainPositions() {
     return;
   }
 
-  LINK_LOGI(LOG_TAG, "Updating train positions...");
+  LINK_LOGD(LOG_TAG, "Updating train positions...");
 
   // Fetch data for both lines
   fetchTrainDataForRoute(LINE_1_ROUTE_ID, LINE_1_NAME, apiKey);
   fetchTrainDataForRoute(LINE_2_ROUTE_ID, LINE_2_NAME, apiKey);
-  
-  LINK_LOGI(LOG_TAG, "Total trains from both lines: %d", trainDataList.size());
 }

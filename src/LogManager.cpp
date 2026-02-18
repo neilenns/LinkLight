@@ -7,7 +7,7 @@ LogManager logManager;
 void LogManager::setup() {
   // Buffer is ready to receive logs
   String msg = "Log manager initialized with buffer size " + String(LOG_BUFFER_SIZE);
-  addLog("I", LOG_TAG, msg.c_str());
+  addLog("D", LOG_TAG, msg.c_str());
 }
 
 void LogManager::log(const char* level, const char* tag, const char* format, ...) {

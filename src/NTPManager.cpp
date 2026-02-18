@@ -13,7 +13,7 @@ const char* NTPManager::NTP_SERVER3 = "time.google.com";
 NTPManager ntpManager;
 
 void NTPManager::setup() {
-  LINK_LOGI(LOG_TAG, "Setting up NTP...");
+  LINK_LOGD(LOG_TAG, "Setting up NTP...");
   
   // Get timezone from preferences
   String timezone = preferencesManager.getTimezone();
@@ -26,7 +26,7 @@ void NTPManager::setup() {
   // Configure NTP with multiple servers for redundancy
   configTime(0, 0, NTP_SERVER1, NTP_SERVER2, NTP_SERVER3);
   
-  LINK_LOGI(LOG_TAG, "NTP configured with timezone: %s", timezone.c_str());
+  LINK_LOGD(LOG_TAG, "NTP configured with timezone: %s", timezone.c_str());
   
   // Wait a bit for time to synchronize
   int retries = 0;
@@ -37,7 +37,7 @@ void NTPManager::setup() {
   }
   
   if (retries < 10) {
-    LINK_LOGI(LOG_TAG, "Time synchronized: %s", asctime(&timeinfo));
+    LINK_LOGI(LOG_TAG, "Current time: %s", asctime(&timeinfo));
   } else {
     LINK_LOGW(LOG_TAG, "Failed to synchronize time");
   }

@@ -4,17 +4,27 @@
     <title>LinkLight - Logs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
       body {
         font-family: "Courier New", monospace;
-        margin: 0;
-        padding: 20px;
         background-color: #1e1e1e;
         color: #d4d4d4;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        box-sizing: border-box;
       }
       h1 {
         color: #4ec9b0;
         font-family: Arial, sans-serif;
-        margin-bottom: 10px;
+        margin: 0 0 10px 0;
+        flex-shrink: 0;
       }
       .controls {
         margin: 20px 0;
@@ -25,6 +35,7 @@
         gap: 15px;
         align-items: center;
         flex-wrap: wrap;
+        flex-shrink: 0;
       }
       .controls label {
         font-family: Arial, sans-serif;
@@ -42,6 +53,10 @@
       }
       .controls button:hover {
         background-color: #505050;
+      }
+      .controls button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
       }
       .controls select:focus,
       .controls button:focus {
@@ -64,8 +79,9 @@
         border: 1px solid #3c3c3c;
         border-radius: 4px;
         padding: 15px;
-        max-height: 70vh;
+        flex: 1;
         overflow-y: auto;
+        min-height: 0;
       }
       .log-entry {
         margin: 4px 0;
@@ -101,6 +117,29 @@
       .log-level-V {
         color: #c586c0;
       }
+      .connection-status {
+        color: #858585;
+        font-size: 12px;
+      }
+      .connection-status.connected {
+        color: #4ec9b0;
+      }
+      .connection-status.disconnected {
+        color: #f48771;
+      }
+      .paused-indicator {
+        background-color: #5a4d1d;
+        color: #dcdcaa;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        margin: 10px 0;
+        display: none;
+        flex-shrink: 0;
+      }
+      .paused-indicator.visible {
+        display: block;
+      }
       .status {
         margin: 10px 0;
         padding: 10px;
@@ -108,14 +147,15 @@
         border-radius: 4px;
         font-family: Arial, sans-serif;
         font-size: 14px;
+        flex-shrink: 0;
       }
       .status.error {
         background-color: #5a1d1d;
         color: #f48771;
       }
-      .auto-refresh-status {
-        color: #858585;
-        font-size: 12px;
+      .status.success {
+        background-color: #1d5a1d;
+        color: #4ec9b0;
       }
     </style>
   </head>
@@ -139,36 +179,26 @@
         <option value="V">Verbose</option>
       </select>
 
-      <label for="autoRefresh">
-        <input
-          type="checkbox"
-          id="autoRefresh"
-          checked
-          onchange="toggleAutoRefresh()"
-        />
-        Auto-refresh (5s)
-      </label>
-
-      <button onclick="refreshLogs()">Refresh Now</button>
+      <button id="pauseButton" onclick="togglePause()">Pause</button>
       <button onclick="clearDisplay()">Clear Display</button>
 
-      <span class="auto-refresh-status" id="refreshStatus"
-        >Last updated: Never</span
-      >
+      <span class="connection-status" id="connectionStatus">Connecting...</span>
     </div>
 
     <div id="status" class="status" style="display: none"></div>
 
     <div class="log-container" id="logContainer">
       <div style="color: #858585; text-align: center; padding: 20px">
-        Loading logs...
+        Connecting to log stream...
       </div>
     </div>
 
     <script>
       let allLogs = [];
-      let autoRefreshEnabled = true;
-      let autoRefreshTimer = null;
+      let isPaused = false;
+      let ws = null;
+      let reconnectTimer = null;
+      let wsPort = 81; // WebSocket port
 
       function formatTimestamp(ms) {
         const seconds = Math.floor(ms / 1000);
@@ -228,8 +258,11 @@
         });
 
         container.innerHTML = html;
-        // Scroll to bottom to show latest logs
-        container.scrollTop = container.scrollHeight;
+
+        // Only auto-scroll if not paused
+        if (!isPaused) {
+          container.scrollTop = container.scrollHeight;
+        }
       }
 
       function escapeHtml(text) {
@@ -242,36 +275,30 @@
         displayLogs();
       }
 
-      function refreshLogs() {
-        fetch("/api/logs")
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Failed to fetch logs: " + response.status);
-            }
-            return response.json();
-          })
-          .then((data) => {
-            allLogs = data.logs || [];
-            displayLogs();
-            updateStatus("success", "Logs updated successfully");
-            document.getElementById("refreshStatus").textContent =
-              "Last updated: " + new Date().toLocaleTimeString();
-          })
-          .catch((error) => {
-            updateStatus("error", "Error fetching logs: " + error.message);
-            console.error("Error:", error);
-          });
-      }
-
       function clearDisplay() {
         allLogs = [];
         displayLogs();
       }
 
+      function togglePause() {
+        isPaused = !isPaused;
+        const button = document.getElementById("pauseButton");
+
+        if (isPaused) {
+          button.textContent = "Resume";
+        } else {
+          button.textContent = "Pause";
+          // Refresh display when resuming
+          displayLogs();
+        }
+      }
+
       function updateStatus(type, message) {
         const statusDiv = document.getElementById("status");
         statusDiv.textContent = message;
-        statusDiv.className = "status " + (type === "error" ? "error" : "");
+        statusDiv.className =
+          "status " +
+          (type === "error" ? "error" : type === "success" ? "success" : "");
         statusDiv.style.display = "block";
 
         // Hide success messages after 3 seconds
@@ -282,37 +309,84 @@
         }
       }
 
-      function toggleAutoRefresh() {
-        autoRefreshEnabled = document.getElementById("autoRefresh").checked;
-
-        if (autoRefreshEnabled) {
-          startAutoRefresh();
+      function updateConnectionStatus(connected) {
+        const statusSpan = document.getElementById("connectionStatus");
+        if (connected) {
+          statusSpan.textContent = "Connected";
+          statusSpan.className = "connection-status connected";
         } else {
-          stopAutoRefresh();
+          statusSpan.textContent = "Disconnected";
+          statusSpan.className = "connection-status disconnected";
         }
       }
 
-      function startAutoRefresh() {
-        if (autoRefreshTimer) {
-          clearInterval(autoRefreshTimer);
-        }
-        autoRefreshTimer = setInterval(refreshLogs, 5000);
+      function connectWebSocket() {
+        // Get the current hostname and port
+        const host = window.location.hostname;
+
+        ws = new WebSocket("ws://" + host + ":" + wsPort);
+
+        ws.onopen = function () {
+          console.log("WebSocket connected");
+          updateConnectionStatus(true);
+
+          // Clear reconnect timer
+          if (reconnectTimer) {
+            clearTimeout(reconnectTimer);
+            reconnectTimer = null;
+          }
+        };
+
+        ws.onmessage = function (event) {
+          try {
+            const data = JSON.parse(event.data);
+
+            if (data.type === "initial") {
+              // Initial log batch
+              allLogs = data.logs || [];
+              displayLogs();
+            } else if (data.type === "log") {
+              // New single log entry
+              const logEntry = {
+                timestamp: data.timestamp,
+                level: data.level,
+                tag: data.tag,
+                message: data.message,
+              };
+              allLogs.push(logEntry);
+
+              // Only update display if not paused
+              if (!isPaused) {
+                displayLogs();
+              }
+            }
+          } catch (e) {
+            console.error("Error parsing WebSocket message:", e);
+          }
+        };
+
+        ws.onerror = function (error) {
+          console.error("WebSocket error:", error);
+          updateStatus("error", "WebSocket connection error");
+        };
+
+        ws.onclose = function () {
+          console.log("WebSocket disconnected");
+          updateConnectionStatus(false);
+          updateStatus(
+            "error",
+            "Disconnected from log stream. Reconnecting...",
+          );
+
+          // Attempt to reconnect after 3 seconds
+          reconnectTimer = setTimeout(() => {
+            connectWebSocket();
+          }, 3000);
+        };
       }
 
-      function stopAutoRefresh() {
-        if (autoRefreshTimer) {
-          clearInterval(autoRefreshTimer);
-          autoRefreshTimer = null;
-        }
-      }
-
-      // Initial load
-      refreshLogs();
-
-      // Start auto-refresh
-      if (autoRefreshEnabled) {
-        startAutoRefresh();
-      }
+      // Connect on page load
+      connectWebSocket();
     </script>
   </body>
 </html>

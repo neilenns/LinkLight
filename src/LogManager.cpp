@@ -1,4 +1,5 @@
 #include "LogManager.h"
+#include "WebServerManager.h"
 
 static const char* LOG_TAG = "LogManager";
 
@@ -36,6 +37,9 @@ void LogManager::addLog(const char* level, const char* tag, const char* message)
     
     // Ring buffer automatically overwrites oldest entry if full
     logBuffer.pushOverwrite(entry);
+    
+    // Broadcast to WebSocket clients
+    webServerManager.broadcastLog(level, tag, message, entry.timestamp);
   } catch (...) {
     Serial.println("[LogManager] Exception in addLog - likely memory allocation failure");
   }

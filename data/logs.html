@@ -171,9 +171,7 @@
       <span class="connection-status" id="connectionStatus">Connecting...</span>
     </div>
 
-    <div id="pausedIndicator" class="paused-indicator">
-      ⏸ Display Paused - New logs are being buffered
-    </div>
+    <div id="pausedIndicator" class="paused-indicator">Display Paused</div>
 
     <div id="status" class="status" style="display: none"></div>
 
@@ -248,7 +246,7 @@
         });
 
         container.innerHTML = html;
-        
+
         // Only auto-scroll if not paused
         if (!isPaused) {
           container.scrollTop = container.scrollHeight;
@@ -274,7 +272,7 @@
         isPaused = !isPaused;
         const button = document.getElementById("pauseButton");
         const indicator = document.getElementById("pausedIndicator");
-        
+
         if (isPaused) {
           button.textContent = "Resume";
           indicator.classList.add("visible");
@@ -289,7 +287,9 @@
       function updateStatus(type, message) {
         const statusDiv = document.getElementById("status");
         statusDiv.textContent = message;
-        statusDiv.className = "status " + (type === "error" ? "error" : type === "success" ? "success" : "");
+        statusDiv.className =
+          "status " +
+          (type === "error" ? "error" : type === "success" ? "success" : "");
         statusDiv.style.display = "block";
 
         // Hide success messages after 3 seconds
@@ -303,10 +303,10 @@
       function updateConnectionStatus(connected) {
         const statusSpan = document.getElementById("connectionStatus");
         if (connected) {
-          statusSpan.textContent = "● Connected";
+          statusSpan.textContent = "Connected";
           statusSpan.className = "connection-status connected";
         } else {
-          statusSpan.textContent = "● Disconnected";
+          statusSpan.textContent = "Disconnected";
           statusSpan.className = "connection-status disconnected";
         }
       }
@@ -314,14 +314,14 @@
       function connectWebSocket() {
         // Get the current hostname and port
         const host = window.location.hostname;
-        
+
         ws = new WebSocket("ws://" + host + ":" + wsPort);
 
-        ws.onopen = function() {
+        ws.onopen = function () {
           console.log("WebSocket connected");
           updateConnectionStatus(true);
           updateStatus("success", "Connected to log stream");
-          
+
           // Clear reconnect timer
           if (reconnectTimer) {
             clearTimeout(reconnectTimer);
@@ -329,10 +329,10 @@
           }
         };
 
-        ws.onmessage = function(event) {
+        ws.onmessage = function (event) {
           try {
             const data = JSON.parse(event.data);
-            
+
             if (data.type === "initial") {
               // Initial log batch
               allLogs = data.logs || [];
@@ -343,10 +343,10 @@
                 timestamp: data.timestamp,
                 level: data.level,
                 tag: data.tag,
-                message: data.message
+                message: data.message,
               };
               allLogs.push(logEntry);
-              
+
               // Only update display if not paused
               if (!isPaused) {
                 displayLogs();
@@ -357,16 +357,19 @@
           }
         };
 
-        ws.onerror = function(error) {
+        ws.onerror = function (error) {
           console.error("WebSocket error:", error);
           updateStatus("error", "WebSocket connection error");
         };
 
-        ws.onclose = function() {
+        ws.onclose = function () {
           console.log("WebSocket disconnected");
           updateConnectionStatus(false);
-          updateStatus("error", "Disconnected from log stream. Reconnecting...");
-          
+          updateStatus(
+            "error",
+            "Disconnected from log stream. Reconnecting...",
+          );
+
           // Attempt to reconnect after 3 seconds
           reconnectTimer = setTimeout(() => {
             connectWebSocket();

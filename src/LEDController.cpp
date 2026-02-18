@@ -2,7 +2,7 @@
 #include "TrainDataManager.h"
 #include "LogManager.h"
 
-static const char* TAG = "LEDController";
+static const char* LOG_TAG = "LEDController";
 
 LEDController ledController;
 
@@ -54,11 +54,11 @@ void LEDController::initializeStationMaps() {
   stationMap["East Main"] =               {111, 112};
   stationMap["South Bellevue"] =          {111, 112};
 
-  LINK_LOGI(TAG, "Initialized Line 1 station map with %d stations", stationMap.size());
+  LINK_LOGI(LOG_TAG, "Initialized Line 1 station map with %d stations", stationMap.size());
 }
 
 void LEDController::setup() {
-  LINK_LOGI(TAG, "Setting up LEDs...");
+  LINK_LOGI(LOG_TAG, "Setting up LEDs...");
   
   strip.Begin();
   strip.Show(); // Initialize all pixels to 'off'
@@ -93,7 +93,7 @@ void LEDController::startupAnimation() {
   setAllLEDs(COLOR_BLACK);
   strip.Show();
 
-  LINK_LOGI(TAG, "LEDs initialized");
+  LINK_LOGI(LOG_TAG, "LEDs initialized");
 }
 
 void LEDController::setAllLEDs(const RgbColor& color) {
@@ -120,7 +120,7 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
   {
     auto closestStationInfo = stationMap.find(train.closestStopName);
     if (closestStationInfo == stationMap.end()) {
-      LINK_LOGW(TAG, "Closest station '%s' not found in Line 1 map", train.closestStopName.c_str());
+      LINK_LOGW(LOG_TAG, "Closest station '%s' not found in Line 1 map", train.closestStopName.c_str());
       return 0; // Default to lighting the first LED if station not found, to at least indicate presence of train.
     }
 
@@ -133,7 +133,7 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
   else if (train.state == TrainState::MOVING) {
     auto nextStationInfo = stationMap.find(train.nextStopName);
     if (nextStationInfo == stationMap.end()) {
-      LINK_LOGW(TAG, "Next station '%s' not found in Line 1 map", train.nextStopName.c_str());
+      LINK_LOGW(LOG_TAG, "Next station '%s' not found in Line 1 map", train.nextStopName.c_str());
       return 0; // Default to lighting the first LED if station not found, to at least indicate presence of train.
     }
 
@@ -149,7 +149,7 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
 
   // Ensure the index is within valid bounds
   if (ledIndex < 0 || ledIndex >= LED_COUNT) {
-    LINK_LOGW(TAG, "LED index %d out of bounds for train %s", ledIndex, train.tripId.c_str());
+    LINK_LOGW(LOG_TAG, "LED index %d out of bounds for train %s", ledIndex, train.tripId.c_str());
   }
 
   return ledIndex;
@@ -160,7 +160,7 @@ void LEDController::displayTrainPositions() {
   setAllLEDs(COLOR_BLACK);
   
   // Get train data from TrainDataManager
-  const std::vector<TrainData>& trains = trainDataManager.getTrainDataList();
+  const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   
   // Process each train and set its LED
   for (const TrainData& train : trains) {
@@ -169,13 +169,13 @@ void LEDController::displayTrainPositions() {
     if (ledIndex >= 0) {
       if (train.state == TrainState::AT_STATION) {
         setTrainLED(ledIndex, train.line == LINE_1_NAME ? LINE_1_COLOR : LINE_2_COLOR);
-        LINK_LOGD(TAG, "Train %s at LED %d (closest: %s, state: AT_STATION, dir: %s)", 
+        LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, state: AT_STATION, dir: %s)", 
                  train.tripId.c_str(), ledIndex, 
                  train.closestStopName.c_str(),
                  train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound");
       } else {
         setTrainLED(ledIndex, COLOR_YELLOW);
-        LINK_LOGD(TAG, "Train %s at LED %d (next: %s, state: MOVING, dir: %s)", 
+        LINK_LOGD(LOG_TAG, "Train %s at LED %d (next: %s, state: MOVING, dir: %s)", 
                  train.tripId.c_str(), ledIndex, 
                  train.nextStopName.c_str(),
                  train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound");

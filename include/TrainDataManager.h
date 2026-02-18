@@ -3,7 +3,9 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <vector>
+// Only include the PSRAM components we need to avoid compilation issues with InMemoryFS
+#include "esp32-psram/AllocatorPSRAM.h"
+#include "esp32-psram/VectorPSRAM.h"
 
 // Train state enum
 enum class TrainState {
@@ -38,12 +40,12 @@ public:
   void updateTrainPositions();
   
   // Returns the current list of train data parsed from the API or sample data
-  const std::vector<TrainData>& getTrainDataList() const { return trainDataList; }
+  const esp32_psram::VectorPSRAM<TrainData>& getTrainDataList() const { return trainDataList; }
   
 private:
   bool parseTrainDataFromJson(JsonDocument& doc, const String& line);
   void fetchTrainDataForRoute(const String& routeId, const String& lineName, const String& apiKey);
-  std::vector<TrainData> trainDataList;
+  esp32_psram::VectorPSRAM<TrainData> trainDataList;
 };
 
 extern TrainDataManager trainDataManager;

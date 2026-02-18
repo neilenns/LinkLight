@@ -2,12 +2,12 @@
 #include "LogManager.h"
 #include "config.h"
 
-static const char* TAG = "PreferencesManager";
+static const char* LOG_TAG = "PreferencesManager";
 
 PreferencesManager preferencesManager;
 
 void PreferencesManager::load() {
-  LINK_LOGI(TAG, "Loading preferences...");
+  LINK_LOGI(LOG_TAG, "Loading preferences...");
   
   preferences.begin(PREF_NAMESPACE, true);
   
@@ -16,11 +16,11 @@ void PreferencesManager::load() {
   
   preferences.end();
   
-  LINK_LOGI(TAG, "Hostname: %s", hostname.c_str());
+  LINK_LOGI(LOG_TAG, "Hostname: %s", hostname.c_str());
 }
 
 void PreferencesManager::save() {
-  LINK_LOGI(TAG, "Saving preferences...");
+  LINK_LOGI(LOG_TAG, "Saving preferences...");
   
   preferences.begin(PREF_NAMESPACE, false);
   
@@ -29,5 +29,5 @@ void PreferencesManager::save() {
   
   preferences.end();
   
-  LINK_LOGI(TAG, "Preferences saved");
+  LINK_LOGI(LOG_TAG, "Preferences saved");
 }

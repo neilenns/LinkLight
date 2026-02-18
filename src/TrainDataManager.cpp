@@ -10,7 +10,6 @@
 
 static const char* LOG_TAG = "TrainDataManager";
 static const float MIN_SCHEDULED_DISTANCE_THRESHOLD = 0.001f;
-static const int AT_STATION_THRESHOLD = 10; // Distance a train should be within to be considered at the station
 
 TrainDataManager trainDataManager;
 

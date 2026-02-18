@@ -61,7 +61,6 @@ void LEDTrainTracker::display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Apa106Metho
   strip.Show();
 }
 
-
 // Logs the train counts in four lines, one for northbound and one for southbound LEDs for each train line.
 // The extra spaces in the Line 2 logs are intentional and align the digits with how things look on the physical LED layout,
 // with the between-station LEDs between Judkins Park and ID/Chinatown aligning above ID/Chinatown.

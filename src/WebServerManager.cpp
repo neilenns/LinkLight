@@ -70,6 +70,7 @@ void WebServerManager::handleConfig() {
   data["hostname"] = preferencesManager.getHostname();
   data["timezone"] = preferencesManager.getTimezone();
   data["focusedVehicleId"] = preferencesManager.getFocusedVehicleId();
+  data["updateInterval"] = preferencesManager.getUpdateInterval();
   
   // Add train data for the dropdown
   JsonArray trainsArray = data["trains"].to<JsonArray>();
@@ -147,6 +148,18 @@ void WebServerManager::handleSaveConfig() {
   if (server.hasArg("focusedVehicleId")) {
     String focusedVehicleId = server.arg("focusedVehicleId");
     preferencesManager.setFocusedVehicleId(focusedVehicleId);
+  }
+  
+  // Handle update interval with validation (15-60 seconds)
+  if (server.hasArg("updateInterval")) {
+    int interval = server.arg("updateInterval").toInt();
+    // Validate range: 15-60 seconds
+    if (interval >= 15 && interval <= 60) {
+      preferencesManager.setUpdateInterval(interval);
+    } else {
+      // Use default if out of range
+      preferencesManager.setUpdateInterval(DEFAULT_UPDATE_INTERVAL);
+    }
   }
   
   preferencesManager.save();

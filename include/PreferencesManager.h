@@ -13,11 +13,13 @@ public:
   String getHostname() const { return hostname; }
   String getTimezone() const { return timezone; }
   String getFocusedVehicleId() const { return focusedVehicleId; }
+  unsigned int getUpdateInterval() const { return updateInterval; }
   
   void setApiKey(const String& value) { apiKey = value; }
   void setHostname(const String& value) { hostname = value; }
   void setTimezone(const String& value) { timezone = value; }
   void setFocusedVehicleId(const String& value) { focusedVehicleId = value; }
+  void setUpdateInterval(unsigned int value) { updateInterval = value; }
   
 private:
   Preferences preferences;
@@ -25,6 +27,7 @@ private:
   String hostname;
   String timezone;
   String focusedVehicleId;  // Not persisted, runtime only
+  unsigned int updateInterval;  // Update interval in seconds
 };
 
 extern PreferencesManager preferencesManager;

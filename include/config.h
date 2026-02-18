@@ -36,7 +36,7 @@
 #define PREF_UPDATE_INTERVAL "updateInterval"
 #define PREF_LINE1_COLOR "line1Color"
 #define PREF_LINE2_COLOR "line2Color"
-#define PREF_BRIGHTNESS "brightness"
+#define PREF_SHARED_COLOR "sharedColor"
 #define MAX_PREFERENCE_LENGTH 64  // Maximum length for preference strings
 
 // Default Values
@@ -45,6 +45,6 @@
 #define DEFAULT_UPDATE_INTERVAL 30  // Default update interval in seconds
 #define DEFAULT_LINE1_COLOR "#00ff00"  // Green for Line 1
 #define DEFAULT_LINE2_COLOR "#0000ff"  // Blue for Line 2
-#define DEFAULT_BRIGHTNESS 32  // Default brightness (0-255)
+#define DEFAULT_SHARED_COLOR "#ffff00"  // Yellow for shared/overlap
 
 #endif // CONFIG_H

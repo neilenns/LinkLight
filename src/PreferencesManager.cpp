@@ -17,7 +17,7 @@ void PreferencesManager::load() {
   updateInterval = preferences.getUInt(PREF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL);
   line1Color = preferences.getString(PREF_LINE1_COLOR, DEFAULT_LINE1_COLOR);
   line2Color = preferences.getString(PREF_LINE2_COLOR, DEFAULT_LINE2_COLOR);
-  brightness = preferences.getUInt(PREF_BRIGHTNESS, DEFAULT_BRIGHTNESS);
+  sharedColor = preferences.getString(PREF_SHARED_COLOR, DEFAULT_SHARED_COLOR);
   
   preferences.end();
   
@@ -36,7 +36,7 @@ void PreferencesManager::save() {
   preferences.putUInt(PREF_UPDATE_INTERVAL, updateInterval);
   preferences.putString(PREF_LINE1_COLOR, line1Color);
   preferences.putString(PREF_LINE2_COLOR, line2Color);
-  preferences.putUInt(PREF_BRIGHTNESS, brightness);
+  preferences.putString(PREF_SHARED_COLOR, sharedColor);
   
   preferences.end();
   

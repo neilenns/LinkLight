@@ -73,7 +73,7 @@ void WebServerManager::handleConfig() {
   data["updateInterval"] = preferencesManager.getUpdateInterval();
   data["line1Color"] = preferencesManager.getLine1Color();
   data["line2Color"] = preferencesManager.getLine2Color();
-  data["brightness"] = preferencesManager.getBrightness();
+  data["sharedColor"] = preferencesManager.getSharedColor();
   
   // Add train data for the dropdown
   JsonArray trainsArray = data["trains"].to<JsonArray>();
@@ -183,12 +183,12 @@ void WebServerManager::handleSaveConfig() {
     }
   }
   
-  // Handle brightness with validation (0-255)
-  if (server.hasArg("brightness")) {
-    int brightness = server.arg("brightness").toInt();
-    // Validate range: 0-255
-    if (brightness >= 0 && brightness <= 255) {
-      preferencesManager.setBrightness(brightness);
+  // Handle shared/overlap color
+  if (server.hasArg("sharedColor")) {
+    String sharedColor = server.arg("sharedColor");
+    // Validate hex color format
+    if (sharedColor.startsWith("#") && sharedColor.length() == 7) {
+      preferencesManager.setSharedColor(sharedColor);
     }
   }
   

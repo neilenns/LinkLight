@@ -13,16 +13,16 @@ static const RgbColor COLOR_BLACK = RgbColor(0, 0, 0);
 // Helper class for color management
 class ColorManager {
 public:
-  // Convert hex color string (e.g., "#00ff00") to RgbColor with brightness applied
-  static RgbColor hexToRgb(const String& hexColor, uint8_t brightness = 255);
+  // Convert hex color string (e.g., "#00ff00") to RgbColor
+  static RgbColor hexToRgb(const String& hexColor);
   
-  // Get Line 1 color from preferences with brightness applied
+  // Get Line 1 color from preferences
   static RgbColor getLine1Color();
   
-  // Get Line 2 color from preferences with brightness applied
+  // Get Line 2 color from preferences
   static RgbColor getLine2Color();
   
-  // Get shared line color (mix of Line 1 and Line 2) with brightness applied
+  // Get shared line color from preferences (when both lines have trains at same LED)
   static RgbColor getSharedLineColor();
 };
 

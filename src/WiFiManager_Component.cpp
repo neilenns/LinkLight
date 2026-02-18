@@ -28,5 +28,5 @@ void WiFiManager_Component::setup() {
     ESP.restart();
   }
   
-  LINK_LOGI(LOG_TAG, "Connected to WIFI. IP address: %s Hostname: %s", WiFi.localIP().toString().c_str(), hostname.c_str());
+  LINK_LOGI(LOG_TAG, "Connected to WiFi. IP address: %s Hostname: %s", WiFi.localIP().toString().c_str(), hostname.c_str());
 }

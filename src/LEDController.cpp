@@ -133,7 +133,7 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
 
   // Ensure the index is within valid bounds
   if (ledIndex < 0 || ledIndex >= LED_COUNT) {
-    LINK_LOGW(LOG_TAG, "LED index %d out of bounds for train %s", ledIndex, train.tripId.c_str());
+    LINK_LOGW(LOG_TAG, "LED index %d out of bounds for vehicle %s", ledIndex, train.vehicleId.c_str());
     ledIndex = 0; // Default to first LED if out of bounds, to at least indicate presence of train.
   }
 
@@ -147,13 +147,13 @@ void LEDController::displayTrainPositions() {
   // Get train data from TrainDataManager
   const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   
-  // Get focused trip ID (if any)
-  String focusedTripId = preferencesManager.getFocusedTripId();
+  // Get focused vehicle ID (if any)
+  String focusedVehicleId = preferencesManager.getFocusedVehicleId();
   
   // Process each train and update the tracker
   for (const TrainData& train : trains) {
     // If a focused train is set, skip all other trains
-    if (!focusedTripId.isEmpty() && train.tripId != focusedTripId) {
+    if (!focusedVehicleId.isEmpty() && train.vehicleId != focusedVehicleId) {
       continue;
     }
     
@@ -164,7 +164,7 @@ void LEDController::displayTrainPositions() {
       trainTracker.incrementTrainCount(ledIndex, train.line);
       
       LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, next: %s, state: %s, dir: %s, line: %d)", 
-                train.tripId.c_str(), ledIndex, 
+                train.vehicleId.c_str(), ledIndex, 
                 train.closestStopName.c_str(),
                 train.nextStopName.c_str(),
               train.state == TrainState::AT_STATION ? "AT_STATION" : "MOVING",

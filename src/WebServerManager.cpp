@@ -67,7 +67,7 @@ void WebServerManager::handleConfig() {
   data["apiKey"] = preferencesManager.getApiKey();
   data["hostname"] = preferencesManager.getHostname();
   data["timezone"] = preferencesManager.getTimezone();
-  data["focusedTripId"] = preferencesManager.getFocusedTripId();
+  data["focusedVehicleId"] = preferencesManager.getFocusedVehicleId();
   
   // Add train data for the dropdown
   JsonArray trainsArray = data["trains"].to<JsonArray>();
@@ -75,7 +75,7 @@ void WebServerManager::handleConfig() {
   
   for (const TrainData& train : trains) {
     JsonObject trainObj = trainsArray.add<JsonObject>();
-    trainObj["tripId"] = train.tripId;
+    trainObj["vehicleId"] = train.vehicleId;
     trainObj["station"] = train.state == TrainState::AT_STATION ? train.closestStopName : train.nextStopName;
     trainObj["line"] = String("Line ") + String(static_cast<int>(train.line));
     trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
@@ -133,9 +133,9 @@ void WebServerManager::handleSaveConfig() {
   }
   
   // Handle focused train ID (not persisted)
-  if (server.hasArg("focusedTripId")) {
-    String focusedTripId = server.arg("focusedTripId");
-    preferencesManager.setFocusedTripId(focusedTripId);
+  if (server.hasArg("focusedVehicleId")) {
+    String focusedVehicleId = server.arg("focusedVehicleId");
+    preferencesManager.setFocusedVehicleId(focusedVehicleId);
   }
   
   preferencesManager.save();

@@ -34,6 +34,7 @@ struct TrainData {
   String nextStopName;
   int nextStopTimeOffset;
   String tripId;
+  String vehicleId;
   TrainDirection direction;
   String routeId;
   String tripHeadsign;

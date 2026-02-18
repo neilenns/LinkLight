@@ -1,6 +1,7 @@
 #include "LEDTrainTracker.h"
 #include "LogManager.h"
 #include "config.h"
+#include "TrainDataManager.h"
 
 static const char* LOG_TAG = "LEDTrainTracker";
 
@@ -10,20 +11,20 @@ LEDTrainTracker::LEDTrainTracker() {
 
 // Increment the count of trains for a specific line at a specific LED.
 // Used later when displaying LEDs to determine color based on train presence.
-void LEDTrainTracker::incrementTrainCount(int ledIndex, const String& line) {
+void LEDTrainTracker::incrementTrainCount(int ledIndex, Line line) {
   // Validate LED index
   if (ledIndex < 0 || ledIndex >= LED_COUNT) {
-    LINK_LOGW(LOG_TAG, "Invalid LED index %d for line %s", ledIndex, line.c_str());
+    LINK_LOGW(LOG_TAG, "Invalid LED index %d for line %d", ledIndex, static_cast<int>(line));
     return;
   }
   
   // Increment the appropriate counter based on the line
-  if (line == LINE_1_NAME) {
+  if (line == Line::LINE_1) {
     ledCounts[ledIndex].line1Count++;
-  } else if (line == LINE_2_NAME) {
+  } else if (line == Line::LINE_2) {
     ledCounts[ledIndex].line2Count++;
   } else {
-    LINK_LOGW(LOG_TAG, "Unknown line: %s", line.c_str());
+    LINK_LOGW(LOG_TAG, "Unknown line: %d", static_cast<int>(line));
   }
 }
 

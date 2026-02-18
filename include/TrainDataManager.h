@@ -19,6 +19,12 @@ enum class TrainDirection {
   NORTHBOUND = 1
 };
 
+// Line identifier enum
+enum class Line {
+  LINE_1 = 1,
+  LINE_2 = 2
+};
+
 // Train data structure
 struct TrainData {
   String closestStop;
@@ -31,7 +37,7 @@ struct TrainData {
   TrainDirection direction;
   String routeId;
   String tripHeadsign;
-  String line;  // Line identifier (e.g., "Line 1", "Line 2")
+  Line line;  // Line identifier
   TrainState state;  // Whether the train is at a station or moving between stations
 };
 
@@ -43,8 +49,8 @@ public:
   const esp32_psram::VectorPSRAM<TrainData>& getTrainDataList() const { return trainDataList; }
   
 private:
-  bool parseTrainDataFromJson(JsonDocument& doc, const String& line);
-  void fetchTrainDataForRoute(const String& routeId, const String& lineName, const String& apiKey);
+  bool parseTrainDataFromJson(JsonDocument& doc, Line line);
+  void fetchTrainDataForRoute(const String& routeId, Line line, const String& apiKey);
   esp32_psram::VectorPSRAM<TrainData> trainDataList;
 };
 

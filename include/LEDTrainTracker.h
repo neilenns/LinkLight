@@ -5,6 +5,9 @@
 #include "config.h"
 #include "colors.h"
 
+// Forward declaration of Line enum from TrainDataManager.h
+enum class Line;
+
 // Structure to track train counts for both lines at a single LED
 struct LEDTrainCounts {
   int line1Count = 0;
@@ -17,7 +20,7 @@ public:
   LEDTrainTracker();
   
   // Increment the count of trains for a specific line at a specific LED
-  void incrementTrainCount(int ledIndex, const String& line);
+  void incrementTrainCount(int ledIndex, Line line);
   
   // Reset all train counts to zero
   void reset();

@@ -2,6 +2,7 @@
 #include "TrainDataManager.h"
 #include "LogManager.h"
 #include "colors.h"
+#include "PreferencesManager.h"
 
 static const char* LOG_TAG = "LEDController";
 
@@ -148,28 +149,29 @@ void LEDController::displayTrainPositions() {
   // Get train data from TrainDataManager
   const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   
+  // Get focused trip ID (if any)
+  String focusedTripId = preferencesManager.getFocusedTripId();
+  
   // Process each train and update the tracker
   for (const TrainData& train : trains) {
+    // If a focused train is set, skip all other trains
+    if (!focusedTripId.isEmpty() && train.tripId != focusedTripId) {
+      continue;
+    }
+    
     int ledIndex = getTrainLEDIndex(train);
     
     if (ledIndex >= 0) {
       // Increment the count for this train's line at this LED
       trainTracker.incrementTrainCount(ledIndex, train.line);
       
-      // Log with closest or next station depending on state
-      if (train.state == TrainState::AT_STATION) {
-        LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, state: AT_STATION, dir: %s, line: %d)", 
-                 train.tripId.c_str(), ledIndex, 
-                 train.closestStopName.c_str(),
-                 train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
-                 static_cast<int>(train.line));
-      } else {
-        LINK_LOGD(LOG_TAG, "Train %s at LED %d (next: %s, state: MOVING, dir: %s, line: %d)", 
-                 train.tripId.c_str(), ledIndex, 
-                 train.nextStopName.c_str(),
-                 train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
-                 static_cast<int>(train.line));
-      }
+      LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, next: %s, state: %s, dir: %s, line: %d)", 
+                train.tripId.c_str(), ledIndex, 
+                train.closestStopName.c_str(),
+                train.nextStopName.c_str(),
+              train.state == TrainState::AT_STATION ? "AT_STATION" : "MOVING",
+                train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
+                static_cast<int>(train.line));
     }
   }
   

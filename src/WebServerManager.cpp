@@ -6,6 +6,7 @@
 #include "FileSystemManager.h"
 #include "PreferencesManager.h"
 #include "PSRAMJsonAllocator.h"
+#include "TrainDataManager.h"
 
 static const char* LOG_TAG = "WebServerManager";
 
@@ -66,6 +67,19 @@ void WebServerManager::handleConfig() {
   data["apiKey"] = preferencesManager.getApiKey();
   data["hostname"] = preferencesManager.getHostname();
   data["timezone"] = preferencesManager.getTimezone();
+  data["focusedTripId"] = preferencesManager.getFocusedTripId();
+  
+  // Add train data for the dropdown
+  JsonArray trainsArray = data["trains"].to<JsonArray>();
+  const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
+  
+  for (const TrainData& train : trains) {
+    JsonObject trainObj = trainsArray.add<JsonObject>();
+    trainObj["tripId"] = train.tripId;
+    trainObj["station"] = train.state == TrainState::AT_STATION ? train.closestStopName : train.nextStopName;
+    trainObj["line"] = String("Line ") + String(static_cast<int>(train.line));
+    trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
+  }
   
   String output = ministache::render(html, data);
   server.send(200, "text/html", output);
@@ -116,6 +130,12 @@ void WebServerManager::handleSaveConfig() {
       timezone = DEFAULT_TIMEZONE;
     }
     preferencesManager.setTimezone(timezone);
+  }
+  
+  // Handle focused train ID (not persisted)
+  if (server.hasArg("focusedTripId")) {
+    String focusedTripId = server.arg("focusedTripId");
+    preferencesManager.setFocusedTripId(focusedTripId);
   }
   
   preferencesManager.save();

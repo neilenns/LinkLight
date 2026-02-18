@@ -9,7 +9,7 @@ a custom PCB with 50 LED indicators.
 
 **Technology Stack:**
 
-- Hardware: ESP32-S3 microcontroller (DevKitC-1), WS2812 LED strip
+- Hardware: ESP32-S3 microcontroller (seeed_xiao_esp32s3), WS2815 LED strip
 - Framework: Arduino-ESP32
 - Build System: PlatformIO
 - Languages: C++ (Arduino)
@@ -35,7 +35,7 @@ pio run
 pio run --target clean
 
 # Build for specific environment (if multiple environments exist)
-pio run --environment esp32-s3-devkitc-1
+pio run --environment seeed_xiao_esp32s3
 
 # Monitor serial output (requires connected device)
 pio device monitor -b 115200
@@ -45,7 +45,7 @@ pio device monitor -b 115200
 
 - Exit code 0
 - Message: `[SUCCESS] Took XX.XX seconds`
-- Firmware files created: `.pio/build/esp32-s3-devkitc-1/firmware.bin`
+- Firmware files created: `.pio/build/seeed_xiao_esp32s3/firmware.bin`
   and `firmware.elf`
 
 **Network Requirements:**
@@ -81,7 +81,7 @@ LinkLight/
 │   ├── config.html           # Configuration form
 │   └── config_saved.html     # Save confirmation page
 ├── platformio.ini            # PlatformIO build configuration
-│                             # Defines target (esp32-s3-devkitc-1), dependencies
+│                             # Defines target (seeed_xiao_esp32s3), dependencies
 ├── .github/workflows/        # CI/CD pipelines
 │   ├── pr-build.yml          # Builds on pull requests
 │   ├── build-release.yml     # Builds and attaches binaries to releases

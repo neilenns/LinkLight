@@ -33,9 +33,11 @@
 #define PREF_NAMESPACE "linklight"
 #define PREF_API_KEY "apiKey"
 #define PREF_HOSTNAME "hostname"
+#define PREF_TIMEZONE "timezone"
 #define MAX_PREFERENCE_LENGTH 64  // Maximum length for preference strings
 
 // Default Values
 #define DEFAULT_HOSTNAME "LinkLight"
+#define DEFAULT_TIMEZONE "PST8PDT,M3.2.0,M11.1.0"  // Pacific Time with DST
 
 #endif // CONFIG_H

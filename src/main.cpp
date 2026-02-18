@@ -9,6 +9,7 @@
 #include "PreferencesManager.h"
 #include "FileSystemManager.h"
 #include "TrainDataManager.h"
+#include "NTPManager.h"
 
 static const char* LOG_TAG = "LinkLight";
 unsigned long lastApiUpdate = -API_UPDATE_INTERVAL; // Initial value is a really large number to ensure the first update happens immediately.
@@ -32,6 +33,9 @@ void setup() {
   
   // Setup WiFi
   wifiManagerComponent.setup();
+
+  // Setup NTP time synchronization
+  ntpManager.setup();
 
   // Setup OTA
   otaManager.setup();

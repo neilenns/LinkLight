@@ -21,6 +21,16 @@
     <input type='text' name='hostname' value='{{hostname}}' placeholder='LinkLight'>
     <label>API Key:</label>
     <input type='text' name='apiKey' value='{{apiKey}}' placeholder='Enter OneBusAway API key'>
+    <label>Timezone:</label>
+    <input type='text' name='timezone' value='{{timezone}}' placeholder='PST8PDT,M3.2.0,M11.1.0'>
+    <p style='font-size: 12px; color: #666; margin-top: -10px;'>
+      Enter timezone in POSIX TZ format. Examples:<br>
+      • Pacific: PST8PDT,M3.2.0,M11.1.0<br>
+      • Eastern: EST5EDT,M3.2.0,M11.1.0<br>
+      • Central: CST6CDT,M3.2.0,M11.1.0<br>
+      • Mountain: MST7MDT,M3.2.0,M11.1.0<br>
+      • UTC: UTC0
+    </p>
     <button type='submit'>Save Configuration</button>
   </form>
   <a href='/'>Back to Home</a>

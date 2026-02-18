@@ -57,6 +57,7 @@ void WebServerManager::handleConfig() {
   JsonDocument data(PSRAMJsonAllocator::instance());
   data["apiKey"] = preferencesManager.getApiKey();
   data["hostname"] = preferencesManager.getHostname();
+  data["timezone"] = preferencesManager.getTimezone();
   
   String output = ministache::render(html, data);
   server.send(200, "text/html", output);
@@ -95,6 +96,18 @@ void WebServerManager::handleSaveConfig() {
       hostname = validHostname.isEmpty() ? DEFAULT_HOSTNAME : validHostname;
     }
     preferencesManager.setHostname(hostname);
+  }
+  if (server.hasArg("timezone")) {
+    String timezone = server.arg("timezone");
+    // Limit length to prevent excessive storage use
+    if (timezone.length() > MAX_PREFERENCE_LENGTH) {
+      timezone = timezone.substring(0, MAX_PREFERENCE_LENGTH);
+    }
+    // Use default if empty
+    if (timezone.isEmpty()) {
+      timezone = DEFAULT_TIMEZONE;
+    }
+    preferencesManager.setTimezone(timezone);
   }
   
   preferencesManager.save();

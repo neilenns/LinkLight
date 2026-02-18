@@ -59,7 +59,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     }
   }
 
-  LINK_LOGI(LOG_TAG, "Loaded %d trips and %d stops for %s", tripMap.size(), stopIdToNameMap.size(), line.c_str());
+  LINK_LOGI(LOG_TAG, "Loaded %u trips and %u stops for %s", tripMap.size(), stopIdToNameMap.size(), line.c_str());
 
   // Process the list array
   JsonArray list = data["list"];

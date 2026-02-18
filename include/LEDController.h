@@ -27,7 +27,7 @@ private:
 
 // Setup for WS2815 LEDs. Yes, it's using 2811 method, but according to https://github.com/Makuna/NeoPixelBus/pull/795#issuecomment-2061333595
 // that's the one that's closest in timing and works.
-NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Method> strip{LED_COUNT, LED_PIN};
+NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Apa106Method> strip{LED_COUNT, LED_PIN};
   
   // Station to LED mappings
   std::map<String, StationLEDMapping> stationMap;

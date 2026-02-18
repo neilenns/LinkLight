@@ -27,7 +27,7 @@ public:
   
   // Display the trains on the LED strip based on current counts
   // Yellow for both lines, line color for single line, black for no trains
-  void display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Method>& strip);
+  void display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Apa106Method>& strip);
   
   // Log the train counts for northbound (0-53) and southbound (108-56) stations
   void logTrainCounts();

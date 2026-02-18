@@ -20,6 +20,8 @@ public:
   void setup();
   void startupAnimation();
   void displayTrainPositions();
+  void testStationLEDs(const String& stationName);
+  const std::map<String, StationLEDMapping>& getStationMap() const;
 
 private:
 // Setup for WS2815 LEDs. Yes, it's using Apa106 method, but according to https://github.com/Makuna/NeoPixelBus/pull/795#issuecomment-2466545330

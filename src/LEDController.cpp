@@ -37,16 +37,18 @@ void LEDController::initializeStationMaps() {
   stationMap["Shoreline North/185th"] =   {49, 60};
   stationMap["Mountlake Terrace"] =       {51, 58};
   stationMap["Lynnwood City Center"] =    {53, 56};
-  stationMap["Downtown Redmond"] =        {111, 112};
-  stationMap["Marymoor Village"] =        {111, 112};
-  stationMap["Redmond Technology"] =      {111, 112};
-  stationMap["Overlake Village"] =        {111, 112};
-  stationMap["BelRed"] =                  {111, 112};
-  stationMap["Spring District"] =         {111, 112};
-  stationMap["Wilburton"] =               {111, 112};
-  stationMap["Bellevue Downtown"] =       {111, 112};
-  stationMap["East Main"] =               {111, 112};
-  stationMap["South Bellevue"] =          {111, 112};
+  stationMap["Downtown Redmond"] =        {111, 158};
+  stationMap["Marymoor Village"] =        {113, 156};
+  stationMap["Redmond Technology"] =      {115, 154};
+  stationMap["Overlake Village"] =        {117, 152};
+  stationMap["BelRed"] =                  {119, 150};
+  stationMap["Spring District"] =         {121, 148};
+  stationMap["Wilburton"] =               {123, 146};
+  stationMap["Bellevue Downtown"] =       {125, 144};
+  stationMap["East Main"] =               {127, 142};
+  stationMap["South Bellevue"] =          {129, 140};
+  stationMap["Mercer Island"] =           {131, 138};
+  stationMap["Judkins Park"] =            {133, 136};
 }
 
 void LEDController::setup() {
@@ -178,4 +180,39 @@ void LEDController::displayTrainPositions() {
   
   // Display all trains on the LED strip
   trainTracker.display(strip);
+}
+
+void LEDController::testStationLEDs(const String& stationName) {
+  LINK_LOGI(LOG_TAG, "Testing LEDs for station: %s", stationName.c_str());
+  
+  // Find the station in the map
+  auto stationInfo = stationMap.find(stationName);
+  if (stationInfo == stationMap.end()) {
+    LINK_LOGW(LOG_TAG, "Station '%s' not found in station map", stationName.c_str());
+    return;
+  }
+  
+  // Turn off all LEDs first
+  setAllLEDs(COLOR_BLACK);
+  
+  // Get the LED indices for this station
+  const StationLEDMapping& mapping = stationInfo->second;
+  
+  // Light up the northbound and southbound LEDs
+  if (mapping.northboundIndex >= 0 && mapping.northboundIndex < LED_COUNT) {
+    strip.SetPixelColor(mapping.northboundIndex, COLOR_GREEN);
+    LINK_LOGD(LOG_TAG, "Northbound LED at index %d", mapping.northboundIndex);
+  }
+  
+  if (mapping.southboundIndex >= 0 && mapping.southboundIndex < LED_COUNT) {
+    strip.SetPixelColor(mapping.southboundIndex, COLOR_BLUE);
+    LINK_LOGD(LOG_TAG, "Southbound LED at index %d", mapping.southboundIndex);
+  }
+  
+  // Update the strip
+  strip.Show();
+}
+
+const std::map<String, StationLEDMapping>& LEDController::getStationMap() const {
+  return stationMap;
 }

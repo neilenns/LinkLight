@@ -15,6 +15,7 @@ private:
   void handleRoot();
   void handleConfig();
   void handleSaveConfig();
+  void handleTestStation();
   void handleLogs();
   void handleLogsData();
   void handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length);

@@ -5,6 +5,7 @@
 #include <map>
 #include "config.h"
 #include "PreferencesManager.h"
+#include "PSRAMJsonAllocator.h"
 
 static const char* TAG = "TrainDataManager";
 static const float MIN_SCHEDULED_DISTANCE_THRESHOLD = 0.001f;
@@ -187,7 +188,7 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const Strin
     if (stream == nullptr) {
       LINK_LOGE(TAG, "Failed to get HTTP stream for %s. URL: %s", lineName.c_str(), url.c_str());
     } else {
-      JsonDocument doc;
+      JsonDocument doc(PSRAMJsonAllocator::instance());
       DeserializationError error = deserializeJson(doc, *stream);
 
       if (error) {
@@ -223,7 +224,7 @@ void TrainDataManager::updateTrainPositions() {
       return;
     }
 
-    JsonDocument doc;
+    JsonDocument doc(PSRAMJsonAllocator::instance());
     DeserializationError error = deserializeJson(doc, sampleFile);
     sampleFile.close();
     if (error) {

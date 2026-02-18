@@ -2,8 +2,10 @@
 #define LOGMANAGER_H
 
 #include <Arduino.h>
-#include <deque>
 #include <esp_log.h>
+// Only include the PSRAM components we need to avoid compilation issues with InMemoryFS
+#include "esp32-psram/VectorPSRAM.h"
+#include "esp32-psram/TypedRingBuffer.h"
 
 #define LOG_BUFFER_SIZE 100  // Number of log entries to keep in memory
 
@@ -19,11 +21,11 @@ public:
   void setup();
   void addLog(const char* level, const char* tag, const char* message);
   void log(const char* level, const char* tag, const char* format, ...);
-  std::deque<LogEntry> getLogs(int maxEntries = LOG_BUFFER_SIZE);
+  esp32_psram::VectorPSRAM<LogEntry> getLogs(int maxEntries = LOG_BUFFER_SIZE);
   void clear();
   
 private:
-  std::deque<LogEntry> logBuffer;
+  esp32_psram::TypedRingBufferPSRAM<LogEntry> logBuffer{LOG_BUFFER_SIZE};
 };
 
 extern LogManager logManager;

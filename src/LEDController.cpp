@@ -160,7 +160,7 @@ void LEDController::displayTrainPositions() {
   setAllLEDs(COLOR_BLACK);
   
   // Get train data from TrainDataManager
-  const std::vector<TrainData>& trains = trainDataManager.getTrainDataList();
+  const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   
   // Process each train and set its LED
   for (const TrainData& train : trains) {

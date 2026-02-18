@@ -5,6 +5,7 @@
 #include "LogManager.h"
 #include "FileSystemManager.h"
 #include "PreferencesManager.h"
+#include "PSRAMJsonAllocator.h"
 
 static const char* TAG = "WebServerManager";
 
@@ -37,7 +38,7 @@ void WebServerManager::handleRoot() {
   }
   
   // Create data for Ministache template
-  JsonDocument data;
+  JsonDocument data(PSRAMJsonAllocator::instance());
   data["ipAddress"] = WiFi.localIP().toString();
   data["hostname"] = preferencesManager.getHostname();
   
@@ -53,7 +54,7 @@ void WebServerManager::handleConfig() {
   }
   
   // Create data for Ministache template
-  JsonDocument data;
+  JsonDocument data(PSRAMJsonAllocator::instance());
   data["apiKey"] = preferencesManager.getApiKey();
   data["hostname"] = preferencesManager.getHostname();
   
@@ -119,10 +120,10 @@ void WebServerManager::handleLogs() {
 
 void WebServerManager::handleLogsData() {
   // Get logs from LogManager
-  std::deque<LogEntry> logs = logManager.getLogs();
+  esp32_psram::VectorPSRAM<LogEntry> logs = logManager.getLogs();
   
   // Create JSON response
-  JsonDocument doc;
+  JsonDocument doc(PSRAMJsonAllocator::instance());
   JsonArray logsArray = doc["logs"].to<JsonArray>();
   
   for (const auto& entry : logs) {

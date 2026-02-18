@@ -6,6 +6,7 @@
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     h1 { color: #0066cc; }
+    h2 { color: #0066cc; margin-top: 30px; }
     form { max-width: 400px; }
     label { display: block; margin: 10px 0 5px; font-weight: bold; }
     input, select { width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; }
@@ -13,8 +14,14 @@
     button:hover { background-color: #0052a3; }
     button.clear-focus { background-color: #dc3545; margin-left: 10px; }
     button.clear-focus:hover { background-color: #c82333; }
+    button.test-station { background-color: #28a745; }
+    button.test-station:hover { background-color: #218838; }
     a { display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; }
     .button-group { display: flex; gap: 10px; }
+    .test-section { margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 4px; max-width: 400px; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 4px; display: none; }
+    .feedback.success { background-color: #d4edda; color: #155724; display: block; }
+    .feedback.error { background-color: #f8d7da; color: #721c24; display: block; }
   </style>
   <script>
     // Set the selected timezone on page load
@@ -37,6 +44,42 @@
       if (focusSelect) {
         focusSelect.value = '';
       }
+    }
+    
+    function testStation() {
+      var stationSelect = document.querySelector('select[name="testStation"]');
+      var feedbackDiv = document.getElementById('test-feedback');
+      
+      if (!stationSelect || !stationSelect.value) {
+        feedbackDiv.className = 'feedback error';
+        feedbackDiv.textContent = 'Please select a station';
+        return;
+      }
+      
+      feedbackDiv.className = 'feedback';
+      feedbackDiv.textContent = 'Testing...';
+      feedbackDiv.style.display = 'block';
+      
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/test-station', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          feedbackDiv.className = 'feedback success';
+          feedbackDiv.textContent = 'Station LEDs are now lit! Northbound = Green, Southbound = Blue';
+        } else {
+          feedbackDiv.className = 'feedback error';
+          feedbackDiv.textContent = 'Error testing station: ' + xhr.statusText;
+        }
+      };
+      
+      xhr.onerror = function() {
+        feedbackDiv.className = 'feedback error';
+        feedbackDiv.textContent = 'Network error occurred';
+      };
+      
+      xhr.send('stationName=' + encodeURIComponent(stationSelect.value));
     }
   </script>
 </head>
@@ -71,6 +114,20 @@
       <button type='button' class='clear-focus' onclick='clearFocus()'>Clear Focus</button>
     </div>
   </form>
+  
+  <div class='test-section'>
+    <h2>Test Station LEDs</h2>
+    <label>Select Station:</label>
+    <select name='testStation'>
+      <option value=''>Choose a station...</option>
+      {{#stations}}
+      <option value='{{name}}'>{{name}}</option>
+      {{/stations}}
+    </select>
+    <button type='button' class='test-station' onclick='testStation()'>Test Station LEDs</button>
+    <div id='test-feedback' class='feedback'></div>
+  </div>
+  
   <a href='/'>Back to Home</a>
 </body>
 </html>

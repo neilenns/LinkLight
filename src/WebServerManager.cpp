@@ -7,6 +7,7 @@
 #include "PreferencesManager.h"
 #include "PSRAMJsonAllocator.h"
 #include "TrainDataManager.h"
+#include "LEDController.h"
 
 static const char* LOG_TAG = "WebServerManager";
 
@@ -19,6 +20,7 @@ void WebServerManager::setup() {
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
   server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });
+  server.on("/test-station", HTTP_POST, [this]() { this->handleTestStation(); });
   server.on("/logs", HTTP_GET, [this]() { this->handleLogs(); });
   server.on("/api/logs", HTTP_GET, [this]() { this->handleLogsData(); });
   
@@ -79,6 +81,15 @@ void WebServerManager::handleConfig() {
     trainObj["station"] = train.state == TrainState::AT_STATION ? train.closestStopName : train.nextStopName;
     trainObj["line"] = String("Line ") + String(static_cast<int>(train.line));
     trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
+  }
+  
+  // Add station data for the test dropdown
+  JsonArray stationsArray = data["stations"].to<JsonArray>();
+  const std::map<String, StationLEDMapping>& stationMap = ledController.getStationMap();
+  
+  for (const auto& station : stationMap) {
+    JsonObject stationObj = stationsArray.add<JsonObject>();
+    stationObj["name"] = station.first;
   }
   
   String output = ministache::render(html, data);
@@ -147,6 +158,22 @@ void WebServerManager::handleSaveConfig() {
   }
   
   server.send(200, "text/html", html);
+}
+
+void WebServerManager::handleTestStation() {
+  // Get the station name from the request
+  if (!server.hasArg("stationName")) {
+    server.send(400, "text/plain", "Missing stationName parameter");
+    return;
+  }
+  
+  String stationName = server.arg("stationName");
+  
+  // Call the LED controller to test the station
+  ledController.testStationLEDs(stationName);
+  
+  // Send success response
+  server.send(200, "text/plain", "OK");
 }
 
 void WebServerManager::handleLogs() {

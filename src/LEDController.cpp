@@ -179,3 +179,38 @@ void LEDController::displayTrainPositions() {
   // Display all trains on the LED strip
   trainTracker.display(strip);
 }
+
+void LEDController::testStationLEDs(const String& stationName) {
+  LINK_LOGI(LOG_TAG, "Testing LEDs for station: %s", stationName.c_str());
+  
+  // Find the station in the map
+  auto stationInfo = stationMap.find(stationName);
+  if (stationInfo == stationMap.end()) {
+    LINK_LOGW(LOG_TAG, "Station '%s' not found in station map", stationName.c_str());
+    return;
+  }
+  
+  // Turn off all LEDs first
+  setAllLEDs(COLOR_BLACK);
+  
+  // Get the LED indices for this station
+  const StationLEDMapping& mapping = stationInfo->second;
+  
+  // Light up the northbound and southbound LEDs
+  if (mapping.northboundIndex >= 0 && mapping.northboundIndex < LED_COUNT) {
+    strip.SetPixelColor(mapping.northboundIndex, COLOR_GREEN);
+    LINK_LOGD(LOG_TAG, "Northbound LED at index %d", mapping.northboundIndex);
+  }
+  
+  if (mapping.southboundIndex >= 0 && mapping.southboundIndex < LED_COUNT) {
+    strip.SetPixelColor(mapping.southboundIndex, COLOR_BLUE);
+    LINK_LOGD(LOG_TAG, "Southbound LED at index %d", mapping.southboundIndex);
+  }
+  
+  // Update the strip
+  strip.Show();
+}
+
+const std::map<String, StationLEDMapping>& LEDController::getStationMap() const {
+  return stationMap;
+}

@@ -36,12 +36,6 @@ void OTAManager::setup() {
     LINK_LOGI(LOG_TAG, "OTA Update Complete");
   });
   
-  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-    if (total > 0) {
-      LINK_LOGI(LOG_TAG, "Progress: %u%%", (progress * 100) / total);
-    }
-  });
-  
   ArduinoOTA.onError([](ota_error_t error) {
     String errorMsg;
     if (error == OTA_AUTH_ERROR) errorMsg = "Auth Failed";

@@ -1,0 +1,4803 @@
+{
+  "code": 200,
+  "currentTime": 1771423063373,
+  "data": {
+    "limitExceeded": false,
+    "list": [
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4416",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3404",
+          "stopTimes": [
+            {
+              "arrivalTime": 20850,
+              "departureTime": 20880,
+              "distanceAlongTrip": 4.12600132645643,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T2"
+            },
+            {
+              "arrivalTime": 21090,
+              "departureTime": 21120,
+              "distanceAlongTrip": 4115.69816440528,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T2"
+            },
+            {
+              "arrivalTime": 21270,
+              "departureTime": 21300,
+              "distanceAlongTrip": 6538.1918015788415,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T2"
+            },
+            {
+              "arrivalTime": 21450,
+              "departureTime": 21480,
+              "distanceAlongTrip": 9844.062401359035,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T2"
+            },
+            {
+              "arrivalTime": 21750,
+              "departureTime": 21780,
+              "distanceAlongTrip": 13627.219870717956,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990005"
+            },
+            {
+              "arrivalTime": 21990,
+              "departureTime": 22020,
+              "distanceAlongTrip": 16878.052656693904,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990003"
+            },
+            {
+              "arrivalTime": 22110,
+              "departureTime": 22140,
+              "distanceAlongTrip": 18690.296901237416,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990001"
+            },
+            {
+              "arrivalTime": 22290,
+              "departureTime": 22320,
+              "distanceAlongTrip": 20297.65637576079,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99604"
+            },
+            {
+              "arrivalTime": 22530,
+              "departureTime": 22560,
+              "distanceAlongTrip": 23895.707045875133,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99610"
+            },
+            {
+              "arrivalTime": 22710,
+              "departureTime": 22740,
+              "distanceAlongTrip": 25739.52798820802,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1108"
+            },
+            {
+              "arrivalTime": 22830,
+              "departureTime": 22860,
+              "distanceAlongTrip": 26276.639492385635,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_455"
+            },
+            {
+              "arrivalTime": 22890,
+              "departureTime": 22920,
+              "distanceAlongTrip": 26944.833450133418,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_501"
+            },
+            {
+              "arrivalTime": 23010,
+              "departureTime": 23040,
+              "distanceAlongTrip": 27505.61046021068,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_623"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4016",
+          "blockTripSequence": 2,
+          "closestStop": "40_N17-T2",
+          "closestStopTimeOffset": 5,
+          "distanceAlongTrip": 6457.442013673055,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.76167297363281,
+            "lon": -122.32379913330078
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423033000,
+          "lastUpdateTime": 1771423033000,
+          "nextStop": "40_N17-T2",
+          "nextStopTimeOffset": 5,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 257.4464696792612,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.764414683214085,
+            "lon": -122.32284467780228
+          },
+          "predicted": true,
+          "scheduleDeviation": 168,
+          "scheduledDistanceAlongTrip": 6457.442013673055,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 27505.667701403258,
+          "vehicleFeatures": [],
+          "vehicleId": "40_417.949340"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4016"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3018",
+          "previousTripId": "",
+          "stopTimes": [
+            {
+              "arrivalTime": 20670,
+              "departureTime": 20700,
+              "distanceAlongTrip": 5162.467355281628,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T2"
+            },
+            {
+              "arrivalTime": 20790,
+              "departureTime": 20820,
+              "distanceAlongTrip": 6143.742379160206,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T2"
+            },
+            {
+              "arrivalTime": 21030,
+              "departureTime": 21060,
+              "distanceAlongTrip": 8745.420293632564,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T2"
+            },
+            {
+              "arrivalTime": 21150,
+              "departureTime": 21180,
+              "distanceAlongTrip": 9806.269205300403,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T2"
+            },
+            {
+              "arrivalTime": 21390,
+              "departureTime": 21420,
+              "distanceAlongTrip": 13894.562370579393,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T2"
+            },
+            {
+              "arrivalTime": 21570,
+              "departureTime": 21600,
+              "distanceAlongTrip": 14958.245280383737,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4415",
+          "blockTripSequence": 0,
+          "closestStop": "40_E29-T2",
+          "closestStopTimeOffset": 43,
+          "distanceAlongTrip": 13057.435674831791,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.6669921875,
+            "lon": -122.1197738647461
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423036000,
+          "lastUpdateTime": 1771423036000,
+          "nextStop": "40_E29-T2",
+          "nextStopTimeOffset": 43,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 359.6385172283716,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.66699582364341,
+            "lon": -122.1201680474809
+          },
+          "predicted": true,
+          "scheduleDeviation": 89,
+          "scheduledDistanceAlongTrip": 13057.435674831791,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 15052.658561123588,
+          "vehicleFeatures": [],
+          "vehicleId": "40_421.872841"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4415"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3416",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4411",
+          "stopTimes": [
+            {
+              "arrivalTime": 21330,
+              "departureTime": 21360,
+              "distanceAlongTrip": 6.507688571729355,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T1"
+            },
+            {
+              "arrivalTime": 21450,
+              "departureTime": 21480,
+              "distanceAlongTrip": 1144.8184984477796,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T1"
+            },
+            {
+              "arrivalTime": 21690,
+              "departureTime": 21720,
+              "distanceAlongTrip": 5225.38216247031,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T1"
+            },
+            {
+              "arrivalTime": 21810,
+              "departureTime": 21840,
+              "distanceAlongTrip": 6277.670281392516,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T1"
+            },
+            {
+              "arrivalTime": 22110,
+              "departureTime": 22140,
+              "distanceAlongTrip": 8878.381784746396,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T1"
+            },
+            {
+              "arrivalTime": 22230,
+              "departureTime": 22260,
+              "distanceAlongTrip": 9823.777461981503,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T1"
+            },
+            {
+              "arrivalTime": 22350,
+              "departureTime": 22380,
+              "distanceAlongTrip": 10666.768790363752,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E19-T1"
+            },
+            {
+              "arrivalTime": 22470,
+              "departureTime": 22500,
+              "distanceAlongTrip": 11523.181105304786,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E15-T1"
+            },
+            {
+              "arrivalTime": 22650,
+              "departureTime": 22680,
+              "distanceAlongTrip": 12503.004319434009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E11-T1"
+            },
+            {
+              "arrivalTime": 22830,
+              "departureTime": 22860,
+              "distanceAlongTrip": 15023.794833819673,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E09-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3016",
+          "blockTripSequence": 1,
+          "closestStop": "40_E29-T1",
+          "closestStopTimeOffset": 17,
+          "distanceAlongTrip": 929.804234360081,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.66790008544922,
+            "lon": -122.10781860351562
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423043000,
+          "lastUpdateTime": 1771423043000,
+          "nextStop": "40_E29-T1",
+          "nextStopTimeOffset": 17,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 224.9999999966074,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.66791624945422,
+            "lon": -122.10780375054578
+          },
+          "predicted": true,
+          "scheduleDeviation": 10,
+          "scheduledDistanceAlongTrip": 929.804234360081,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 15024.88018021869,
+          "vehicleFeatures": [],
+          "vehicleId": "40_420.992795"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3016"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4414",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3403",
+          "stopTimes": [
+            {
+              "arrivalTime": 20370,
+              "departureTime": 20400,
+              "distanceAlongTrip": 4.12600132645643,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T2"
+            },
+            {
+              "arrivalTime": 20610,
+              "departureTime": 20640,
+              "distanceAlongTrip": 4115.69816440528,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T2"
+            },
+            {
+              "arrivalTime": 20790,
+              "departureTime": 20820,
+              "distanceAlongTrip": 6538.1918015788415,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T2"
+            },
+            {
+              "arrivalTime": 20970,
+              "departureTime": 21000,
+              "distanceAlongTrip": 9844.062401359035,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T2"
+            },
+            {
+              "arrivalTime": 21270,
+              "departureTime": 21300,
+              "distanceAlongTrip": 13627.219870717956,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990005"
+            },
+            {
+              "arrivalTime": 21510,
+              "departureTime": 21540,
+              "distanceAlongTrip": 16878.052656693904,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990003"
+            },
+            {
+              "arrivalTime": 21630,
+              "departureTime": 21660,
+              "distanceAlongTrip": 18690.296901237416,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990001"
+            },
+            {
+              "arrivalTime": 21810,
+              "departureTime": 21840,
+              "distanceAlongTrip": 20297.65637576079,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99604"
+            },
+            {
+              "arrivalTime": 22050,
+              "departureTime": 22080,
+              "distanceAlongTrip": 23895.707045875133,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99610"
+            },
+            {
+              "arrivalTime": 22230,
+              "departureTime": 22260,
+              "distanceAlongTrip": 25739.52798820802,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1108"
+            },
+            {
+              "arrivalTime": 22350,
+              "departureTime": 22380,
+              "distanceAlongTrip": 26276.639492385635,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_455"
+            },
+            {
+              "arrivalTime": 22410,
+              "departureTime": 22440,
+              "distanceAlongTrip": 26944.833450133418,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_501"
+            },
+            {
+              "arrivalTime": 22530,
+              "departureTime": 22560,
+              "distanceAlongTrip": 27505.61046021068,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_623"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4014",
+          "blockTripSequence": 2,
+          "closestStop": "40_990005",
+          "closestStopTimeOffset": -97,
+          "distanceAlongTrip": 15128.795014716372,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.692142486572266,
+            "lon": -122.3286361694336
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423036000,
+          "lastUpdateTime": 1771423036000,
+          "nextStop": "40_990003",
+          "nextStopTimeOffset": 113,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 303.9510943286199,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.689274586628066,
+            "lon": -122.3276992068387
+          },
+          "predicted": true,
+          "scheduleDeviation": 39,
+          "scheduledDistanceAlongTrip": 15128.795014716372,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 27505.667701403258,
+          "vehicleFeatures": [],
+          "vehicleId": "40_417.454205"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4014"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4021",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3009",
+          "stopTimes": [
+            {
+              "arrivalTime": 19710,
+              "departureTime": 19740,
+              "distanceAlongTrip": 0.0,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_621"
+            },
+            {
+              "arrivalTime": 19830,
+              "departureTime": 19860,
+              "distanceAlongTrip": 569.2276620032566,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_532"
+            },
+            {
+              "arrivalTime": 19890,
+              "departureTime": 19920,
+              "distanceAlongTrip": 1226.9744916356465,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_565"
+            },
+            {
+              "arrivalTime": 20010,
+              "departureTime": 20040,
+              "distanceAlongTrip": 1762.5147000354348,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1121"
+            },
+            {
+              "arrivalTime": 20190,
+              "departureTime": 20220,
+              "distanceAlongTrip": 3493.180052569406,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99603"
+            },
+            {
+              "arrivalTime": 20430,
+              "departureTime": 20460,
+              "distanceAlongTrip": 7192.2941399009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99605"
+            },
+            {
+              "arrivalTime": 20610,
+              "departureTime": 20640,
+              "distanceAlongTrip": 8786.834973852481,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990002"
+            },
+            {
+              "arrivalTime": 20730,
+              "departureTime": 20760,
+              "distanceAlongTrip": 10610.26464784994,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990004"
+            },
+            {
+              "arrivalTime": 21030,
+              "departureTime": 21060,
+              "distanceAlongTrip": 13837.994420421926,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990006"
+            },
+            {
+              "arrivalTime": 21330,
+              "departureTime": 21360,
+              "distanceAlongTrip": 17629.039049322393,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T1"
+            },
+            {
+              "arrivalTime": 21510,
+              "departureTime": 21540,
+              "distanceAlongTrip": 20933.240580941798,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T1"
+            },
+            {
+              "arrivalTime": 21690,
+              "departureTime": 21720,
+              "distanceAlongTrip": 23368.602855133697,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T1"
+            },
+            {
+              "arrivalTime": 21930,
+              "departureTime": 21960,
+              "distanceAlongTrip": 27462.485971680304,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3409",
+          "blockTripSequence": 1,
+          "closestStop": "40_N17-T1",
+          "closestStopTimeOffset": 47,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_N17-T1",
+          "nextStopTimeOffset": 47,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 61.12259877756355,
+          "phase": "",
+          "position": {
+            "lat": 47.7561284667544,
+            "lon": -122.32853607591122
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 19897.924101034387,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 27467.491057250867,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3409"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3020",
+          "previousTripId": "",
+          "stopTimes": [
+            {
+              "arrivalTime": 21630,
+              "departureTime": 21660,
+              "distanceAlongTrip": 5162.467355281628,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T2"
+            },
+            {
+              "arrivalTime": 21750,
+              "departureTime": 21780,
+              "distanceAlongTrip": 6143.742379160206,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T2"
+            },
+            {
+              "arrivalTime": 21990,
+              "departureTime": 22020,
+              "distanceAlongTrip": 8745.420293632564,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T2"
+            },
+            {
+              "arrivalTime": 22110,
+              "departureTime": 22140,
+              "distanceAlongTrip": 9806.269205300403,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T2"
+            },
+            {
+              "arrivalTime": 22350,
+              "departureTime": 22380,
+              "distanceAlongTrip": 13894.562370579393,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T2"
+            },
+            {
+              "arrivalTime": 22530,
+              "departureTime": 22560,
+              "distanceAlongTrip": 14958.245280383737,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4419",
+          "blockTripSequence": 0,
+          "closestStop": "40_E21-T2",
+          "closestStopTimeOffset": 167,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_E21-T2",
+          "nextStopTimeOffset": 167,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 86.24827092829747,
+          "phase": "",
+          "position": {
+            "lat": 47.61214016528032,
+            "lon": -122.1935909727685
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 3014.565358569631,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 15052.658561123588,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4419"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4020",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3007",
+          "stopTimes": [
+            {
+              "arrivalTime": 19230,
+              "departureTime": 19260,
+              "distanceAlongTrip": 0.0,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_621"
+            },
+            {
+              "arrivalTime": 19350,
+              "departureTime": 19380,
+              "distanceAlongTrip": 569.2276620032566,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_532"
+            },
+            {
+              "arrivalTime": 19410,
+              "departureTime": 19440,
+              "distanceAlongTrip": 1226.9744916356465,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_565"
+            },
+            {
+              "arrivalTime": 19530,
+              "departureTime": 19560,
+              "distanceAlongTrip": 1762.5147000354348,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1121"
+            },
+            {
+              "arrivalTime": 19710,
+              "departureTime": 19740,
+              "distanceAlongTrip": 3493.180052569406,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99603"
+            },
+            {
+              "arrivalTime": 19950,
+              "departureTime": 19980,
+              "distanceAlongTrip": 7192.2941399009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99605"
+            },
+            {
+              "arrivalTime": 20130,
+              "departureTime": 20160,
+              "distanceAlongTrip": 8786.834973852481,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990002"
+            },
+            {
+              "arrivalTime": 20250,
+              "departureTime": 20280,
+              "distanceAlongTrip": 10610.26464784994,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990004"
+            },
+            {
+              "arrivalTime": 20550,
+              "departureTime": 20580,
+              "distanceAlongTrip": 13837.994420421926,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990006"
+            },
+            {
+              "arrivalTime": 20850,
+              "departureTime": 20880,
+              "distanceAlongTrip": 17629.039049322393,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T1"
+            },
+            {
+              "arrivalTime": 21030,
+              "departureTime": 21060,
+              "distanceAlongTrip": 20933.240580941798,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T1"
+            },
+            {
+              "arrivalTime": 21210,
+              "departureTime": 21240,
+              "distanceAlongTrip": 23368.602855133697,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T1"
+            },
+            {
+              "arrivalTime": 21450,
+              "departureTime": 21480,
+              "distanceAlongTrip": 27462.485971680304,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3407",
+          "blockTripSequence": 1,
+          "closestStop": "40_N23-T1",
+          "closestStopTimeOffset": 0,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_N23-T1",
+          "nextStopTimeOffset": 0,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 30.069718899061815,
+          "phase": "",
+          "position": {
+            "lat": 47.81585260786395,
+            "lon": -122.29424076591353
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 27462.485971680308,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 27467.491057250867,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3407"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3019",
+          "previousTripId": "",
+          "stopTimes": [
+            {
+              "arrivalTime": 21150,
+              "departureTime": 21180,
+              "distanceAlongTrip": 5162.467355281628,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T2"
+            },
+            {
+              "arrivalTime": 21270,
+              "departureTime": 21300,
+              "distanceAlongTrip": 6143.742379160206,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T2"
+            },
+            {
+              "arrivalTime": 21510,
+              "departureTime": 21540,
+              "distanceAlongTrip": 8745.420293632564,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T2"
+            },
+            {
+              "arrivalTime": 21630,
+              "departureTime": 21660,
+              "distanceAlongTrip": 9806.269205300403,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T2"
+            },
+            {
+              "arrivalTime": 21870,
+              "departureTime": 21900,
+              "distanceAlongTrip": 13894.562370579393,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T2"
+            },
+            {
+              "arrivalTime": 22050,
+              "departureTime": 22080,
+              "distanceAlongTrip": 15047.20227191313,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T2"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4417",
+          "blockTripSequence": 0,
+          "closestStop": "40_E23-T2",
+          "closestStopTimeOffset": -65,
+          "distanceAlongTrip": 6949.02363840165,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.62495040893555,
+            "lon": -122.15888214111328
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423028000,
+          "lastUpdateTime": 1771423028000,
+          "nextStop": "40_E25-T2",
+          "nextStopTimeOffset": 145,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 61.313852425591335,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.6275267027792,
+            "lon": -122.15732331357364
+          },
+          "predicted": true,
+          "scheduleDeviation": 63,
+          "scheduledDistanceAlongTrip": 6949.02363840165,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 15052.658561123588,
+          "vehicleFeatures": [],
+          "vehicleId": "40_422.348289"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4417"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4025",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3010",
+          "stopTimes": [
+            {
+              "arrivalTime": 21150,
+              "departureTime": 21180,
+              "distanceAlongTrip": 0.0,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_621"
+            },
+            {
+              "arrivalTime": 21270,
+              "departureTime": 21300,
+              "distanceAlongTrip": 569.2276620032566,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_532"
+            },
+            {
+              "arrivalTime": 21330,
+              "departureTime": 21360,
+              "distanceAlongTrip": 1226.9744916356465,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_565"
+            },
+            {
+              "arrivalTime": 21450,
+              "departureTime": 21480,
+              "distanceAlongTrip": 1762.5147000354348,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1121"
+            },
+            {
+              "arrivalTime": 21630,
+              "departureTime": 21660,
+              "distanceAlongTrip": 3493.180052569406,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99603"
+            },
+            {
+              "arrivalTime": 21870,
+              "departureTime": 21900,
+              "distanceAlongTrip": 7192.2941399009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99605"
+            },
+            {
+              "arrivalTime": 22050,
+              "departureTime": 22080,
+              "distanceAlongTrip": 8786.834973852481,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990002"
+            },
+            {
+              "arrivalTime": 22170,
+              "departureTime": 22200,
+              "distanceAlongTrip": 10610.26464784994,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990004"
+            },
+            {
+              "arrivalTime": 22470,
+              "departureTime": 22500,
+              "distanceAlongTrip": 13837.994420421926,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990006"
+            },
+            {
+              "arrivalTime": 22770,
+              "departureTime": 22800,
+              "distanceAlongTrip": 17629.039049322393,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T1"
+            },
+            {
+              "arrivalTime": 22950,
+              "departureTime": 22980,
+              "distanceAlongTrip": 20933.240580941798,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T1"
+            },
+            {
+              "arrivalTime": 23130,
+              "departureTime": 23160,
+              "distanceAlongTrip": 23368.602855133697,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T1"
+            },
+            {
+              "arrivalTime": 23370,
+              "departureTime": 23400,
+              "distanceAlongTrip": 27462.485971680304,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3410",
+          "blockTripSequence": 2,
+          "closestStop": "40_1121",
+          "closestStopTimeOffset": 0,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_1121",
+          "nextStopTimeOffset": 0,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 24.377888762865982,
+          "phase": "",
+          "position": {
+            "lat": 47.611876870895706,
+            "lon": -122.33590156760145
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 1762.5147000354336,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 27467.491057250867,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3410"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3415",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4409",
+          "stopTimes": [
+            {
+              "arrivalTime": 20850,
+              "departureTime": 20880,
+              "distanceAlongTrip": 0.0,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T2"
+            },
+            {
+              "arrivalTime": 20970,
+              "departureTime": 21000,
+              "distanceAlongTrip": 1144.8184984477796,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T1"
+            },
+            {
+              "arrivalTime": 21210,
+              "departureTime": 21240,
+              "distanceAlongTrip": 5225.38216247031,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T1"
+            },
+            {
+              "arrivalTime": 21330,
+              "departureTime": 21360,
+              "distanceAlongTrip": 6277.670281392516,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T1"
+            },
+            {
+              "arrivalTime": 21630,
+              "departureTime": 21660,
+              "distanceAlongTrip": 8878.381784746396,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T1"
+            },
+            {
+              "arrivalTime": 21750,
+              "departureTime": 21780,
+              "distanceAlongTrip": 9823.777461981503,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T1"
+            },
+            {
+              "arrivalTime": 21870,
+              "departureTime": 21900,
+              "distanceAlongTrip": 10666.768790363752,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E19-T1"
+            },
+            {
+              "arrivalTime": 21990,
+              "departureTime": 22020,
+              "distanceAlongTrip": 11523.181105304786,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E15-T1"
+            },
+            {
+              "arrivalTime": 22170,
+              "departureTime": 22200,
+              "distanceAlongTrip": 12503.004319434009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E11-T1"
+            },
+            {
+              "arrivalTime": 22350,
+              "departureTime": 22380,
+              "distanceAlongTrip": 15023.794833819673,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E09-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3015",
+          "blockTripSequence": 1,
+          "closestStop": "40_E27-T1",
+          "closestStopTimeOffset": 0,
+          "distanceAlongTrip": 5225.3821624703105,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.64411163330078,
+            "lon": -122.13357543945312
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423043000,
+          "lastUpdateTime": 1771423043000,
+          "nextStop": "40_E27-T1",
+          "nextStopTimeOffset": 0,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 281.3099324749336,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.64441963471609,
+            "lon": -122.13360392694322
+          },
+          "predicted": true,
+          "scheduleDeviation": 233,
+          "scheduledDistanceAlongTrip": 5225.3821624703105,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 15024.88018021869,
+          "vehicleFeatures": [],
+          "vehicleId": "40_420.426090"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3015"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3017",
+          "previousTripId": "",
+          "stopTimes": [
+            {
+              "arrivalTime": 20190,
+              "departureTime": 20220,
+              "distanceAlongTrip": 5162.467355281628,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T2"
+            },
+            {
+              "arrivalTime": 20310,
+              "departureTime": 20340,
+              "distanceAlongTrip": 6143.742379160206,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T2"
+            },
+            {
+              "arrivalTime": 20550,
+              "departureTime": 20580,
+              "distanceAlongTrip": 8745.420293632564,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T2"
+            },
+            {
+              "arrivalTime": 20670,
+              "departureTime": 20700,
+              "distanceAlongTrip": 9806.269205300403,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T2"
+            },
+            {
+              "arrivalTime": 20910,
+              "departureTime": 20940,
+              "distanceAlongTrip": 13894.562370579393,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T2"
+            },
+            {
+              "arrivalTime": 21090,
+              "departureTime": 21120,
+              "distanceAlongTrip": 15047.20227191313,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T2"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4413",
+          "blockTripSequence": 0,
+          "closestStop": "40_E31-T2",
+          "closestStopTimeOffset": -343,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_E31-T2",
+          "nextStopTimeOffset": 347,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 166.17134902763806,
+          "phase": "",
+          "position": {
+            "lat": 47.67183,
+            "lon": -122.11901
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 15094.024663411888,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 15052.658561123588,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4413"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3414",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4408",
+          "stopTimes": [
+            {
+              "arrivalTime": 20370,
+              "departureTime": 20400,
+              "distanceAlongTrip": 6.507688571729355,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T1"
+            },
+            {
+              "arrivalTime": 20490,
+              "departureTime": 20520,
+              "distanceAlongTrip": 1144.8184984477796,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T1"
+            },
+            {
+              "arrivalTime": 20730,
+              "departureTime": 20760,
+              "distanceAlongTrip": 5225.38216247031,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T1"
+            },
+            {
+              "arrivalTime": 20850,
+              "departureTime": 20880,
+              "distanceAlongTrip": 6277.670281392516,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T1"
+            },
+            {
+              "arrivalTime": 21150,
+              "departureTime": 21180,
+              "distanceAlongTrip": 8878.381784746396,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T1"
+            },
+            {
+              "arrivalTime": 21270,
+              "departureTime": 21300,
+              "distanceAlongTrip": 9823.777461981503,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T1"
+            },
+            {
+              "arrivalTime": 21390,
+              "departureTime": 21420,
+              "distanceAlongTrip": 10666.768790363752,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E19-T1"
+            },
+            {
+              "arrivalTime": 21510,
+              "departureTime": 21540,
+              "distanceAlongTrip": 11523.181105304786,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E15-T1"
+            },
+            {
+              "arrivalTime": 21690,
+              "departureTime": 21720,
+              "distanceAlongTrip": 12503.004319434009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E11-T1"
+            },
+            {
+              "arrivalTime": 21870,
+              "departureTime": 21900,
+              "distanceAlongTrip": 15023.794833819673,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E09-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3014",
+          "blockTripSequence": 1,
+          "closestStop": "40_E21-T1",
+          "closestStopTimeOffset": 0,
+          "distanceAlongTrip": 9823.7774619815,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.623687744140625,
+            "lon": -122.17945098876953
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423043000,
+          "lastUpdateTime": 1771423043000,
+          "nextStop": "40_E21-T1",
+          "nextStopTimeOffset": 0,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 187.59464336823584,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.62375260212656,
+            "lon": -122.17889548405081
+          },
+          "predicted": true,
+          "scheduleDeviation": 165,
+          "scheduledDistanceAlongTrip": 9823.7774619815,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 15024.88018021869,
+          "vehicleFeatures": [],
+          "vehicleId": "40_420.258402"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3014"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4418",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3405",
+          "stopTimes": [
+            {
+              "arrivalTime": 21330,
+              "departureTime": 21360,
+              "distanceAlongTrip": 4.12600132645643,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T2"
+            },
+            {
+              "arrivalTime": 21570,
+              "departureTime": 21600,
+              "distanceAlongTrip": 4115.69816440528,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T2"
+            },
+            {
+              "arrivalTime": 21750,
+              "departureTime": 21780,
+              "distanceAlongTrip": 6538.1918015788415,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T2"
+            },
+            {
+              "arrivalTime": 21930,
+              "departureTime": 21960,
+              "distanceAlongTrip": 9844.062401359035,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T2"
+            },
+            {
+              "arrivalTime": 22230,
+              "departureTime": 22260,
+              "distanceAlongTrip": 13627.219870717956,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990005"
+            },
+            {
+              "arrivalTime": 22470,
+              "departureTime": 22500,
+              "distanceAlongTrip": 16878.052656693904,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990003"
+            },
+            {
+              "arrivalTime": 22590,
+              "departureTime": 22620,
+              "distanceAlongTrip": 18690.296901237416,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990001"
+            },
+            {
+              "arrivalTime": 22770,
+              "departureTime": 22800,
+              "distanceAlongTrip": 20297.65637576079,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99604"
+            },
+            {
+              "arrivalTime": 23010,
+              "departureTime": 23040,
+              "distanceAlongTrip": 23895.707045875133,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99610"
+            },
+            {
+              "arrivalTime": 23190,
+              "departureTime": 23220,
+              "distanceAlongTrip": 25739.52798820802,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1108"
+            },
+            {
+              "arrivalTime": 23310,
+              "departureTime": 23340,
+              "distanceAlongTrip": 26276.639492385635,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_455"
+            },
+            {
+              "arrivalTime": 23370,
+              "departureTime": 23400,
+              "distanceAlongTrip": 26944.833450133418,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_501"
+            },
+            {
+              "arrivalTime": 23490,
+              "departureTime": 23520,
+              "distanceAlongTrip": 27505.61046021068,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_623"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4018",
+          "blockTripSequence": 2,
+          "closestStop": "40_N23-T2",
+          "closestStopTimeOffset": 0,
+          "distanceAlongTrip": 4.1260013264545705,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.81114196777344,
+            "lon": -122.29905700683594
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423038000,
+          "lastUpdateTime": 1771423038000,
+          "nextStop": "40_N23-T2",
+          "nextStopTimeOffset": 0,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 210.29118029874056,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.815430646810846,
+            "lon": -122.29522069021944
+          },
+          "predicted": true,
+          "scheduleDeviation": 98,
+          "scheduledDistanceAlongTrip": 4.1260013264545705,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 27505.667701403258,
+          "vehicleFeatures": [],
+          "vehicleId": "40_418.487780"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4018"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3413",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4406",
+          "stopTimes": [
+            {
+              "arrivalTime": 19890,
+              "departureTime": 19920,
+              "distanceAlongTrip": 0.0,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T2"
+            },
+            {
+              "arrivalTime": 20010,
+              "departureTime": 20040,
+              "distanceAlongTrip": 1144.8184984477796,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T1"
+            },
+            {
+              "arrivalTime": 20250,
+              "departureTime": 20280,
+              "distanceAlongTrip": 5225.38216247031,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T1"
+            },
+            {
+              "arrivalTime": 20370,
+              "departureTime": 20400,
+              "distanceAlongTrip": 6277.670281392516,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T1"
+            },
+            {
+              "arrivalTime": 20670,
+              "departureTime": 20700,
+              "distanceAlongTrip": 8878.381784746396,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T1"
+            },
+            {
+              "arrivalTime": 20790,
+              "departureTime": 20820,
+              "distanceAlongTrip": 9823.777461981503,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T1"
+            },
+            {
+              "arrivalTime": 20910,
+              "departureTime": 20940,
+              "distanceAlongTrip": 10666.768790363752,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E19-T1"
+            },
+            {
+              "arrivalTime": 21030,
+              "departureTime": 21060,
+              "distanceAlongTrip": 11523.181105304786,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E15-T1"
+            },
+            {
+              "arrivalTime": 21210,
+              "departureTime": 21240,
+              "distanceAlongTrip": 12503.004319434009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E11-T1"
+            },
+            {
+              "arrivalTime": 21390,
+              "departureTime": 21420,
+              "distanceAlongTrip": 15023.794833819673,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E09-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3013",
+          "blockTripSequence": 1,
+          "closestStop": "40_E09-T1",
+          "closestStopTimeOffset": 17,
+          "distanceAlongTrip": 14738.105242189295,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.58776092529297,
+            "lon": -122.19131469726562
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423007000,
+          "lastUpdateTime": 1771423007000,
+          "nextStop": "40_E09-T1",
+          "nextStopTimeOffset": 17,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 291.10483858495144,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.588577592324434,
+            "lon": -122.19164889528311
+          },
+          "predicted": true,
+          "scheduleDeviation": 34,
+          "scheduledDistanceAlongTrip": 14738.105242189295,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 15024.88018021869,
+          "vehicleFeatures": [],
+          "vehicleId": "40_419.803941"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3013"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4024",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3008",
+          "stopTimes": [
+            {
+              "arrivalTime": 20670,
+              "departureTime": 20700,
+              "distanceAlongTrip": 0.0,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_621"
+            },
+            {
+              "arrivalTime": 20790,
+              "departureTime": 20820,
+              "distanceAlongTrip": 569.2276620032566,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_532"
+            },
+            {
+              "arrivalTime": 20850,
+              "departureTime": 20880,
+              "distanceAlongTrip": 1226.9744916356465,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_565"
+            },
+            {
+              "arrivalTime": 20970,
+              "departureTime": 21000,
+              "distanceAlongTrip": 1762.5147000354348,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1121"
+            },
+            {
+              "arrivalTime": 21150,
+              "departureTime": 21180,
+              "distanceAlongTrip": 3493.180052569406,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99603"
+            },
+            {
+              "arrivalTime": 21390,
+              "departureTime": 21420,
+              "distanceAlongTrip": 7192.2941399009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99605"
+            },
+            {
+              "arrivalTime": 21570,
+              "departureTime": 21600,
+              "distanceAlongTrip": 8786.834973852481,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990002"
+            },
+            {
+              "arrivalTime": 21690,
+              "departureTime": 21720,
+              "distanceAlongTrip": 10610.26464784994,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990004"
+            },
+            {
+              "arrivalTime": 21990,
+              "departureTime": 22020,
+              "distanceAlongTrip": 13837.994420421926,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990006"
+            },
+            {
+              "arrivalTime": 22290,
+              "departureTime": 22320,
+              "distanceAlongTrip": 17629.039049322393,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T1"
+            },
+            {
+              "arrivalTime": 22470,
+              "departureTime": 22500,
+              "distanceAlongTrip": 20933.240580941798,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T1"
+            },
+            {
+              "arrivalTime": 22650,
+              "departureTime": 22680,
+              "distanceAlongTrip": 23368.602855133697,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T1"
+            },
+            {
+              "arrivalTime": 22890,
+              "departureTime": 22920,
+              "distanceAlongTrip": 27462.485971680304,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3408",
+          "blockTripSequence": 2,
+          "closestStop": "40_99605",
+          "closestStopTimeOffset": -43,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_990002",
+          "nextStopTimeOffset": 107,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 123.85400350259451,
+          "phase": "",
+          "position": {
+            "lat": 47.65437288192503,
+            "lon": -122.30430866613604
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 7649.395845633684,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 27467.491057250867,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3408"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4410",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3401",
+          "stopTimes": [
+            {
+              "arrivalTime": 19410,
+              "departureTime": 19440,
+              "distanceAlongTrip": 4.12600132645643,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T2"
+            },
+            {
+              "arrivalTime": 19650,
+              "departureTime": 19680,
+              "distanceAlongTrip": 4115.69816440528,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T2"
+            },
+            {
+              "arrivalTime": 19830,
+              "departureTime": 19860,
+              "distanceAlongTrip": 6538.1918015788415,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T2"
+            },
+            {
+              "arrivalTime": 20010,
+              "departureTime": 20040,
+              "distanceAlongTrip": 9844.062401359035,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T2"
+            },
+            {
+              "arrivalTime": 20310,
+              "departureTime": 20340,
+              "distanceAlongTrip": 13627.219870717956,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990005"
+            },
+            {
+              "arrivalTime": 20550,
+              "departureTime": 20580,
+              "distanceAlongTrip": 16878.052656693904,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990003"
+            },
+            {
+              "arrivalTime": 20670,
+              "departureTime": 20700,
+              "distanceAlongTrip": 18690.296901237416,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990001"
+            },
+            {
+              "arrivalTime": 20850,
+              "departureTime": 20880,
+              "distanceAlongTrip": 20297.65637576079,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99604"
+            },
+            {
+              "arrivalTime": 21090,
+              "departureTime": 21120,
+              "distanceAlongTrip": 23895.707045875133,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99610"
+            },
+            {
+              "arrivalTime": 21270,
+              "departureTime": 21300,
+              "distanceAlongTrip": 25739.52798820802,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1108"
+            },
+            {
+              "arrivalTime": 21390,
+              "departureTime": 21420,
+              "distanceAlongTrip": 26276.639492385635,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_455"
+            },
+            {
+              "arrivalTime": 21450,
+              "departureTime": 21480,
+              "distanceAlongTrip": 26944.833450133418,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_501"
+            },
+            {
+              "arrivalTime": 21570,
+              "departureTime": 21600,
+              "distanceAlongTrip": 27505.61046021068,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_623"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4010",
+          "blockTripSequence": 2,
+          "closestStop": "40_623",
+          "closestStopTimeOffset": 17,
+          "distanceAlongTrip": 27399.685913862748,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.60158920288086,
+            "lon": -122.33026123046875
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423042000,
+          "lastUpdateTime": 1771423042000,
+          "nextStop": "40_623",
+          "nextStopTimeOffset": 17,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 270.911081529276,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.59882206082071,
+            "lon": -122.32806215625253
+          },
+          "predicted": true,
+          "scheduleDeviation": -111,
+          "scheduledDistanceAlongTrip": 27399.685913862748,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 27505.667701403258,
+          "vehicleFeatures": [],
+          "vehicleId": "40_415.950665"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4010"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4407",
+          "previousTripId": "",
+          "stopTimes": [
+            {
+              "arrivalTime": 18450,
+              "departureTime": 18480,
+              "distanceAlongTrip": 4.12600132645643,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T2"
+            },
+            {
+              "arrivalTime": 18690,
+              "departureTime": 18720,
+              "distanceAlongTrip": 4115.69816440528,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T2"
+            },
+            {
+              "arrivalTime": 18870,
+              "departureTime": 18900,
+              "distanceAlongTrip": 6538.1918015788415,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T2"
+            },
+            {
+              "arrivalTime": 19050,
+              "departureTime": 19080,
+              "distanceAlongTrip": 9844.062401359035,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T2"
+            },
+            {
+              "arrivalTime": 19350,
+              "departureTime": 19380,
+              "distanceAlongTrip": 13627.219870717956,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990005"
+            },
+            {
+              "arrivalTime": 19590,
+              "departureTime": 19620,
+              "distanceAlongTrip": 16878.052656693904,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990003"
+            },
+            {
+              "arrivalTime": 19710,
+              "departureTime": 19740,
+              "distanceAlongTrip": 18690.296901237416,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990001"
+            },
+            {
+              "arrivalTime": 19890,
+              "departureTime": 19920,
+              "distanceAlongTrip": 20297.65637576079,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99604"
+            },
+            {
+              "arrivalTime": 20130,
+              "departureTime": 20160,
+              "distanceAlongTrip": 23895.707045875133,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99610"
+            },
+            {
+              "arrivalTime": 20310,
+              "departureTime": 20340,
+              "distanceAlongTrip": 25739.52798820802,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1108"
+            },
+            {
+              "arrivalTime": 20430,
+              "departureTime": 20460,
+              "distanceAlongTrip": 26276.639492385635,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_455"
+            },
+            {
+              "arrivalTime": 20490,
+              "departureTime": 20520,
+              "distanceAlongTrip": 26944.833450133418,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_501"
+            },
+            {
+              "arrivalTime": 20610,
+              "departureTime": 20640,
+              "distanceAlongTrip": 27505.61046021068,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_623"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4007",
+          "blockTripSequence": 0,
+          "closestStop": "40_E09-T2",
+          "closestStopTimeOffset": 227,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_E09-T2",
+          "nextStopTimeOffset": 227,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 270.911081529276,
+          "phase": "",
+          "position": {
+            "lat": 47.597869,
+            "lon": -122.328047
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 35649.37489094872,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 27505.667701403258,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4007"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4023",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3006",
+          "stopTimes": [
+            {
+              "arrivalTime": 20190,
+              "departureTime": 20220,
+              "distanceAlongTrip": 0.0,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_621"
+            },
+            {
+              "arrivalTime": 20310,
+              "departureTime": 20340,
+              "distanceAlongTrip": 569.2276620032566,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_532"
+            },
+            {
+              "arrivalTime": 20370,
+              "departureTime": 20400,
+              "distanceAlongTrip": 1226.9744916356465,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_565"
+            },
+            {
+              "arrivalTime": 20490,
+              "departureTime": 20520,
+              "distanceAlongTrip": 1762.5147000354348,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1121"
+            },
+            {
+              "arrivalTime": 20670,
+              "departureTime": 20700,
+              "distanceAlongTrip": 3493.180052569406,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99603"
+            },
+            {
+              "arrivalTime": 20910,
+              "departureTime": 20940,
+              "distanceAlongTrip": 7192.2941399009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99605"
+            },
+            {
+              "arrivalTime": 21090,
+              "departureTime": 21120,
+              "distanceAlongTrip": 8786.834973852481,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990002"
+            },
+            {
+              "arrivalTime": 21210,
+              "departureTime": 21240,
+              "distanceAlongTrip": 10610.26464784994,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990004"
+            },
+            {
+              "arrivalTime": 21510,
+              "departureTime": 21540,
+              "distanceAlongTrip": 13837.994420421926,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990006"
+            },
+            {
+              "arrivalTime": 21810,
+              "departureTime": 21840,
+              "distanceAlongTrip": 17629.039049322393,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T1"
+            },
+            {
+              "arrivalTime": 21990,
+              "departureTime": 22020,
+              "distanceAlongTrip": 20933.240580941798,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T1"
+            },
+            {
+              "arrivalTime": 22170,
+              "departureTime": 22200,
+              "distanceAlongTrip": 23368.602855133697,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T1"
+            },
+            {
+              "arrivalTime": 22410,
+              "departureTime": 22440,
+              "distanceAlongTrip": 27462.485971680304,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3406",
+          "blockTripSequence": 2,
+          "closestStop": "40_990006",
+          "closestStopTimeOffset": 47,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_990006",
+          "nextStopTimeOffset": 47,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 89.74870432985432,
+          "phase": "",
+          "position": {
+            "lat": 47.69838188027701,
+            "lon": -122.32875847859528
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 13276.130348900137,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 27467.491057250867,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3406"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3412",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4405",
+          "stopTimes": [
+            {
+              "arrivalTime": 19410,
+              "departureTime": 19440,
+              "distanceAlongTrip": 6.507688571729355,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T1"
+            },
+            {
+              "arrivalTime": 19530,
+              "departureTime": 19560,
+              "distanceAlongTrip": 1144.8184984477796,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T1"
+            },
+            {
+              "arrivalTime": 19770,
+              "departureTime": 19800,
+              "distanceAlongTrip": 5225.38216247031,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T1"
+            },
+            {
+              "arrivalTime": 19890,
+              "departureTime": 19920,
+              "distanceAlongTrip": 6277.670281392516,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T1"
+            },
+            {
+              "arrivalTime": 20190,
+              "departureTime": 20220,
+              "distanceAlongTrip": 8878.381784746396,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T1"
+            },
+            {
+              "arrivalTime": 20310,
+              "departureTime": 20340,
+              "distanceAlongTrip": 9823.777461981503,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T1"
+            },
+            {
+              "arrivalTime": 20430,
+              "departureTime": 20460,
+              "distanceAlongTrip": 10666.768790363752,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E19-T1"
+            },
+            {
+              "arrivalTime": 20550,
+              "departureTime": 20580,
+              "distanceAlongTrip": 11523.181105304786,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E15-T1"
+            },
+            {
+              "arrivalTime": 20730,
+              "departureTime": 20760,
+              "distanceAlongTrip": 12503.004319434009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E11-T1"
+            },
+            {
+              "arrivalTime": 20910,
+              "departureTime": 20940,
+              "distanceAlongTrip": 15023.794833819673,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E09-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3012",
+          "blockTripSequence": 1,
+          "closestStop": "40_E09-T1",
+          "closestStopTimeOffset": -523,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_621",
+          "nextStopTimeOffset": 647,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 304.56252464874547,
+          "phase": "",
+          "position": {
+            "lat": 47.58619,
+            "lon": -122.19023
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 19683.054240746656,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 15024.88018021869,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3012"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3411",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4404",
+          "stopTimes": [
+            {
+              "arrivalTime": 18930,
+              "departureTime": 18960,
+              "distanceAlongTrip": 0.0,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E31-T2"
+            },
+            {
+              "arrivalTime": 19050,
+              "departureTime": 19080,
+              "distanceAlongTrip": 1144.8184984477796,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E29-T1"
+            },
+            {
+              "arrivalTime": 19290,
+              "departureTime": 19320,
+              "distanceAlongTrip": 5225.38216247031,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E27-T1"
+            },
+            {
+              "arrivalTime": 19410,
+              "departureTime": 19440,
+              "distanceAlongTrip": 6277.670281392516,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E25-T1"
+            },
+            {
+              "arrivalTime": 19710,
+              "departureTime": 19740,
+              "distanceAlongTrip": 8878.381784746396,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E23-T1"
+            },
+            {
+              "arrivalTime": 19830,
+              "departureTime": 19860,
+              "distanceAlongTrip": 9823.777461981503,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E21-T1"
+            },
+            {
+              "arrivalTime": 19950,
+              "departureTime": 19980,
+              "distanceAlongTrip": 10666.768790363752,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E19-T1"
+            },
+            {
+              "arrivalTime": 20070,
+              "departureTime": 20100,
+              "distanceAlongTrip": 11523.181105304786,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E15-T1"
+            },
+            {
+              "arrivalTime": 20250,
+              "departureTime": 20280,
+              "distanceAlongTrip": 12503.004319434009,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E11-T1"
+            },
+            {
+              "arrivalTime": 20430,
+              "departureTime": 20460,
+              "distanceAlongTrip": 15023.794833819673,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_E09-T1"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3011",
+          "blockTripSequence": 1,
+          "closestStop": "40_621",
+          "closestStopTimeOffset": 167,
+          "distanceAlongTrip": 0,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 0,
+          "lastUpdateTime": 0,
+          "nextStop": "40_621",
+          "nextStopTimeOffset": 167,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 304.56252464874547,
+          "phase": "",
+          "position": {
+            "lat": 47.58619,
+            "lon": -122.19023
+          },
+          "predicted": false,
+          "scheduleDeviation": 0,
+          "scheduledDistanceAlongTrip": 23959.23878247697,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "default",
+          "totalDistanceAlongTrip": 15024.88018021869,
+          "vehicleFeatures": [],
+          "vehicleId": ""
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3011"
+      },
+      {
+        "frequency": null,
+        "schedule": {
+          "frequency": null,
+          "nextTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4412",
+          "previousTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3402",
+          "stopTimes": [
+            {
+              "arrivalTime": 19890,
+              "departureTime": 19920,
+              "distanceAlongTrip": 4.12600132645643,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N23-T2"
+            },
+            {
+              "arrivalTime": 20130,
+              "departureTime": 20160,
+              "distanceAlongTrip": 4115.69816440528,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N19-T2"
+            },
+            {
+              "arrivalTime": 20310,
+              "departureTime": 20340,
+              "distanceAlongTrip": 6538.1918015788415,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N17-T2"
+            },
+            {
+              "arrivalTime": 20490,
+              "departureTime": 20520,
+              "distanceAlongTrip": 9844.062401359035,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_N15-T2"
+            },
+            {
+              "arrivalTime": 20790,
+              "departureTime": 20820,
+              "distanceAlongTrip": 13627.219870717956,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990005"
+            },
+            {
+              "arrivalTime": 21030,
+              "departureTime": 21060,
+              "distanceAlongTrip": 16878.052656693904,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990003"
+            },
+            {
+              "arrivalTime": 21150,
+              "departureTime": 21180,
+              "distanceAlongTrip": 18690.296901237416,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_990001"
+            },
+            {
+              "arrivalTime": 21330,
+              "departureTime": 21360,
+              "distanceAlongTrip": 20297.65637576079,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99604"
+            },
+            {
+              "arrivalTime": 21570,
+              "departureTime": 21600,
+              "distanceAlongTrip": 23895.707045875133,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_99610"
+            },
+            {
+              "arrivalTime": 21750,
+              "departureTime": 21780,
+              "distanceAlongTrip": 25739.52798820802,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_1108"
+            },
+            {
+              "arrivalTime": 21870,
+              "departureTime": 21900,
+              "distanceAlongTrip": 26276.639492385635,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_455"
+            },
+            {
+              "arrivalTime": 21930,
+              "departureTime": 21960,
+              "distanceAlongTrip": 26944.833450133418,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_501"
+            },
+            {
+              "arrivalTime": 22050,
+              "departureTime": 22080,
+              "distanceAlongTrip": 27505.61046021068,
+              "historicalOccupancy": "",
+              "stopHeadsign": "",
+              "stopId": "40_623"
+            }
+          ],
+          "timeZone": "America/Los_Angeles"
+        },
+        "serviceDate": 1771401600000,
+        "situationIds": ["40_14823"],
+        "status": {
+          "activeTripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4012",
+          "blockTripSequence": 2,
+          "closestStop": "40_99604",
+          "closestStopTimeOffset": -63,
+          "distanceAlongTrip": 21377.071576795097,
+          "frequency": null,
+          "lastKnownDistanceAlongTrip": 0,
+          "lastKnownLocation": {
+            "lat": 47.64238739013672,
+            "lon": -122.30464935302734
+          },
+          "lastKnownOrientation": 0,
+          "lastLocationUpdateTime": 1771423038000,
+          "lastUpdateTime": 1771423038000,
+          "nextStop": "40_99610",
+          "nextStopTimeOffset": 147,
+          "occupancyCapacity": -1,
+          "occupancyCount": -1,
+          "occupancyStatus": "",
+          "orientation": 239.6925516506585,
+          "phase": "in_progress",
+          "position": {
+            "lat": 47.63981942437456,
+            "lon": -122.30586877772949
+          },
+          "predicted": true,
+          "scheduleDeviation": 15,
+          "scheduledDistanceAlongTrip": 21377.071576795097,
+          "serviceDate": 1771401600000,
+          "situationIds": ["40_14823"],
+          "status": "SCHEDULED",
+          "totalDistanceAlongTrip": 27505.667701403258,
+          "vehicleFeatures": [],
+          "vehicleId": "40_417.024793"
+        },
+        "tripId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4012"
+      }
+    ],
+    "outOfRange": false,
+    "references": {
+      "agencies": [
+        {
+          "disclaimer": "",
+          "email": "main@soundtransit.org",
+          "fareUrl": "https://www.soundtransit.org/ride-with-us/how-to-pay/fares",
+          "id": "40",
+          "lang": "en",
+          "name": "Sound Transit",
+          "phone": "1-888-889-6368",
+          "privateService": false,
+          "timezone": "America/Los_Angeles",
+          "url": "https://www.soundtransit.org"
+        }
+      ],
+      "routes": [
+        {
+          "agencyId": "40",
+          "color": "007CAD",
+          "description": "2 Line runs between South Bellevue Station and Downtown Redmond Station seven days a week",
+          "id": "40_2LINE",
+          "longName": "South Bellevue - Downtown Redmond",
+          "nullSafeShortName": "2 Line",
+          "shortName": "2 Line",
+          "textColor": "FFFFFF",
+          "type": 0,
+          "url": "https://www.soundtransit.org/2"
+        },
+        {
+          "agencyId": "40",
+          "color": "28813F",
+          "description": "1 Line runs between Lynnwood City Center Station and Federal Way Downtown Station seven days a week",
+          "id": "40_100479",
+          "longName": "Lynnwood - Federal Way",
+          "nullSafeShortName": "1 Line",
+          "shortName": "1 Line",
+          "textColor": "FFFFFF",
+          "type": 0,
+          "url": "https://www.soundtransit.org/1"
+        }
+      ],
+      "situations": [
+        {
+          "activeWindows": [
+            {
+              "from": 1766246400000
+            }
+          ],
+          "allAffects": [
+            {
+              "agencyId": "40",
+              "applicationId": "",
+              "directionId": "",
+              "routeId": "40_2LINE",
+              "stopId": "",
+              "tripId": ""
+            }
+          ],
+          "consequenceMessage": "",
+          "consequences": [
+            {
+              "condition": "",
+              "conditionDetails": {
+                "diversionPath": {
+                  "length": 0,
+                  "levels": "",
+                  "points": ""
+                },
+                "diversionStopIds": []
+              }
+            }
+          ],
+          "creationTime": 1771423005050,
+          "description": {
+            "lang": "en",
+            "value": "Passengers will see out-of-service trains departing South Bellevue Station. These trains will continue to International District Station. Passengers will not be affected during these operator trainings.\r\n\nPlease pay attention to the train head signs or listen to the audio announcements before you board your train."
+          },
+          "id": "40_14823",
+          "publicationWindows": [],
+          "reason": "UNKNOWN_CAUSE",
+          "severity": "noImpact",
+          "summary": {
+            "lang": "en",
+            "value": "Starting December 22, Sound Transit will be conducting operator trainings from South Bellevue Station to International District Station in preparation for the 2 Line extension opening."
+          }
+        }
+      ],
+      "stopTimes": [],
+      "stops": [
+        {
+          "code": "N23",
+          "direction": "",
+          "id": "40_N23",
+          "lat": 47.815637,
+          "locationType": 0,
+          "lon": -122.294779,
+          "name": "Lynnwood City Center",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N23-T2",
+          "direction": "SW",
+          "id": "40_N23-T2",
+          "lat": 47.815403,
+          "locationType": 0,
+          "lon": -122.295185,
+          "name": "Lynnwood City Center",
+          "parent": "40_N23",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N19",
+          "direction": "",
+          "id": "40_N19",
+          "lat": 47.785057,
+          "locationType": 0,
+          "lon": -122.314788,
+          "name": "Mountlake Terrace",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N19-T2",
+          "direction": "S",
+          "id": "40_N19-T2",
+          "lat": 47.784548,
+          "locationType": 0,
+          "lon": -122.314801,
+          "name": "Mountlake Terrace",
+          "parent": "40_N19",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N17",
+          "direction": "",
+          "id": "40_N17",
+          "lat": 47.764067,
+          "locationType": 0,
+          "lon": -122.322889,
+          "name": "Shoreline North/185th",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N17-T2",
+          "direction": "S",
+          "id": "40_N17-T2",
+          "lat": 47.763699,
+          "locationType": 0,
+          "lon": -122.323048,
+          "name": "Shoreline North/185th",
+          "parent": "40_N17",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N15",
+          "direction": "",
+          "id": "40_N15",
+          "lat": 47.736095,
+          "locationType": 0,
+          "lon": -122.325227,
+          "name": "Shoreline South/148th",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N15-T2",
+          "direction": "SE",
+          "id": "40_N15-T2",
+          "lat": 47.735753,
+          "locationType": 0,
+          "lon": -122.32504,
+          "name": "Shoreline South/148th",
+          "parent": "40_N15",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N11",
+          "direction": "",
+          "id": "40_N11",
+          "lat": 47.703028,
+          "locationType": 0,
+          "lon": -122.32829,
+          "name": "Northgate",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "990005",
+          "direction": "S",
+          "id": "40_990005",
+          "lat": 47.702662,
+          "locationType": 0,
+          "lon": -122.32832,
+          "name": "Northgate",
+          "parent": "40_N11",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N09",
+          "direction": "",
+          "id": "40_N09",
+          "lat": 47.676595,
+          "locationType": 0,
+          "lon": -122.315976,
+          "name": "Roosevelt",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "990003",
+          "direction": "S",
+          "id": "40_990003",
+          "lat": 47.676107,
+          "locationType": 0,
+          "lon": -122.316041,
+          "name": "Roosevelt",
+          "parent": "40_N09",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N07",
+          "direction": "",
+          "id": "40_N07",
+          "lat": 47.660301,
+          "locationType": 0,
+          "lon": -122.314132,
+          "name": "U District",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "990001",
+          "direction": "S",
+          "id": "40_990001",
+          "lat": 47.659875,
+          "locationType": 0,
+          "lon": -122.314194,
+          "name": "U District",
+          "parent": "40_N07",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N05",
+          "direction": "",
+          "id": "40_N05",
+          "lat": 47.649815,
+          "locationType": 0,
+          "lon": -122.303763,
+          "name": "Univ of Washington",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "99604",
+          "direction": "S",
+          "id": "40_99604",
+          "lat": 47.649349,
+          "locationType": 0,
+          "lon": -122.303795,
+          "name": "Univ of Washington",
+          "parent": "40_N05",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N03",
+          "direction": "",
+          "id": "40_N03",
+          "lat": 47.61906,
+          "locationType": 0,
+          "lon": -122.320195,
+          "name": "Capitol Hill",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "99610",
+          "direction": "S",
+          "id": "40_99610",
+          "lat": 47.61956,
+          "locationType": 0,
+          "lon": -122.320389,
+          "name": "Capitol Hill",
+          "parent": "40_N03",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "C03",
+          "direction": "",
+          "id": "40_C03",
+          "lat": 47.611572,
+          "locationType": 0,
+          "lon": -122.33672,
+          "name": "Westlake",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "1108",
+          "direction": "SW",
+          "id": "40_1108",
+          "lat": 47.61145,
+          "locationType": 0,
+          "lon": -122.337532,
+          "name": "Westlake",
+          "parent": "40_C03",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "C05",
+          "direction": "",
+          "id": "40_C05",
+          "lat": 47.60781,
+          "locationType": 0,
+          "lon": -122.33602,
+          "name": "Symphony",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "455",
+          "direction": "SE",
+          "id": "40_455",
+          "lat": 47.607246,
+          "locationType": 0,
+          "lon": -122.335754,
+          "name": "Symphony",
+          "parent": "40_C05",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "C07",
+          "direction": "",
+          "id": "40_C07",
+          "lat": 47.60256,
+          "locationType": 0,
+          "lon": -122.331216,
+          "name": "Pioneer Square",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "501",
+          "direction": "SE",
+          "id": "40_501",
+          "lat": 47.602139,
+          "locationType": 0,
+          "lon": -122.331055,
+          "name": "Pioneer Square",
+          "parent": "40_C07",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "C09",
+          "direction": "",
+          "id": "40_C09",
+          "lat": 47.598355,
+          "locationType": 0,
+          "lon": -122.327992,
+          "name": "Int'l Dist/Chinatown",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "623",
+          "direction": "S",
+          "id": "40_623",
+          "lat": 47.59766,
+          "locationType": 0,
+          "lon": -122.328217,
+          "name": "Int'l Dist/Chinatown",
+          "parent": "40_C09",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E21",
+          "direction": "",
+          "id": "40_E21",
+          "lat": 47.623773,
+          "locationType": 0,
+          "lon": -122.178573,
+          "name": "Spring District",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E21-T2",
+          "direction": "E",
+          "id": "40_E21-T2",
+          "lat": 47.623776,
+          "locationType": 0,
+          "lon": -122.178239,
+          "name": "Spring District",
+          "parent": "40_E21",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E23",
+          "direction": "",
+          "id": "40_E23",
+          "lat": 47.624448,
+          "locationType": 0,
+          "lon": -122.16564,
+          "name": "BelRed",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E23-T2",
+          "direction": "E",
+          "id": "40_E23-T2",
+          "lat": 47.6244,
+          "locationType": 0,
+          "lon": -122.165224,
+          "name": "BelRed",
+          "parent": "40_E23",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E25",
+          "direction": "",
+          "id": "40_E25",
+          "lat": 47.63631,
+          "locationType": 0,
+          "lon": -122.13892,
+          "name": "Overlake Village",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E25-T2",
+          "direction": "NE",
+          "id": "40_E25-T2",
+          "lat": 47.636622,
+          "locationType": 0,
+          "lon": -122.138361,
+          "name": "Overlake Village",
+          "parent": "40_E25",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E27",
+          "direction": "",
+          "id": "40_E27",
+          "lat": 47.644842,
+          "locationType": 0,
+          "lon": -122.133628,
+          "name": "Redmond Technology",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E27-T2",
+          "direction": "N",
+          "id": "40_E27-T2",
+          "lat": 47.645199,
+          "locationType": 0,
+          "lon": -122.133673,
+          "name": "Redmond Technology",
+          "parent": "40_E27",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E29",
+          "direction": "",
+          "id": "40_E29",
+          "lat": 47.667263,
+          "locationType": 0,
+          "lon": -122.1098,
+          "name": "Marymoor Village",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E29-T2",
+          "direction": "E",
+          "id": "40_E29-T2",
+          "lat": 47.667381,
+          "locationType": 0,
+          "lon": -122.109118,
+          "name": "Marymoor Village",
+          "parent": "40_E29",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E31",
+          "direction": "",
+          "id": "40_E31",
+          "lat": 47.671645,
+          "locationType": 0,
+          "lon": -122.11848,
+          "name": "Downtown Redmond",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E31-T1",
+          "direction": "",
+          "id": "40_E31-T1",
+          "lat": 47.671467,
+          "locationType": 0,
+          "lon": -122.117864,
+          "name": "Downtown Redmond",
+          "parent": "40_E31",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E29",
+          "direction": "",
+          "id": "40_E29",
+          "lat": 47.667263,
+          "locationType": 0,
+          "lon": -122.1098,
+          "name": "Marymoor Village",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E29-T1",
+          "direction": "W",
+          "id": "40_E29-T1",
+          "lat": 47.667166,
+          "locationType": 0,
+          "lon": -122.110398,
+          "name": "Marymoor Village",
+          "parent": "40_E29",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E27",
+          "direction": "",
+          "id": "40_E27",
+          "lat": 47.644842,
+          "locationType": 0,
+          "lon": -122.133628,
+          "name": "Redmond Technology",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E27-T1",
+          "direction": "S",
+          "id": "40_E27-T1",
+          "lat": 47.644424,
+          "locationType": 0,
+          "lon": -122.133556,
+          "name": "Redmond Technology",
+          "parent": "40_E27",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E25",
+          "direction": "",
+          "id": "40_E25",
+          "lat": 47.63631,
+          "locationType": 0,
+          "lon": -122.13892,
+          "name": "Overlake Village",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E25-T1",
+          "direction": "SW",
+          "id": "40_E25-T1",
+          "lat": 47.636151,
+          "locationType": 0,
+          "lon": -122.139236,
+          "name": "Overlake Village",
+          "parent": "40_E25",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E23",
+          "direction": "",
+          "id": "40_E23",
+          "lat": 47.624448,
+          "locationType": 0,
+          "lon": -122.16564,
+          "name": "BelRed",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E23-T1",
+          "direction": "W",
+          "id": "40_E23-T1",
+          "lat": 47.624499,
+          "locationType": 0,
+          "lon": -122.166364,
+          "name": "BelRed",
+          "parent": "40_E23",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E21",
+          "direction": "",
+          "id": "40_E21",
+          "lat": 47.623773,
+          "locationType": 0,
+          "lon": -122.178573,
+          "name": "Spring District",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E21-T1",
+          "direction": "W",
+          "id": "40_E21-T1",
+          "lat": 47.623772,
+          "locationType": 0,
+          "lon": -122.178901,
+          "name": "Spring District",
+          "parent": "40_E21",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E19",
+          "direction": "",
+          "id": "40_E19",
+          "lat": 47.617967,
+          "locationType": 0,
+          "lon": -122.183762,
+          "name": "Wilburton",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E19-T1",
+          "direction": "S",
+          "id": "40_E19-T1",
+          "lat": 47.617909,
+          "locationType": 0,
+          "lon": -122.183806,
+          "name": "Wilburton",
+          "parent": "40_E19",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E15",
+          "direction": "",
+          "id": "40_E15",
+          "lat": 47.615223,
+          "locationType": 0,
+          "lon": -122.192084,
+          "name": "Bellevue Downtown",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E15-T1",
+          "direction": "W",
+          "id": "40_E15-T1",
+          "lat": 47.615285,
+          "locationType": 0,
+          "lon": -122.192531,
+          "name": "Bellevue Downtown",
+          "parent": "40_E15",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E11",
+          "direction": "",
+          "id": "40_E11",
+          "lat": 47.608188,
+          "locationType": 0,
+          "lon": -122.191147,
+          "name": "East Main",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E11-T1",
+          "direction": "S",
+          "id": "40_E11-T1",
+          "lat": 47.607707,
+          "locationType": 0,
+          "lon": -122.191202,
+          "name": "East Main",
+          "parent": "40_E11",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E09",
+          "direction": "",
+          "id": "40_E09",
+          "lat": 47.586556,
+          "locationType": 0,
+          "lon": -122.190396,
+          "name": "South Bellevue",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E09-T1",
+          "direction": "SE",
+          "id": "40_E09-T1",
+          "lat": 47.58621,
+          "locationType": 0,
+          "lon": -122.190201,
+          "name": "South Bellevue",
+          "parent": "40_E09",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "C09",
+          "direction": "",
+          "id": "40_C09",
+          "lat": 47.598355,
+          "locationType": 0,
+          "lon": -122.327992,
+          "name": "Int'l Dist/Chinatown",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "621",
+          "direction": "N",
+          "id": "40_621",
+          "lat": 47.598438,
+          "locationType": 0,
+          "lon": -122.32782,
+          "name": "Int'l Dist/Chinatown",
+          "parent": "40_C09",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "C07",
+          "direction": "",
+          "id": "40_C07",
+          "lat": 47.60256,
+          "locationType": 0,
+          "lon": -122.331216,
+          "name": "Pioneer Square",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "532",
+          "direction": "NW",
+          "id": "40_532",
+          "lat": 47.603199,
+          "locationType": 0,
+          "lon": -122.331581,
+          "name": "Pioneer Square",
+          "parent": "40_C07",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "C05",
+          "direction": "",
+          "id": "40_C05",
+          "lat": 47.60781,
+          "locationType": 0,
+          "lon": -122.33602,
+          "name": "Symphony",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "565",
+          "direction": "NW",
+          "id": "40_565",
+          "lat": 47.608246,
+          "locationType": 0,
+          "lon": -122.336166,
+          "name": "Symphony",
+          "parent": "40_C05",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "C03",
+          "direction": "",
+          "id": "40_C03",
+          "lat": 47.611572,
+          "locationType": 0,
+          "lon": -122.33672,
+          "name": "Westlake",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "1121",
+          "direction": "NE",
+          "id": "40_1121",
+          "lat": 47.611759,
+          "locationType": 0,
+          "lon": -122.335785,
+          "name": "Westlake",
+          "parent": "40_C03",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N03",
+          "direction": "",
+          "id": "40_N03",
+          "lat": 47.61906,
+          "locationType": 0,
+          "lon": -122.320195,
+          "name": "Capitol Hill",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "99603",
+          "direction": "N",
+          "id": "40_99603",
+          "lat": 47.619621,
+          "locationType": 0,
+          "lon": -122.320038,
+          "name": "Capitol Hill",
+          "parent": "40_N03",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N05",
+          "direction": "",
+          "id": "40_N05",
+          "lat": 47.649815,
+          "locationType": 0,
+          "lon": -122.303763,
+          "name": "Univ of Washington",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "99605",
+          "direction": "N",
+          "id": "40_99605",
+          "lat": 47.650312,
+          "locationType": 0,
+          "lon": -122.303736,
+          "name": "Univ of Washington",
+          "parent": "40_N05",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N07",
+          "direction": "",
+          "id": "40_N07",
+          "lat": 47.660301,
+          "locationType": 0,
+          "lon": -122.314132,
+          "name": "U District",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "990002",
+          "direction": "N",
+          "id": "40_990002",
+          "lat": 47.660749,
+          "locationType": 0,
+          "lon": -122.314067,
+          "name": "U District",
+          "parent": "40_N07",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N09",
+          "direction": "",
+          "id": "40_N09",
+          "lat": 47.676595,
+          "locationType": 0,
+          "lon": -122.315976,
+          "name": "Roosevelt",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "990004",
+          "direction": "N",
+          "id": "40_990004",
+          "lat": 47.677081,
+          "locationType": 0,
+          "lon": -122.315928,
+          "name": "Roosevelt",
+          "parent": "40_N09",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N11",
+          "direction": "",
+          "id": "40_N11",
+          "lat": 47.703028,
+          "locationType": 0,
+          "lon": -122.32829,
+          "name": "Northgate",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "990006",
+          "direction": "N",
+          "id": "40_990006",
+          "lat": 47.703414,
+          "locationType": 0,
+          "lon": -122.328244,
+          "name": "Northgate",
+          "parent": "40_N11",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N15",
+          "direction": "",
+          "id": "40_N15",
+          "lat": 47.736095,
+          "locationType": 0,
+          "lon": -122.325227,
+          "name": "Shoreline South/148th",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N15-T1",
+          "direction": "NW",
+          "id": "40_N15-T1",
+          "lat": 47.736499,
+          "locationType": 0,
+          "lon": -122.325446,
+          "name": "Shoreline South/148th",
+          "parent": "40_N15",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N17",
+          "direction": "",
+          "id": "40_N17",
+          "lat": 47.764067,
+          "locationType": 0,
+          "lon": -122.322889,
+          "name": "Shoreline North/185th",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N17-T1",
+          "direction": "N",
+          "id": "40_N17-T1",
+          "lat": 47.764477,
+          "locationType": 0,
+          "lon": -122.322731,
+          "name": "Shoreline North/185th",
+          "parent": "40_N17",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N19",
+          "direction": "",
+          "id": "40_N19",
+          "lat": 47.785057,
+          "locationType": 0,
+          "lon": -122.314788,
+          "name": "Mountlake Terrace",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N19-T1",
+          "direction": "N",
+          "id": "40_N19-T1",
+          "lat": 47.785448,
+          "locationType": 0,
+          "lon": -122.314761,
+          "name": "Mountlake Terrace",
+          "parent": "40_N19",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N23",
+          "direction": "",
+          "id": "40_N23",
+          "lat": 47.815637,
+          "locationType": 0,
+          "lon": -122.294779,
+          "name": "Lynnwood City Center",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "N23-T1",
+          "direction": "NE",
+          "id": "40_N23-T1",
+          "lat": 47.815876,
+          "locationType": 0,
+          "lon": -122.294275,
+          "name": "Lynnwood City Center",
+          "parent": "40_N23",
+          "routeIds": ["40_100479", "40_2LINE"],
+          "staticRouteIds": ["40_100479", "40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E31",
+          "direction": "",
+          "id": "40_E31",
+          "lat": 47.671645,
+          "locationType": 0,
+          "lon": -122.11848,
+          "name": "Downtown Redmond",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E31-T2",
+          "direction": "",
+          "id": "40_E31-T2",
+          "lat": 47.671788,
+          "locationType": 0,
+          "lon": -122.118952,
+          "name": "Downtown Redmond",
+          "parent": "40_E31",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E09",
+          "direction": "",
+          "id": "40_E09",
+          "lat": 47.586556,
+          "locationType": 0,
+          "lon": -122.190396,
+          "name": "South Bellevue",
+          "parent": "",
+          "routeIds": [],
+          "staticRouteIds": [],
+          "wheelchairBoarding": "ACCESSIBLE"
+        },
+        {
+          "code": "E09-T2",
+          "direction": "",
+          "id": "40_E09-T2",
+          "lat": 47.586932,
+          "locationType": 0,
+          "lon": -122.190604,
+          "name": "South Bellevue",
+          "parent": "40_E09",
+          "routeIds": ["40_2LINE"],
+          "staticRouteIds": ["40_2LINE"],
+          "wheelchairBoarding": "ACCESSIBLE"
+        }
+      ],
+      "trips": [
+        {
+          "blockId": "40_600-32",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4016",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-32",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4416",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-32",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3404",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-43",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4415",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-43",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3018",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-42",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3016",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-42",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3416",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-42",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4411",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-31",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4014",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-31",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4414",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-31",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3403",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-34",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3409",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-34",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4021",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-34",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3009",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E19:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-45",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4419",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-45",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3020",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-33",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3407",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-33",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4020",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-33",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3007",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E19:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-44",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4417",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-44",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3019",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-50",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3410",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-50",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4025",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-50",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3010",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-41",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3015",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-41",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3415",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-41",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4409",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-52",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4413",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-52",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3017",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-40",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3014",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-40",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3414",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-40",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4408",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-51",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4018",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-51",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4418",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-51",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3405",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-39",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3013",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-39",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3413",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-39",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4406",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-36",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3408",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-36",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4024",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-36",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3008",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-47",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4010",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-47",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4410",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-47",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3401",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-46",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4007",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-46",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4407",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-35",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3406",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-35",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4023",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-35",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3006",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-38",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3012",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-38",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3412",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-38",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4405",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-37",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3011",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E31:E09",
+          "timeZone": "",
+          "tripHeadsign": "South Bellevue",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-37",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3411",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-37",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4404",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-48",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4012",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_N23:C09",
+          "timeZone": "",
+          "tripHeadsign": "Int'l Dist/Chinatown",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-48",
+          "directionId": "0",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_4412",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_E09:E31",
+          "timeZone": "",
+          "tripHeadsign": "Downtown Redmond",
+          "tripShortName": ""
+        },
+        {
+          "blockId": "40_600-48",
+          "directionId": "1",
+          "id": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday_2LINE_3402",
+          "peakOffpeak": 0,
+          "routeId": "40_2LINE",
+          "routeShortName": "",
+          "serviceId": "40_LLR_2026-02-14_Jan29_Link_Q12026_CLC_SimSvc_Weekday",
+          "shapeId": "40_C09:N23",
+          "timeZone": "",
+          "tripHeadsign": "Lynnwood City Center",
+          "tripShortName": ""
+        }
+      ]
+    }
+  },
+  "text": "OK",
+  "version": 2
+}

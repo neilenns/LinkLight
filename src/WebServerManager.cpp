@@ -71,6 +71,9 @@ void WebServerManager::handleConfig() {
   data["timezone"] = preferencesManager.getTimezone();
   data["focusedVehicleId"] = preferencesManager.getFocusedVehicleId();
   data["updateInterval"] = preferencesManager.getUpdateInterval();
+  data["line1Color"] = preferencesManager.getLine1Color();
+  data["line2Color"] = preferencesManager.getLine2Color();
+  data["sharedColor"] = preferencesManager.getSharedColor();
   
   // Add train data for the dropdown
   JsonArray trainsArray = data["trains"].to<JsonArray>();
@@ -159,6 +162,33 @@ void WebServerManager::handleSaveConfig() {
     } else {
       // Use default if out of range
       preferencesManager.setUpdateInterval(DEFAULT_UPDATE_INTERVAL);
+    }
+  }
+  
+  // Handle Line 1 color
+  if (server.hasArg("line1Color")) {
+    String line1Color = server.arg("line1Color");
+    // Validate hex color format
+    if (line1Color.startsWith("#") && line1Color.length() == 7) {
+      preferencesManager.setLine1Color(line1Color);
+    }
+  }
+  
+  // Handle Line 2 color
+  if (server.hasArg("line2Color")) {
+    String line2Color = server.arg("line2Color");
+    // Validate hex color format
+    if (line2Color.startsWith("#") && line2Color.length() == 7) {
+      preferencesManager.setLine2Color(line2Color);
+    }
+  }
+  
+  // Handle shared/overlap color
+  if (server.hasArg("sharedColor")) {
+    String sharedColor = server.arg("sharedColor");
+    // Validate hex color format
+    if (sharedColor.startsWith("#") && sharedColor.length() == 7) {
+      preferencesManager.setSharedColor(sharedColor);
     }
   }
   

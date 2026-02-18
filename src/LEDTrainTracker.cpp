@@ -2,6 +2,7 @@
 #include "LogManager.h"
 #include "config.h"
 #include "TrainDataManager.h"
+#include "colors.h"
 
 static const char* LOG_TAG = "LEDTrainTracker";
 
@@ -46,14 +47,14 @@ void LEDTrainTracker::display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Apa106Metho
       // No trains at this LED - turn it black
       strip.SetPixelColor(i, COLOR_BLACK);
     } else if (ledCounts[i].line1Count > 0 && ledCounts[i].line2Count > 0) {
-      // Both lines have trains at this LED - display yellow
-      strip.SetPixelColor(i, SHARED_LINE_COLOR);
+      // Both lines have trains at this LED - display mixed color
+      strip.SetPixelColor(i, ColorManager::getSharedLineColor());
     } else if (ledCounts[i].line1Count > 0) {
       // Only Line 1 has trains - display Line 1 color
-      strip.SetPixelColor(i, LINE_1_COLOR);
+      strip.SetPixelColor(i, ColorManager::getLine1Color());
     } else {
       // Only Line 2 has trains - display Line 2 color
-      strip.SetPixelColor(i, LINE_2_COLOR);
+      strip.SetPixelColor(i, ColorManager::getLine2Color());
     }
   }
   

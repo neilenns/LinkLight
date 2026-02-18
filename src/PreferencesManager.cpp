@@ -16,6 +16,9 @@ void PreferencesManager::load() {
   timezone = preferences.getString(PREF_TIMEZONE, DEFAULT_TIMEZONE);
   
   preferences.end();
+  
+  // focusedTripId is not persisted - always starts empty on boot
+  focusedTripId = "";
   }
 
 void PreferencesManager::save() {

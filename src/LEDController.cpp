@@ -2,6 +2,7 @@
 #include "TrainDataManager.h"
 #include "LogManager.h"
 #include "colors.h"
+#include "PreferencesManager.h"
 
 static const char* LOG_TAG = "LEDController";
 
@@ -148,8 +149,16 @@ void LEDController::displayTrainPositions() {
   // Get train data from TrainDataManager
   const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   
+  // Get focused trip ID (if any)
+  String focusedTripId = preferencesManager.getFocusedTripId();
+  
   // Process each train and update the tracker
   for (const TrainData& train : trains) {
+    // If a focused train is set, skip all other trains
+    if (!focusedTripId.isEmpty() && train.tripId != focusedTripId) {
+      continue;
+    }
+    
     int ledIndex = getTrainLEDIndex(train);
     
     if (ledIndex >= 0) {

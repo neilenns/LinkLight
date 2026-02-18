@@ -180,7 +180,11 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
 }
 
 void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const String& lineName, const String& apiKey) {
-  String url = String(API_BASE_URL) + "/trips-for-route/" + routeId + ".json?" + API_KEY_PARAM + "=" + apiKey;
+  // Use static buffer to avoid heap allocation for URL string on every call
+  char url[256];
+  snprintf(url, sizeof(url), "%s/trips-for-route/%s.json?%s=%s", 
+           API_BASE_URL, routeId.c_str(), API_KEY_PARAM, apiKey.c_str());
+  
   LINK_LOGI(LOG_TAG, "Fetching data for %s (route: %s)", lineName.c_str(), routeId.c_str());
   
   HTTPClient http;
@@ -192,13 +196,13 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const Strin
     WiFiClient* stream = http.getStreamPtr();
 
     if (stream == nullptr) {
-      LINK_LOGE(LOG_TAG, "Failed to get HTTP stream for %s. URL: %s", lineName.c_str(), url.c_str());
+      LINK_LOGE(LOG_TAG, "Failed to get HTTP stream for %s. URL: %s", lineName.c_str(), url);
     } else {
       JsonDocument doc(PSRAMJsonAllocator::instance());
       DeserializationError error = deserializeJson(doc, *stream);
 
       if (error) {
-        LINK_LOGE(LOG_TAG, "JSON parsing failed for %s: %s. URL: %s", lineName.c_str(), error.c_str(), url.c_str());
+        LINK_LOGE(LOG_TAG, "JSON parsing failed for %s: %s. URL: %s", lineName.c_str(), error.c_str(), url);
       } else {
         LINK_LOGI(LOG_TAG, "Successfully retrieved %s train data", lineName.c_str());
         parseTrainDataFromJson(doc, lineName);
@@ -206,7 +210,7 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const Strin
     }
   } else {
     LINK_LOGW(LOG_TAG, "HTTP request failed for %s with code %d. URL: %s. Will retry on next update cycle.", 
-             lineName.c_str(), httpCode, url.c_str());
+             lineName.c_str(), httpCode, url);
   }
 
   http.end();

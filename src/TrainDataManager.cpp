@@ -159,6 +159,12 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     // Add to the list
     trainDataList.push_back(train);
 
+    // If a focused train is set, log only that train's data
+    String focusedTripId = preferencesManager.getFocusedTripId();
+    if (!focusedTripId.isEmpty() && train.tripId != focusedTripId) {
+      continue;
+    }
+
     // Log parsed data
     LINK_LOGD(LOG_TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%d, state=%s",
       train.tripId.c_str(),

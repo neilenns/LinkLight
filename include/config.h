@@ -25,8 +25,8 @@
 #define LINE_1_ROUTE_ID "40_100479"  // Link Light Rail Line 1
 #define LINE_2_ROUTE_ID "40_2LINE"   // Link Light Rail Line 2
 
-// Train State Threshold
-#define MIN_DEPARTED_SECONDS 30  // Minimum seconds after departure to consider train as "moving"
+// Distance a train should be within to be considered at the station
+#define AT_STATION_THRESHOLD 10
 
 // Preferences Keys
 #define PREF_NAMESPACE "linklight"

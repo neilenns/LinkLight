@@ -17,8 +17,8 @@ void PreferencesManager::load() {
   
   preferences.end();
   
-  // focusedTripId is not persisted - always starts empty on boot
-  focusedTripId = "";
+  // focusedVehicleId is not persisted - always starts empty on boot
+  focusedVehicleId = "";
   }
 
 void PreferencesManager::save() {

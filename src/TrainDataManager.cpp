@@ -86,16 +86,30 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
       continue;
     }
 
+    // Extract vehicleId from status.vehicleId
+    train.vehicleId = status["vehicleId"].as<String>();
+    
+    // Fall back to last part of tripId if vehicleId is empty
+    if (train.vehicleId.isEmpty()) {
+      int lastUnderscore = train.tripId.lastIndexOf('_');
+      if (lastUnderscore != -1 && lastUnderscore < train.tripId.length() - 1) {
+        train.vehicleId = train.tripId.substring(lastUnderscore + 1);
+      } else {
+        // If no underscore found, use the whole tripId as fallback
+        train.vehicleId = train.tripId;
+      }
+    }
+
     // Check for nextStop
     if (status["nextStop"].isNull()) {
-      LINK_LOGW(LOG_TAG, "No next stop for trip %s", train.tripId.c_str());
+      LINK_LOGW(LOG_TAG, "No next stop for vehicle %s", train.vehicleId.c_str());
       continue;
     }
     train.nextStop = status["nextStop"].as<String>();
 
     // Check for nextStopTimeOffset
     if (status["nextStopTimeOffset"].isNull()) {
-      LINK_LOGW(LOG_TAG, "No next stop time offset for trip %s", train.tripId.c_str());
+      LINK_LOGW(LOG_TAG, "No next stop time offset for vehicle %s", train.vehicleId.c_str());
       continue;
     }
     train.nextStopTimeOffset = status["nextStopTimeOffset"].as<int>();
@@ -110,12 +124,12 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     if (!status["scheduledDistanceAlongTrip"].isNull()) {
       float scheduledDistance = status["scheduledDistanceAlongTrip"].as<float>();
       if (scheduledDistance < MIN_SCHEDULED_DISTANCE_THRESHOLD) {
-        LINK_LOGW(LOG_TAG, "Trip %s not in progress yet, scheduledDistanceAlongTrip: %.2f", 
-                 train.tripId.c_str(), scheduledDistance);
+        LINK_LOGW(LOG_TAG, "Vehicle %s not in progress yet, scheduledDistanceAlongTrip: %.2f", 
+                 train.vehicleId.c_str(), scheduledDistance);
       }
     } else {
-      LINK_LOGW(LOG_TAG, "Trip %s not in progress yet, no scheduledDistanceAlongTrip", 
-               train.tripId.c_str());
+      LINK_LOGW(LOG_TAG, "Vehicle %s not in progress yet, no scheduledDistanceAlongTrip", 
+               train.vehicleId.c_str());
     }
 
     // Look up stop names from the stops map
@@ -162,14 +176,14 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     trainDataList.push_back(train);
 
     // If a focused train is set, log only that train's data
-    String focusedTripId = preferencesManager.getFocusedTripId();
-    if (!focusedTripId.isEmpty() && train.tripId != focusedTripId) {
+    String focusedVehicleId = preferencesManager.getFocusedVehicleId();
+    if (!focusedVehicleId.isEmpty() && train.vehicleId != focusedVehicleId) {
       continue;
     }
 
     // Log parsed data
-    LINK_LOGD(LOG_TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%d, state=%s",
-      train.tripId.c_str(),
+    LINK_LOGD(LOG_TAG, "Train: vehicleId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%d, state=%s",
+      train.vehicleId.c_str(),
       train.closestStop.c_str(),
       train.closestStopName.c_str(),
       train.closestStopTimeOffset,

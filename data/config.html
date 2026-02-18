@@ -25,15 +25,15 @@
         select.value = savedTimezone;
       }
       
-      var savedFocusedTripId = '{{focusedTripId}}';
-      var focusSelect = document.querySelector('select[name="focusedTripId"]');
-      if (focusSelect && savedFocusedTripId) {
-        focusSelect.value = savedFocusedTripId;
+      var savedFocusedVehicleId = '{{focusedVehicleId}}';
+      var focusSelect = document.querySelector('select[name="focusedVehicleId"]');
+      if (focusSelect && savedFocusedVehicleId) {
+        focusSelect.value = savedFocusedVehicleId;
       }
     });
     
     function clearFocus() {
-      var focusSelect = document.querySelector('select[name="focusedTripId"]');
+      var focusSelect = document.querySelector('select[name="focusedVehicleId"]');
       if (focusSelect) {
         focusSelect.value = '';
       }
@@ -60,10 +60,10 @@
       <option value='UTC0'>UTC</option>
     </select>
     <label>Focused Train (for debugging):</label>
-    <select name='focusedTripId'>
+    <select name='focusedVehicleId'>
       <option value=''>All Trains</option>
       {{#trains}}
-      <option value='{{tripId}}'>{{tripId}} - {{station}} - {{line}} {{direction}}</option>
+      <option value='{{vehicleId}}'>{{vehicleId}} - {{station}} - {{line}} {{direction}}</option>
       {{/trains}}
     </select>
     <div class='button-group'>

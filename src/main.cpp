@@ -46,6 +46,20 @@ void setup() {
   LINK_LOGI(TAG, "IP Address: %s", WiFi.localIP().toString().c_str());
 }
 
+void dumpMemoryStats()
+{
+  if (psramInit())
+  {
+    Serial.printf("Total PSRAM size: %lu kB\r\n", ESP.getPsramSize() / 1024);
+    Serial.printf("Free PSRAM size: %lu kB\r\n", ESP.getFreePsram() / 1024);
+    Serial.printf("Available heap: %lu kB\n", ESP.getFreeHeap() / 1024);
+  }
+  else
+  {
+    Serial.println("No PSRAM found");
+  }
+}
+
 void loop() {
   // Handle OTA updates
   otaManager.handle();
@@ -55,6 +69,8 @@ void loop() {
   
   // Update train positions periodically
   if (millis() - lastApiUpdate > API_UPDATE_INTERVAL) {
+    dumpMemoryStats();
+    
     trainDataManager.updateTrainPositions();
     
     // Display current train positions on LEDs

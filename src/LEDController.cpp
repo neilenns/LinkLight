@@ -46,12 +46,10 @@ void LEDController::initializeStationMaps() {
   stationMap["Bellevue Downtown"] =       {111, 112};
   stationMap["East Main"] =               {111, 112};
   stationMap["South Bellevue"] =          {111, 112};
-
-  LINK_LOGI(LOG_TAG, "Initialized Line 1 station map with %d stations", stationMap.size());
 }
 
 void LEDController::setup() {
-  LINK_LOGI(LOG_TAG, "Setting up LEDs...");
+  LINK_LOGD(LOG_TAG, "Setting up LEDs...");
   
   strip.Begin();
   strip.Show(); // Initialize all pixels to 'off'
@@ -86,7 +84,7 @@ void LEDController::startupAnimation() {
   setAllLEDs(COLOR_BLACK);
   strip.Show();
 
-  LINK_LOGI(LOG_TAG, "LEDs initialized");
+  LINK_LOGD(LOG_TAG, "LEDs initialized");
 }
 
 void LEDController::setAllLEDs(const RgbColor& color) {

@@ -12,7 +12,7 @@ static const char* LOG_TAG = "WebServerManager";
 WebServerManager webServerManager;
 
 void WebServerManager::setup() {
-  LINK_LOGI(LOG_TAG, "Setting up web server...");
+  LINK_LOGD(LOG_TAG, "Setting up web server...");
   
   // Register handlers
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
@@ -23,7 +23,6 @@ void WebServerManager::setup() {
   
   // Start server
   server.begin();
-  LINK_LOGI(LOG_TAG, "Web server started");
 }
 
 void WebServerManager::handleClient() {

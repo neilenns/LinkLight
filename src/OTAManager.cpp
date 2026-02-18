@@ -9,7 +9,7 @@ static const char* LOG_TAG = "OTAManager";
 OTAManager otaManager;
 
 void OTAManager::setup() {
-  LINK_LOGI(LOG_TAG, "Setting up OTA...");
+  LINK_LOGD(LOG_TAG, "Setting up OTA...");
   
   // Set hostname from preferences
   String hostname = preferencesManager.getHostname();
@@ -56,7 +56,7 @@ void OTAManager::setup() {
   // Start OTA service
   ArduinoOTA.begin();
   
-  LINK_LOGI(LOG_TAG, "OTA Ready");
+  LINK_LOGD(LOG_TAG, "OTA Ready");
 }
 
 void OTAManager::handle() {

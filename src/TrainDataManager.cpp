@@ -59,7 +59,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     }
   }
 
-  LINK_LOGI(LOG_TAG, "Loaded %u trips and %u stops for line %d", tripMap.size(), stopIdToNameMap.size(), static_cast<int>(line));
+  LINK_LOGI(LOG_TAG, "Loaded %u trips and %u stops for %d Line", tripMap.size(), stopIdToNameMap.size(), static_cast<int>(line));
 
   // Process the list array
   JsonArray list = data["list"];
@@ -184,7 +184,7 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, Line line, 
   snprintf(url, sizeof(url), "%s/trips-for-route/%s.json?%s=%s", 
            API_BASE_URL, routeId.c_str(), API_KEY_PARAM, apiKey.c_str());
   
-  LINK_LOGD(LOG_TAG, "Fetching data for line %d (route: %s)", static_cast<int>(line), routeId.c_str());
+  LINK_LOGD(LOG_TAG, "Fetching data for %d Line (route: %s)", static_cast<int>(line), routeId.c_str());
   
   HTTPClient http;
   http.setTimeout(10000);
@@ -195,20 +195,20 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, Line line, 
     WiFiClient* stream = http.getStreamPtr();
 
     if (stream == nullptr) {
-      LINK_LOGE(LOG_TAG, "Failed to get HTTP stream for line %d. URL: %s", static_cast<int>(line), url);
+      LINK_LOGE(LOG_TAG, "Failed to get HTTP stream for %d Line. URL: %s", static_cast<int>(line), url);
     } else {
       JsonDocument doc(PSRAMJsonAllocator::instance());
       DeserializationError error = deserializeJson(doc, *stream);
 
       if (error) {
-        LINK_LOGE(LOG_TAG, "JSON parsing failed for line %d: %s. URL: %s", static_cast<int>(line), error.c_str(), url);
+        LINK_LOGE(LOG_TAG, "JSON parsing failed for %d Line: %s. URL: %s", static_cast<int>(line), error.c_str(), url);
       } else {
-        LINK_LOGD(LOG_TAG, "Successfully retrieved line %d train data", static_cast<int>(line));
+        LINK_LOGD(LOG_TAG, "Successfully retrieved %d Line train data", static_cast<int>(line));
         parseTrainDataFromJson(doc, line);
       }
     }
   } else {
-    LINK_LOGW(LOG_TAG, "HTTP request failed for line %d with code %d. URL: %s. Will retry on next update cycle.", 
+    LINK_LOGW(LOG_TAG, "HTTP request failed for %d Line with code %d. URL: %s. Will retry on next update cycle.", 
              static_cast<int>(line), httpCode, url);
   }
 

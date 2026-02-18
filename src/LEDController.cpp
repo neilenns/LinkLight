@@ -95,12 +95,6 @@ void LEDController::setAllLEDs(const RgbColor& color) {
   }
 }
 
-void LEDController::setTrainLED(int ledIndex, const RgbColor& color) {
-  if (ledIndex >= 0 && ledIndex < LED_COUNT) {
-    strip.SetPixelColor(ledIndex, color);
-  }
-}
-
 int LEDController::getTrainLEDIndex(const TrainData& train) {
   int ledIndex = -1;
 
@@ -143,6 +137,7 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
   // Ensure the index is within valid bounds
   if (ledIndex < 0 || ledIndex >= LED_COUNT) {
     LINK_LOGW(LOG_TAG, "LED index %d out of bounds for train %s", ledIndex, train.tripId.c_str());
+    ledIndex = 0; // Default to first LED if out of bounds, to at least indicate presence of train.
   }
 
   return ledIndex;

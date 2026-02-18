@@ -7,8 +7,8 @@
 
 // Structure to track train counts for both lines at a single LED
 struct LEDTrainCounts {
-  int line1Count;
-  int line2Count;
+  int line1Count = 0;
+  int line2Count = 0;
 };
 
 // Class to track train counts at each LED position

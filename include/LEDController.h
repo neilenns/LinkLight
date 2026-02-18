@@ -37,7 +37,6 @@ NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Method> strip{LED_COUNT, LED_PIN};
   
   void initializeStationMaps();
   void setAllLEDs(const RgbColor& color);
-  void setTrainLED(int ledIndex, const RgbColor& color);
   int getTrainLEDIndex(const TrainData& train);
 };
 

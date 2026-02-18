@@ -10,6 +10,8 @@
     form { max-width: 400px; }
     label { display: block; margin: 10px 0 5px; font-weight: bold; }
     input, select { width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; }
+    input[type="color"] { height: 50px; cursor: pointer; }
+    input[type="range"] { cursor: pointer; }
     button { padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
     button:hover { background-color: #0052a3; }
     button.clear-focus { background-color: #dc3545; margin-left: 10px; }
@@ -22,6 +24,10 @@
     .feedback { margin-top: 10px; padding: 10px; border-radius: 4px; display: none; }
     .feedback.success { background-color: #d4edda; color: #155724; display: block; }
     .feedback.error { background-color: #f8d7da; color: #721c24; display: block; }
+    .color-section { margin-top: 30px; padding: 20px; background-color: #f0f8ff; border-radius: 4px; }
+    .color-preview { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+    .color-box { width: 50px; height: 50px; border: 2px solid #ccc; border-radius: 4px; }
+    .slider-value { font-weight: bold; color: #0066cc; margin-left: 10px; }
   </style>
   <script>
     // Set the selected timezone on page load
@@ -37,7 +43,18 @@
       if (focusSelect && savedFocusedVehicleId) {
         focusSelect.value = savedFocusedVehicleId;
       }
+      
+      // Update brightness display
+      updateBrightnessDisplay();
     });
+    
+    function updateBrightnessDisplay() {
+      var slider = document.getElementById('brightness');
+      var display = document.getElementById('brightnessValue');
+      if (slider && display) {
+        display.textContent = slider.value;
+      }
+    }
     
     function clearFocus() {
       var focusSelect = document.querySelector('select[name="focusedVehicleId"]');
@@ -104,6 +121,19 @@
     </select>
     <label>Refresh Interval (seconds):</label>
     <input type='number' name='updateInterval' value='{{updateInterval}}' min='15' max='60' placeholder='30'>
+    
+    <div class='color-section'>
+      <h2>LED Color Settings</h2>
+      <label>Line 1 Color:</label>
+      <input type='color' name='line1Color' value='{{line1Color}}'>
+      
+      <label>Line 2 Color:</label>
+      <input type='color' name='line2Color' value='{{line2Color}}'>
+      
+      <label>Brightness: <span id='brightnessValue' class='slider-value'>{{brightness}}</span></label>
+      <input type='range' id='brightness' name='brightness' min='0' max='255' value='{{brightness}}' oninput='updateBrightnessDisplay()'>
+    </div>
+    
     <label>Focused Train (for debugging):</label>
     <select name='focusedVehicleId'>
       <option value=''>All Trains</option>

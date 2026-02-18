@@ -34,11 +34,17 @@
 #define PREF_HOSTNAME "hostname"
 #define PREF_TIMEZONE "timezone"
 #define PREF_UPDATE_INTERVAL "updateInterval"
+#define PREF_LINE1_COLOR "line1Color"
+#define PREF_LINE2_COLOR "line2Color"
+#define PREF_BRIGHTNESS "brightness"
 #define MAX_PREFERENCE_LENGTH 64  // Maximum length for preference strings
 
 // Default Values
 #define DEFAULT_HOSTNAME "LinkLight"
 #define DEFAULT_TIMEZONE "PST8PDT,M3.2.0,M11.1.0"  // Pacific Time with DST
 #define DEFAULT_UPDATE_INTERVAL 30  // Default update interval in seconds
+#define DEFAULT_LINE1_COLOR "#00ff00"  // Green for Line 1
+#define DEFAULT_LINE2_COLOR "#0000ff"  // Blue for Line 2
+#define DEFAULT_BRIGHTNESS 32  // Default brightness (0-255)
 
 #endif // CONFIG_H

@@ -3,6 +3,13 @@
 
 #include <NeoPixelBus.h>
 #include "config.h"
+#include "colors.h"
+
+// Structure to track train counts for both lines at a single LED
+struct LEDTrainCounts {
+  int line1Count;
+  int line2Count;
+};
 
 // Class to track train counts at each LED position
 class LEDTrainTracker {
@@ -23,16 +30,9 @@ public:
   void logTrainCounts();
   
 private:
-  // Arrays to track train counts for each LED
+  // Array to track train counts for each LED using a struct
   // Index represents LED position (0-113)
-  int line1Counts[LED_COUNT];
-  int line2Counts[LED_COUNT];
-  
-  // LED colors
-  static const RgbColor COLOR_BLUE;
-  static const RgbColor COLOR_GREEN;
-  static const RgbColor COLOR_YELLOW;
-  static const RgbColor COLOR_BLACK;
+  LEDTrainCounts ledCounts[LED_COUNT];
 };
 
 #endif // LEDTRAINTRACKER_H

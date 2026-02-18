@@ -156,34 +156,31 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
 }
 
 void LEDController::displayTrainPositions() {
-  // Set all LEDs to black in memory (without calling Show() to avoid flash)
-  setAllLEDs(COLOR_BLACK);
+  // Reset train counts
+  trainTracker.reset();
   
   // Get train data from TrainDataManager
   const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   
-  // Process each train and set its LED
+  // Process each train and update the tracker
   for (const TrainData& train : trains) {
     int ledIndex = getTrainLEDIndex(train);
     
     if (ledIndex >= 0) {
-      if (train.state == TrainState::AT_STATION) {
-        setTrainLED(ledIndex, train.line == LINE_1_NAME ? LINE_1_COLOR : LINE_2_COLOR);
-        LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, state: AT_STATION, dir: %s)", 
-                 train.tripId.c_str(), ledIndex, 
-                 train.closestStopName.c_str(),
-                 train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound");
-      } else {
-        setTrainLED(ledIndex, COLOR_YELLOW);
-        LINK_LOGD(LOG_TAG, "Train %s at LED %d (next: %s, state: MOVING, dir: %s)", 
-                 train.tripId.c_str(), ledIndex, 
-                 train.nextStopName.c_str(),
-                 train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound");
-      }  
+      // Increment the count for this train's line at this LED
+      trainTracker.incrementTrainCount(ledIndex, train.line);
+      
+      LINK_LOGD(LOG_TAG, "Train %s at LED %d (state: %s, dir: %s, line: %s)", 
+               train.tripId.c_str(), ledIndex, 
+               train.state == TrainState::AT_STATION ? "AT_STATION" : "MOVING",
+               train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
+               train.line.c_str());
     }
   }
   
-  // Update the LED strip once with all changes
-  // Update the LED strip once with all changes
-  strip.Show();
+  // Log train counts for debugging
+  trainTracker.logTrainCounts();
+  
+  // Display all trains on the LED strip
+  trainTracker.display(strip);
 }

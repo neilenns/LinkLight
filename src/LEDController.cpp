@@ -125,11 +125,9 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
 
     const StationLEDMapping& nextMapping = nextStationInfo->second;
     if (isNorthbound) {
-      // For northbound trains, the LED index should be one less than the next station's northbound index
       ledIndex = nextMapping.northboundIndex - 1;
     } else {
-      // For southbound trains, the LED index should be one more than the next station's southbound index
-      ledIndex = nextMapping.southboundIndex + 1;
+      ledIndex = nextMapping.southboundIndex - 1;
     }    
   }
 

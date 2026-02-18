@@ -10,6 +10,7 @@
 
 static const char* LOG_TAG = "TrainDataManager";
 static const float MIN_SCHEDULED_DISTANCE_THRESHOLD = 0.001f;
+static const int AT_STATION_THRESHOLD = 10; // Distance a train should be within to be considered at the station
 
 TrainDataManager trainDataManager;
 
@@ -148,16 +149,24 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     train.line = line;
 
     // Determine train state: AT_STATION or MOVING
-    // If closestStopTimeOffset is negative (train has left the station) and significant,
-    // the train is moving between stations. Otherwise, it's at a station.
-    if (train.closestStopTimeOffset < -MIN_DEPARTED_SECONDS) {
-      train.state = TrainState::MOVING;
-    } else {
+    // This took quite a bit of work to get right. Simply checking to see if nextStopTimeOffset and closestStopTimeOffset are 0
+    // doesn't work, since it misses trains that are just barely arriving at the station but leave during the data refresh window.
+    // Checking for the next and closest stop IDs (or offsets) being the same also doesn't work, since that's true any time the
+    // train is past the halfway point of the two stations. 
+    if (train.nextStopTimeOffset < AT_STATION_THRESHOLD) {
       train.state = TrainState::AT_STATION;
+    } else {
+      train.state = TrainState::MOVING;
     }
 
     // Add to the list
     trainDataList.push_back(train);
+
+    // If a focused train is set, log only that train's data
+    String focusedTripId = preferencesManager.getFocusedTripId();
+    if (!focusedTripId.isEmpty() && train.tripId != focusedTripId) {
+      continue;
+    }
 
     // Log parsed data
     LINK_LOGD(LOG_TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%d, state=%s",

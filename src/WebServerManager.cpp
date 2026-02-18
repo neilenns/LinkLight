@@ -119,7 +119,7 @@ void WebServerManager::handleLogs() {
 
 void WebServerManager::handleLogsData() {
   // Get logs from LogManager
-  std::deque<LogEntry> logs = logManager.getLogs();
+  std::deque<LogEntry, PSRAMAllocator<LogEntry>> logs = logManager.getLogs();
   
   // Create JSON response
   JsonDocument doc;

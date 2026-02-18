@@ -28,8 +28,6 @@ void LogManager::log(const char* level, const char* tag, const char* format, ...
 }
 
 void LogManager::addLog(const char* level, const char* tag, const char* message) {
-  return;
-  
   // Validate inputs to prevent crashes
   if (!level || !tag || !message) {
     Serial.println("[LogManager] Null parameter passed to addLog");
@@ -55,7 +53,7 @@ void LogManager::addLog(const char* level, const char* tag, const char* message)
   }
 }
 
-std::deque<LogEntry> LogManager::getLogs(int maxEntries) {
+std::deque<LogEntry, PSRAMAllocator<LogEntry>> LogManager::getLogs(int maxEntries) {
   // Validate maxEntries to prevent undefined behavior from negative values
   if (maxEntries <= 0) {
     maxEntries = LOG_BUFFER_SIZE;
@@ -66,7 +64,7 @@ std::deque<LogEntry> LogManager::getLogs(int maxEntries) {
     startIndex = logBuffer.size() - maxEntries;
   }
   
-  std::deque<LogEntry> result;
+  std::deque<LogEntry, PSRAMAllocator<LogEntry>> result;
   for (size_t i = startIndex; i < logBuffer.size(); i++) {
     result.push_back(logBuffer[i]);
   }

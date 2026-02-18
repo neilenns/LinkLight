@@ -12,5 +12,6 @@ static const RgbColor COLOR_BLACK = RgbColor(0, 0, 0);
 // Line-specific colors
 static const RgbColor LINE_1_COLOR = COLOR_GREEN;
 static const RgbColor LINE_2_COLOR = COLOR_BLUE;
+static const RgbColor SHARED_LINE_COLOR = COLOR_YELLOW;
 
 #endif // COLORS_H

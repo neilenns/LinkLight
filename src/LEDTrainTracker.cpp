@@ -8,6 +8,8 @@ LEDTrainTracker::LEDTrainTracker() {
   reset();
 }
 
+// Increment the count of trains for a specific line at a specific LED.
+// Used later when displaying LEDs to determine color based on train presence.
 void LEDTrainTracker::incrementTrainCount(int ledIndex, const String& line) {
   // Validate LED index
   if (ledIndex < 0 || ledIndex >= LED_COUNT) {
@@ -25,14 +27,15 @@ void LEDTrainTracker::incrementTrainCount(int ledIndex, const String& line) {
   }
 }
 
+// Reset all train counts to zero for all LEDs. Called at the start of each update cycle to clear previous counts.
 void LEDTrainTracker::reset() {
-  // Reset all counts to zero
   for (int i = 0; i < LED_COUNT; i++) {
     ledCounts[i].line1Count = 0;
     ledCounts[i].line2Count = 0;
   }
 }
 
+// Display the trains on the LED strip based on current counts. Determines color for each LED based on presence of trains from both lines.
 void LEDTrainTracker::display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Method>& strip) {
   // Display trains on LEDs based on counts
   for (int i = 0; i < LED_COUNT; i++) {
@@ -43,13 +46,13 @@ void LEDTrainTracker::display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Metho
       strip.SetPixelColor(i, COLOR_BLACK);
     } else if (ledCounts[i].line1Count > 0 && ledCounts[i].line2Count > 0) {
       // Both lines have trains at this LED - display yellow
-      strip.SetPixelColor(i, COLOR_YELLOW);
+      strip.SetPixelColor(i, SHARED_LINE_COLOR);
     } else if (ledCounts[i].line1Count > 0) {
-      // Only Line 1 has trains - display Line 1 color (green)
-      strip.SetPixelColor(i, COLOR_GREEN);
+      // Only Line 1 has trains - display Line 1 color
+      strip.SetPixelColor(i, LINE_1_COLOR);
     } else {
-      // Only Line 2 has trains - display Line 2 color (blue)
-      strip.SetPixelColor(i, COLOR_BLUE);
+      // Only Line 2 has trains - display Line 2 color
+      strip.SetPixelColor(i, LINE_2_COLOR);
     }
   }
   
@@ -58,23 +61,23 @@ void LEDTrainTracker::display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Metho
 }
 
 void LEDTrainTracker::logTrainCounts() {
-  // Log northbound LEDs (0-53)
-  String northboundLog = "Northbound (0-53): ";
-  for (int i = 0; i <= 53; i++) {
+  // Log northbound LEDs (0 up to 54)
+  String northboundLog = "Northbound:  ";
+  for (int i = 0; i <= 54; i++) {
     int totalTrains = ledCounts[i].line1Count + ledCounts[i].line2Count;
     northboundLog += String(totalTrains);
-    if (i < 53) {
+    if (i < 54) {
       northboundLog += " ";
     }
   }
   LINK_LOGI(LOG_TAG, "%s", northboundLog.c_str());
   
-  // Log southbound LEDs (108 down to 56)
-  String southboundLog = "Southbound (108-56): ";
-  for (int i = 108; i >= 56; i--) {
+  // Log southbound LEDs (109 down to 55)
+  String southboundLog = "Southbound: ";
+  for (int i = 109; i >= 55; i--) {
     int totalTrains = ledCounts[i].line1Count + ledCounts[i].line2Count;
     southboundLog += String(totalTrains);
-    if (i > 56) {
+    if (i > 55) {
       southboundLog += " ";
     }
   }

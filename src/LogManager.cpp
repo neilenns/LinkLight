@@ -1,10 +1,3 @@
-/*
-#2  0x42004a32 in LogManager::addLog(char const*, char const*, char const*) at src/LogManager.cpp:28 (discriminator 1)
-#3  0x42004bc5 in LogManager::log(char const*, char const*, char const*, ...) at src/LogManager.cpp:20
-#4  0x42008672 in TrainDataManager::parseTrainDataFromJson(ArduinoJson::V742PB22::JsonDocument&, String const&) at src/TrainDataManager.cpp:156 (discriminator 35)
-#5  0x42008eb9 in TrainDataManager::fetchTrainDataForRoute(String const&, String const&, String const&) at src/TrainDataManager.cpp:197
-#6  0x420095ea in TrainDataManager::updateTrainPositions() at src/TrainDataManager.cpp:244 (discriminator 3)
-  */
 #include "LogManager.h"
 
 static const char* LOG_TAG = "LogManager";

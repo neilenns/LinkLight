@@ -52,7 +52,7 @@ void dumpMemoryStats()
   {
     Serial.printf("Total PSRAM size: %lu kB\r\n", ESP.getPsramSize() / 1024);
     Serial.printf("Free PSRAM size: %lu kB\r\n", ESP.getFreePsram() / 1024);
-    Serial.printf("Available heap: %lu kB\n", ESP.getFreeHeap() / 1024);
+    Serial.printf("Available internal heap: %lu kB\n", ESP.getFreeHeap() / 1024);
   }
   else
   {

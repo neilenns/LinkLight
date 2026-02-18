@@ -88,6 +88,18 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
 
     // Extract vehicleId from status.vehicleId
     train.vehicleId = status["vehicleId"].as<String>();
+    
+    // Fall back to last part of tripId if vehicleId is empty
+    if (train.vehicleId.isEmpty()) {
+      int lastUnderscore = train.tripId.lastIndexOf('_');
+      if (lastUnderscore != -1 && lastUnderscore < train.tripId.length() - 1) {
+        train.vehicleId = train.tripId.substring(lastUnderscore + 1);
+      } else {
+        // If no underscore found, use the whole tripId as fallback
+        train.vehicleId = train.tripId;
+      }
+      LINK_LOGD(LOG_TAG, "Vehicle ID missing, using fallback from tripId: %s", train.vehicleId.c_str());
+    }
 
     // Check for nextStop
     if (status["nextStop"].isNull()) {

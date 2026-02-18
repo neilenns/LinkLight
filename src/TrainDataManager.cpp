@@ -6,11 +6,17 @@
 #include "config.h"
 #include "PreferencesManager.h"
 #include "PSRAMJsonAllocator.h"
+#include "PSRAMString.h"
 
 static const char* LOG_TAG = "TrainDataManager";
 static const float MIN_SCHEDULED_DISTANCE_THRESHOLD = 0.001f;
 
 TrainDataManager trainDataManager;
+
+// PSRAM-backed map types for temporary data structures
+// Using PSRAM allocator for both the map nodes and the String-to-PSRAMString conversions
+template<typename Key, typename Value>
+using PSRAMMap = std::map<Key, Value, std::less<Key>, esp32_psram::AllocatorPSRAM<std::pair<const Key, Value>>>;
 
 // Trip information structure
 struct TripInfo {
@@ -27,8 +33,8 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     return false;
   }
 
-  // First, build a map of trip information
-  std::map<String, TripInfo> tripMap;
+  // First, build a map of trip information using PSRAM allocator
+  PSRAMMap<String, TripInfo> tripMap;
   JsonArray trips = data["references"]["trips"];
   if (!trips.isNull()) {
     for (JsonObject trip : trips) {
@@ -43,8 +49,8 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     LINK_LOGI(LOG_TAG, "Loaded %d trip references", tripMap.size());
   }
 
-  // Build a map of stop IDs to stop names
-  std::map<String, String> stopIdToNameMap;
+  // Build a map of stop IDs to stop names using PSRAM allocator
+  PSRAMMap<String, String> stopIdToNameMap;
   JsonArray stops = data["references"]["stops"];
   if (!stops.isNull()) {
     for (JsonObject stop : stops) {

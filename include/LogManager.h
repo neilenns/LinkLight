@@ -7,7 +7,7 @@
 #include "esp32-psram/VectorPSRAM.h"
 #include "esp32-psram/TypedRingBuffer.h"
 
-#define LOG_BUFFER_SIZE 100  // Number of log entries to keep in memory
+#define LOG_BUFFER_SIZE 500  // Number of log entries to keep in memory
 
 struct LogEntry {
   unsigned long timestamp;  // millis() when log was created

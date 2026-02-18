@@ -7,14 +7,14 @@
   */
 #include "LogManager.h"
 
-static const char* TAG = "LogManager";
+static const char* LOG_TAG = "LogManager";
 
 LogManager logManager;
 
 void LogManager::setup() {
   // Buffer is ready to receive logs
   String msg = "Log manager initialized with buffer size " + String(LOG_BUFFER_SIZE);
-  addLog("I", TAG, msg.c_str());
+  addLog("I", LOG_TAG, msg.c_str());
 }
 
 void LogManager::log(const char* level, const char* tag, const char* format, ...) {
@@ -75,5 +75,5 @@ esp32_psram::VectorPSRAM<LogEntry> LogManager::getLogs(int maxEntries) {
 
 void LogManager::clear() {
   logBuffer.clear();
-  addLog("I", TAG, "Log buffer cleared");
+  addLog("I", LOG_TAG, "Log buffer cleared");
 }

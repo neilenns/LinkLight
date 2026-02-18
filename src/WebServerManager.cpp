@@ -7,12 +7,12 @@
 #include "PreferencesManager.h"
 #include "PSRAMJsonAllocator.h"
 
-static const char* TAG = "WebServerManager";
+static const char* LOG_TAG = "WebServerManager";
 
 WebServerManager webServerManager;
 
 void WebServerManager::setup() {
-  LINK_LOGI(TAG, "Setting up web server...");
+  LINK_LOGI(LOG_TAG, "Setting up web server...");
   
   // Register handlers
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
@@ -23,7 +23,7 @@ void WebServerManager::setup() {
   
   // Start server
   server.begin();
-  LINK_LOGI(TAG, "Web server started");
+  LINK_LOGI(LOG_TAG, "Web server started");
 }
 
 void WebServerManager::handleClient() {

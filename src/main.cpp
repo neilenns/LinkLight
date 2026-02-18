@@ -20,6 +20,13 @@ void setup() {
   logManager.setup();
 
   LINK_LOGI(TAG, "LinkLight Starting...");
+  
+  // Check PSRAM availability
+  if (psramFound()) {
+    LINK_LOGI(TAG, "PSRAM found: %d bytes total, %d bytes free", ESP.getPsramSize(), ESP.getFreePsram());
+  } else {
+    LINK_LOGW(TAG, "PSRAM not found!");
+  }
 
   // Initialize LEDs
   ledController.setup();

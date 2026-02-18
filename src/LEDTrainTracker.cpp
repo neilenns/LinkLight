@@ -37,7 +37,7 @@ void LEDTrainTracker::reset() {
 }
 
 // Display the trains on the LED strip based on current counts. Determines color for each LED based on presence of trains from both lines.
-void LEDTrainTracker::display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Method>& strip) {
+void LEDTrainTracker::display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Apa106Method>& strip) {
   // Display trains on LEDs based on counts
   for (int i = 0; i < LED_COUNT; i++) {
     int totalTrains = ledCounts[i].line1Count + ledCounts[i].line2Count;

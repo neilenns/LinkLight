@@ -22,12 +22,10 @@ public:
   void displayTrainPositions();
 
 private:
-// Setup for WS2812x LEDs.
-//  NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2812xMethod> strip{LED_COUNT, LED_PIN};
-
-// Setup for WS2815 LEDs. Yes, it's using 2811 method, but according to https://github.com/Makuna/NeoPixelBus/pull/795#issuecomment-2061333595
-// that's the one that's closest in timing and works.
-NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Method> strip{LED_COUNT, LED_PIN};
+// Setup for WS2815 LEDs. Yes, it's using Apa106 method, but according to https://github.com/Makuna/NeoPixelBus/pull/795#issuecomment-2466545330
+// that's the one that's closest in timing and works. I've also tried the NeoEsp32Rmt0Ws2811Method and while it worked I was seeing
+// the occasional LED displayed in the wrong position.
+NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Apa106Method> strip{LED_COUNT, LED_PIN};
   
   // Station to LED mappings
   std::map<String, StationLEDMapping> stationMap;

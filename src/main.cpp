@@ -48,7 +48,7 @@ void setup() {
 
 void dumpMemoryStats()
 {
-  if (psramInit())
+  if (psramFound())
   {
     Serial.printf("Total PSRAM size: %lu kB\r\n", ESP.getPsramSize() / 1024);
     Serial.printf("Free PSRAM size: %lu kB\r\n", ESP.getFreePsram() / 1024);

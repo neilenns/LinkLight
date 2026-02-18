@@ -158,17 +158,17 @@ void LEDController::displayTrainPositions() {
       
       // Log with closest or next station depending on state
       if (train.state == TrainState::AT_STATION) {
-        LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, state: AT_STATION, dir: %s, line: %s)", 
+        LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, state: AT_STATION, dir: %s, line: %d)", 
                  train.tripId.c_str(), ledIndex, 
                  train.closestStopName.c_str(),
                  train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
-                 train.line.c_str());
+                 static_cast<int>(train.line));
       } else {
-        LINK_LOGD(LOG_TAG, "Train %s at LED %d (next: %s, state: MOVING, dir: %s, line: %s)", 
+        LINK_LOGD(LOG_TAG, "Train %s at LED %d (next: %s, state: MOVING, dir: %s, line: %d)", 
                  train.tripId.c_str(), ledIndex, 
                  train.nextStopName.c_str(),
                  train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
-                 train.line.c_str());
+                 static_cast<int>(train.line));
       }
     }
   }

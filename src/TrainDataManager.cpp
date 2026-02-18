@@ -25,7 +25,7 @@ struct TripInfo {
   String tripHeadsign;
 };
 
-bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& line) {
+bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
   // Get the data object
   JsonObject data = doc["data"];
   if (data.isNull()) {
@@ -59,7 +59,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     }
   }
 
-  LINK_LOGI(LOG_TAG, "Loaded %u trips and %u stops for %s", tripMap.size(), stopIdToNameMap.size(), line.c_str());
+  LINK_LOGI(LOG_TAG, "Loaded %u trips and %u stops for %d Line", tripMap.size(), stopIdToNameMap.size(), static_cast<int>(line));
 
   // Process the list array
   JsonArray list = data["list"];
@@ -160,7 +160,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
     trainDataList.push_back(train);
 
     // Log parsed data
-    LINK_LOGD(LOG_TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%s, state=%s",
+    LINK_LOGD(LOG_TAG, "Train: tripId=%s, closestStop=%s (%s), closestStopOffset=%d, nextStop=%s (%s), nextStopOffset=%d, direction=%s, route=%s, headsign=%s, line=%d, state=%s",
       train.tripId.c_str(),
       train.closestStop.c_str(),
       train.closestStopName.c_str(),
@@ -171,20 +171,20 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, const String& l
       train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound",
       train.routeId.c_str(),
       train.tripHeadsign.c_str(),
-      train.line.c_str(),
+      static_cast<int>(train.line),
       train.state == TrainState::AT_STATION ? "AT_STATION" : "MOVING");
   }
 
   return true;
 }
 
-void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const String& lineName, const String& apiKey) {
+void TrainDataManager::fetchTrainDataForRoute(const String& routeId, Line line, const String& apiKey) {
   // Use static buffer to avoid heap allocation for URL string on every call
   char url[256];
   snprintf(url, sizeof(url), "%s/trips-for-route/%s.json?%s=%s", 
            API_BASE_URL, routeId.c_str(), API_KEY_PARAM, apiKey.c_str());
   
-  LINK_LOGD(LOG_TAG, "Fetching data for %s (route: %s)", lineName.c_str(), routeId.c_str());
+  LINK_LOGD(LOG_TAG, "Fetching data for %d Line (route: %s)", static_cast<int>(line), routeId.c_str());
   
   HTTPClient http;
   http.setTimeout(10000);
@@ -195,21 +195,21 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, const Strin
     WiFiClient* stream = http.getStreamPtr();
 
     if (stream == nullptr) {
-      LINK_LOGE(LOG_TAG, "Failed to get HTTP stream for %s. URL: %s", lineName.c_str(), url);
+      LINK_LOGE(LOG_TAG, "Failed to get HTTP stream for %d Line. URL: %s", static_cast<int>(line), url);
     } else {
       JsonDocument doc(PSRAMJsonAllocator::instance());
       DeserializationError error = deserializeJson(doc, *stream);
 
       if (error) {
-        LINK_LOGE(LOG_TAG, "JSON parsing failed for %s: %s. URL: %s", lineName.c_str(), error.c_str(), url);
+        LINK_LOGE(LOG_TAG, "JSON parsing failed for %d Line: %s. URL: %s", static_cast<int>(line), error.c_str(), url);
       } else {
-        LINK_LOGD(LOG_TAG, "Successfully retrieved %s train data", lineName.c_str());
-        parseTrainDataFromJson(doc, lineName);
+        LINK_LOGD(LOG_TAG, "Successfully retrieved %d Line train data", static_cast<int>(line));
+        parseTrainDataFromJson(doc, line);
       }
     }
   } else {
-    LINK_LOGW(LOG_TAG, "HTTP request failed for %s with code %d. URL: %s. Will retry on next update cycle.", 
-             lineName.c_str(), httpCode, url);
+    LINK_LOGW(LOG_TAG, "HTTP request failed for %d Line with code %d. URL: %s. Will retry on next update cycle.", 
+             static_cast<int>(line), httpCode, url);
   }
 
   http.end();
@@ -240,7 +240,7 @@ void TrainDataManager::updateTrainPositions() {
       return;
     }
 
-    if (parseTrainDataFromJson(doc, LINE_1_NAME)) {
+    if (parseTrainDataFromJson(doc, Line::LINE_1)) {
       LINK_LOGI(LOG_TAG, "Successfully loaded sample train data from LittleFS");
     }
 
@@ -250,6 +250,6 @@ void TrainDataManager::updateTrainPositions() {
   LINK_LOGD(LOG_TAG, "Updating train positions...");
 
   // Fetch data for both lines
-  fetchTrainDataForRoute(LINE_1_ROUTE_ID, LINE_1_NAME, apiKey);
-  fetchTrainDataForRoute(LINE_2_ROUTE_ID, LINE_2_NAME, apiKey);
+  fetchTrainDataForRoute(LINE_1_ROUTE_ID, Line::LINE_1, apiKey);
+  fetchTrainDataForRoute(LINE_2_ROUTE_ID, Line::LINE_2, apiKey);
 }

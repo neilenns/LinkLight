@@ -6,7 +6,7 @@ LinkLight is an ESP32-S3 firmware project that displays real-time SoundTransit L
 
 ### Key Technologies
 
-- **Hardware**: ESP32-S3 microcontroller (DevKitC-1), WS2812 LED strip (50 LEDs)
+- **Hardware**: SeeedStudio XIAO ESP32-S3 microcontroller, WS2812 LED strip (50 LEDs)
 - **Framework**: Arduino-ESP32
 - **Build System**: PlatformIO
 - **Libraries**: WiFiManager, NeoPixelBus, ArduinoJson, Preferences
@@ -92,7 +92,7 @@ LinkLight/
 │       └── Artifacts: firmware.bin, firmware.elf
 │
 ├── platformio.ini            # PlatformIO configuration
-│   ├── Target: esp32-s3-devkitc-1
+│   ├── Target: seeed_xiao_esp32s3
 │   ├── Platform: espressif32
 │   ├── Framework: arduino
 │   └── Dependencies: WiFiManager 2.0.17, NeoPixelBus 2.8.4, ArduinoJson 7.2.0
@@ -152,6 +152,7 @@ platformio run --target clean
 5. Click "Publish release"
 
 GitHub Actions will automatically:
+
 1. Build firmware.bin and firmware.elf
 2. Attach binaries to the release
 

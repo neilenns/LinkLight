@@ -23,10 +23,19 @@ void WebServerManager::setup() {
   
   // Start server
   server.begin();
+  
+  // Setup WebSocket
+  webSocket.begin();
+  webSocket.onEvent([this](uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
+    this->handleWebSocketEvent(num, type, payload, length);
+  });
+  
+  LINK_LOGI(LOG_TAG, "WebSocket server started on port %d", WEB_SOCKET_PORT);
 }
 
 void WebServerManager::handleClient() {
   server.handleClient();
+  webSocket.loop();
 }
 
 void WebServerManager::handleRoot() {
@@ -150,4 +159,71 @@ void WebServerManager::handleLogsData() {
   serializeJson(doc, jsonResponse);
   
   server.send(200, "application/json", jsonResponse);
+}
+
+void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length) {
+  switch(type) {
+    case WStype_DISCONNECTED:
+      LINK_LOGD(LOG_TAG, "WebSocket client #%u disconnected", clientNum);
+      break;
+      
+    case WStype_CONNECTED: {
+      IPAddress ip = webSocket.remoteIP(clientNum);
+      LINK_LOGI(LOG_TAG, "WebSocket client #%u connected from %s", clientNum, ip.toString().c_str());
+      
+      // Send initial logs to the newly connected client
+      esp32_psram::VectorPSRAM<LogEntry> logs = logManager.getLogs();
+      
+      // Create JSON for initial logs
+      JsonDocument doc(PSRAMJsonAllocator::instance());
+      doc["type"] = "initial";
+      JsonArray logsArray = doc["logs"].to<JsonArray>();
+      
+      for (const auto& entry : logs) {
+        JsonObject logObj = logsArray.add<JsonObject>();
+        logObj["timestamp"] = entry.timestamp;
+        logObj["level"] = entry.level;
+        logObj["tag"] = entry.tag;
+        logObj["message"] = entry.message;
+      }
+      
+      String jsonResponse;
+      serializeJson(doc, jsonResponse);
+      webSocket.sendTXT(clientNum, jsonResponse);
+      break;
+    }
+      
+    case WStype_TEXT:
+      // Handle incoming text messages if needed
+      LINK_LOGD(LOG_TAG, "WebSocket message from client #%u: %s", clientNum, payload);
+      break;
+      
+    case WStype_ERROR:
+      LINK_LOGE(LOG_TAG, "WebSocket error on client #%u", clientNum);
+      break;
+      
+    default:
+      break;
+  }
+}
+
+void WebServerManager::broadcastLog(const char* level, const char* tag, const char* message, unsigned long timestamp) {
+  // Only broadcast if there are connected clients
+  if (webSocket.connectedClients() == 0) {
+    return;
+  }
+  
+  // Create JSON for the new log entry
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  doc["type"] = "log";
+  doc["timestamp"] = timestamp;
+  doc["level"] = level;
+  doc["tag"] = tag;
+  doc["message"] = message;
+  
+  String jsonResponse;
+  serializeJson(doc, jsonResponse);
+  
+  // Broadcast to all connected clients
+  webSocket.broadcastTXT(jsonResponse);
 }

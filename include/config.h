@@ -14,6 +14,7 @@
 
 // Web Server Configuration
 #define WEB_SERVER_PORT 80
+#define WEB_SOCKET_PORT 81
 
 // API Configuration
 #define API_BASE_URL "https://api.pugetsound.onebusaway.org/api/where"

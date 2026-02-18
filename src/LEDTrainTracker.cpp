@@ -60,18 +60,10 @@ void LEDTrainTracker::display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2811Metho
   strip.Show();
 }
 
+// Logs the train counts in two lines, one for northbound and one for southbound LEDs.
+// Southbound: 0 0 0 0 0 0 0 0 0 2 0 1 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+// Northbound: 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 void LEDTrainTracker::logTrainCounts() {
-  // Log northbound LEDs (0 up to 54)
-  String northboundLog = "Northbound:  ";
-  for (int i = 0; i <= 54; i++) {
-    int totalTrains = ledCounts[i].line1Count + ledCounts[i].line2Count;
-    northboundLog += String(totalTrains);
-    if (i < 54) {
-      northboundLog += " ";
-    }
-  }
-  LINK_LOGI(LOG_TAG, "%s", northboundLog.c_str());
-  
   // Log southbound LEDs (109 down to 55)
   String southboundLog = "Southbound: ";
   for (int i = 109; i >= 55; i--) {
@@ -82,4 +74,15 @@ void LEDTrainTracker::logTrainCounts() {
     }
   }
   LINK_LOGI(LOG_TAG, "%s", southboundLog.c_str());
+
+  // Log northbound LEDs (0 up to 54)
+  String northboundLog = "Northbound:  ";
+  for (int i = 0; i <= 54; i++) {
+    int totalTrains = ledCounts[i].line1Count + ledCounts[i].line2Count;
+    northboundLog += String(totalTrains);
+    if (i < 54) {
+      northboundLog += " ";
+    }
+  }
+  LINK_LOGI(LOG_TAG, "%s", northboundLog.c_str());
 }

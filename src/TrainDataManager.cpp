@@ -69,12 +69,10 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     // Extract tripId from the list item
     train.tripId = item["tripId"].as<String>();
 
-    // Validate critical fields - skip trains with missing data
-    // Note: We skip trains missing critical position/timing data (status, nextStop, nextStopTimeOffset)
-    // but allow trains that haven't started yet (scheduledDistanceAlongTrip == 0)
+    // Trains without a status aren't actually running, so we skip them entirely instead of trying to parse incomplete data.
     JsonObject status = item["status"];
     if (status.isNull()) {
-      LINK_LOGW(LOG_TAG, "Status missing for trip %s", train.tripId.c_str());
+      LINK_LOGW(LOG_TAG, "Status missing for trip %s, skipping train", train.tripId.c_str());
       continue;
     }
 

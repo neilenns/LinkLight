@@ -10,45 +10,46 @@ LEDController ledController;
 
 void LEDController::initializeStationMaps() {
   // Indexes are origin 0.
-  stationMap["Federal Way Downtown"] =    {1, 108};
-  stationMap["Star Lake"] =               {3, 106};
-  stationMap["Kent Des Moines"] =         {5, 104};
-  stationMap["Angle Lake"] =              {7, 102};
-  stationMap["SeaTac/Airport"] =          {9, 100};
-  stationMap["Tukwila Int'l Blvd"] =      {11, 98};
-  stationMap["Rainier Beach"] =           {13, 96};
-  stationMap["Othello"] =                 {15, 94};
-  stationMap["Columbia City"] =           {17, 92};
-  stationMap["Mount Baker"] =             {19, 90};
-  stationMap["Beacon Hill"] =             {21, 88};
-  stationMap["SODO"] =                    {23, 86};
-  stationMap["Stadium"] =                 {25, 84};
-  stationMap["Int'l Dist/Chinatown"] =    {27, 82};
-  stationMap["Pioneer Square"] =          {29, 80};
-  stationMap["Symphony"] =                {31, 78};
-  stationMap["Westlake"] =                {33, 76};
-  stationMap["Capitol Hill"] =            {35, 74};
-  stationMap["Univ of Washington"] =      {37, 72};
-  stationMap["U District"] =              {39, 70};
-  stationMap["Roosevelt"] =               {41, 68};
-  stationMap["Northgate"] =               {43, 66};
-  stationMap["Pinehurst"] =               {45, 64};
-  stationMap["Shoreline South/148th"] =   {47, 62};
-  stationMap["Shoreline North/185th"] =   {49, 60};
-  stationMap["Mountlake Terrace"] =       {51, 58};
-  stationMap["Lynnwood City Center"] =    {53, 56};
-  stationMap["Downtown Redmond"] =        {111, 158};
-  stationMap["Marymoor Village"] =        {113, 156};
-  stationMap["Redmond Technology"] =      {115, 154};
-  stationMap["Overlake Village"] =        {117, 152};
-  stationMap["BelRed"] =                  {119, 150};
-  stationMap["Spring District"] =         {121, 148};
-  stationMap["Wilburton"] =               {123, 146};
-  stationMap["Bellevue Downtown"] =       {125, 144};
-  stationMap["East Main"] =               {127, 142};
-  stationMap["South Bellevue"] =          {129, 140};
-  stationMap["Mercer Island"] =           {131, 138};
-  stationMap["Judkins Park"] =            {133, 136};
+  // {northboundIndex, northboundEnrouteIndex, southboundIndex, southboundEnrouteIndex}
+  stationMap["Federal Way Downtown"] =    {53, 52, 56, 55};
+  stationMap["Star Lake"] =               {51, 50, 58, 57};
+  stationMap["Kent Des Moines"] =         {49, 48, 60, 59};
+  stationMap["Angle Lake"] =              {47, 46, 62, 61};
+  stationMap["SeaTac/Airport"] =          {45, 44, 64, 63};
+  stationMap["Tukwila Int'l Blvd"] =      {43, 42, 66, 65};
+  stationMap["Rainier Beach"] =           {41, 40, 68, 67};
+  stationMap["Othello"] =                 {39, 38, 70, 69};
+  stationMap["Columbia City"] =           {37, 36, 72, 71};
+  stationMap["Mount Baker"] =             {35, 34, 74, 73};
+  stationMap["Beacon Hill"] =             {33, 32, 76, 75};
+  stationMap["SODO"] =                    {31, 30, 78, 77};
+  stationMap["Stadium"] =                 {29, 28, 80, 79};
+  stationMap["Int'l Dist/Chinatown"] =    {27, 26, 82, 81};
+  stationMap["Pioneer Square"] =          {25, 24, 84, 83};
+  stationMap["Symphony"] =                {23, 22, 86, 85};
+  stationMap["Westlake"] =                {21, 20, 88, 87};
+  stationMap["Capitol Hill"] =            {19, 18, 90, 89};
+  stationMap["Univ of Washington"] =      {17, 16, 92, 91};
+  stationMap["U District"] =              {15, 14, 94, 93};
+  stationMap["Roosevelt"] =               {13, 12, 96, 95};
+  stationMap["Northgate"] =               {11, 10, 98, 97};
+  stationMap["Pinehurst"] =               {9, 8, 100, 99};
+  stationMap["Shoreline South/148th"] =   {7, 6, 102, 101};
+  stationMap["Shoreline North/185th"] =   {5, 4, 104, 103};
+  stationMap["Mountlake Terrace"] =       {3, 2, 106, 105};
+  stationMap["Lynnwood City Center"] =    {1, 0, 108, 107};
+  stationMap["Downtown Redmond"] =        {111, 110, 158, 157};
+  stationMap["Marymoor Village"] =        {113, 112, 156, 155};
+  stationMap["Redmond Technology"] =      {115, 114, 154, 153};
+  stationMap["Overlake Village"] =        {117, 116, 152, 151};
+  stationMap["BelRed"] =                  {119, 118, 150, 149};
+  stationMap["Spring District"] =         {121, 120, 148, 147};
+  stationMap["Wilburton"] =               {123, 122, 146, 145};
+  stationMap["Bellevue Downtown"] =       {125, 124, 144, 143};
+  stationMap["East Main"] =               {127, 126, 142, 141};
+  stationMap["South Bellevue"] =          {129, 128, 140, 139};
+  stationMap["Mercer Island"] =           {131, 130, 138, 137};
+  stationMap["Judkins Park"] =            {133, 132, 136, 135};
 }
 
 void LEDController::setup() {
@@ -126,11 +127,7 @@ int LEDController::getTrainLEDIndex(const TrainData& train) {
     }
 
     const StationLEDMapping& nextMapping = nextStationInfo->second;
-    if (isNorthbound) {
-      ledIndex = nextMapping.northboundIndex - 1;
-    } else {
-      ledIndex = nextMapping.southboundIndex - 1;
-    }    
+    ledIndex = isNorthbound ? nextMapping.northboundEnrouteIndex : nextMapping.southboundEnrouteIndex;
   }
 
   // Ensure the index is within valid bounds
@@ -203,12 +200,22 @@ void LEDController::testStationLEDs(const String& stationName) {
     strip.SetPixelColor(mapping.northboundIndex, COLOR_GREEN);
     LINK_LOGD(LOG_TAG, "Northbound LED at index %d", mapping.northboundIndex);
   }
-  
+
+  if (mapping.northboundEnrouteIndex >= 0 && mapping.northboundEnrouteIndex < LED_COUNT) {
+    strip.SetPixelColor(mapping.northboundEnrouteIndex, COLOR_YELLOW);
+    LINK_LOGD(LOG_TAG, "Northbound enroute LED at index %d", mapping.northboundEnrouteIndex);
+  }
+
   if (mapping.southboundIndex >= 0 && mapping.southboundIndex < LED_COUNT) {
     strip.SetPixelColor(mapping.southboundIndex, COLOR_BLUE);
     LINK_LOGD(LOG_TAG, "Southbound LED at index %d", mapping.southboundIndex);
   }
-  
+
+  if (mapping.southboundEnrouteIndex >= 0 && mapping.southboundEnrouteIndex < LED_COUNT) {
+    strip.SetPixelColor(mapping.southboundEnrouteIndex, COLOR_YELLOW);
+    LINK_LOGD(LOG_TAG, "Southbound LED at index %d", mapping.southboundEnrouteIndex);
+  }
+
   // Update the strip
   strip.Show();
 }

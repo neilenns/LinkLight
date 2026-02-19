@@ -1,25 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>LinkLight</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { color: #0066cc; }
-    a { display: inline-block; margin: 10px 0; padding: 10px 20px; background-color: #0066cc; color: white; text-decoration: none; border-radius: 4px; }
-    a:hover { background-color: #0052a3; }
-    .info { margin: 20px 0; padding: 10px; background-color: #f0f0f0; border-radius: 4px; }
-  </style>
-</head>
-<body>
-  <h1>LinkLight</h1>
-  <div class='info'>
-    <p><strong>Status:</strong> Running</p>
-    <p><strong>Hostname:</strong> {{hostname}}</p>
-    <p><strong>IP Address:</strong> {{ipAddress}}</p>
-  </div>
-  <a href='/config'>Configuration</a>
-  <a href='/logs'>System Logs</a>
-  <a href='/trains'>Train Status</a>
-</body>
+  <head>
+    <title>LinkLight</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+    ></script>
+    <style>
+      body {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        padding: 20px;
+        box-sizing: border-box;
+        font-family: var(--sl-font-sans);
+        max-width: 600px;
+      }
+
+      h1 {
+        color: #4ec9b0;
+        margin: 0 0 20px 0;
+      }
+
+      .info {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #252526;
+        border-radius: var(--sl-border-radius-medium);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .info-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: var(--sl-font-size-medium);
+      }
+
+      .info-label {
+        color: #9cdcfe;
+        font-weight: var(--sl-font-weight-semibold);
+        min-width: 100px;
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body class="sl-theme-dark">
+    <h1>LinkLight</h1>
+
+    <div class="info">
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <sl-badge variant="success" pill>Running</sl-badge>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Hostname</span>
+        <span>{{hostname}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">IP address</span>
+        <span>{{ipAddress}}</span>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <sl-button href="/config">Configuration</sl-button>
+      <sl-button href="/logs">System logs</sl-button>
+      <sl-button href="/trains">Train status</sl-button>
+    </div>
+  </body>
 </html>

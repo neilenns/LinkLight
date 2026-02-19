@@ -9,9 +9,6 @@
 static const char* LOG_TAG = "LEDController";
 
 // Row definitions shared by logTrainCounts() and serializeLEDState().
-// The extra spaces in the Line 2 log prefixes are intentional and align the digits with how things look
-// on the physical LED layout, with the between-station LEDs between Judkins Park and ID/Chinatown
-// aligning above ID/Chinatown.
 struct LEDRowDef {
   const char* label;
   const char* logPrefix;
@@ -20,11 +17,14 @@ struct LEDRowDef {
   bool descending;
 };
 
+// The extra spaces in the Line 2 log prefixes are intentional and align the digits with how things look
+// on the physical LED layout, with the between-station LEDs between Judkins Park and ID/Chinatown
+// aligning above ID/Chinatown.
 static const LEDRowDef LED_ROW_DEFS[] = {
-  { "Line 2 southbound", "Line 2 southbound:       ", 159, 135, true  },
-  { "Line 2 northbound", "Line 2 northbound:       ", 110, 134, false },
-  { "Line 1 southbound", "Line 1 southbound: ",       109,  55, true  },
-  { "Line 1 northbound", "Line 1 northbound: ",         0,  54, false },
+  { "Line 2 northbound", "Line 2 northbound:       ", 159, 135, true  },
+  { "Line 2 southbound", "Line 2 southbound:       ", 110, 134, false },
+  { "Line 1 northbound", "Line 1 northbound: ",       109,  55, true  },
+  { "Line 1 southbound", "Line 1 southbound: ",         0,  54, false },
 };
 
 LEDController ledController;
@@ -33,49 +33,49 @@ void LEDController::initializeStationMaps() {
   // Indexes are origin 0.
   // {northboundIndex, northboundEnrouteIndex, southboundIndex, southboundEnrouteIndex}
   // 1 and 2 Line stations
-  stationMap["Lynnwood City Center"] =    {1, 0, 108, 107};
-  stationMap["Mountlake Terrace"] =       {3, 2, 106, 105};
-  stationMap["Shoreline North/185th"] =   {5, 4, 104, 103};
-  stationMap["Shoreline South/148th"] =   {7, 6, 102, 101};
-  stationMap["Pinehurst"] =               {9, 8, 100, 99};
-  stationMap["Northgate"] =               {11, 10, 98, 97};
-  stationMap["Roosevelt"] =               {13, 12, 96, 95};
-  stationMap["U District"] =              {15, 14, 94, 93};
-  stationMap["Univ of Washington"] =      {17, 16, 92, 91};
-  stationMap["Capitol Hill"] =            {19, 18, 90, 89};
-  stationMap["Westlake"] =                {21, 20, 88, 87};
-  stationMap["Symphony"] =                {23, 22, 86, 85};
-  stationMap["Pioneer Square"] =          {25, 24, 84, 83};
-  stationMap["Int'l Dist/Chinatown"] =    {27, 26, 82, 81};
+  stationMap["Lynnwood City Center"] =    {108, 107, 1, 0};
+  stationMap["Mountlake Terrace"] =       {106, 105, 3, 2};
+  stationMap["Shoreline North/185th"] =   {104, 103, 5, 4};
+  stationMap["Shoreline South/148th"] =   {102, 101, 7, 6};
+  stationMap["Pinehurst"] =               {100, 99, 9, 8};
+  stationMap["Northgate"] =               {98, 97, 11, 10};
+  stationMap["Roosevelt"] =               {96, 95, 13, 12};
+  stationMap["U District"] =              {94, 93, 15, 14};
+  stationMap["Univ of Washington"] =      {92, 91, 17, 16};
+  stationMap["Capitol Hill"] =            {90, 89, 19, 18};
+  stationMap["Westlake"] =                {88, 87, 21, 20};
+  stationMap["Symphony"] =                {86, 85, 23, 22};
+  stationMap["Pioneer Square"] =          {84, 83, 25, 24};
+  stationMap["Int'l Dist/Chinatown"] =    {82, 81, 27, 26};
 
   // 1 Line stations
-  stationMap["Stadium"] =                 {29, 28, 80, 79};
-  stationMap["SODO"] =                    {31, 30, 78, 77};
-  stationMap["Beacon Hill"] =             {33, 32, 76, 75};
-  stationMap["Mount Baker"] =             {35, 34, 74, 73};
-  stationMap["Columbia City"] =           {37, 36, 72, 71};
-  stationMap["Othello"] =                 {39, 38, 70, 69};
-  stationMap["Rainier Beach"] =           {41, 40, 68, 67};
-  stationMap["Tukwila Int'l Blvd"] =      {43, 42, 66, 65};
-  stationMap["SeaTac/Airport"] =          {45, 44, 64, 63};
-  stationMap["Angle Lake"] =              {47, 46, 62, 61};
-  stationMap["Kent Des Moines"] =         {49, 48, 60, 59};
-  stationMap["Star Lake"] =               {51, 50, 58, 57};
-  stationMap["Federal Way Downtown"] =    {53, 52, 56, 55};
+  stationMap["Stadium"] =                 {80, 79, 29, 28};
+  stationMap["SODO"] =                    {78, 77, 31, 30};
+  stationMap["Beacon Hill"] =             {76, 75, 33, 32};
+  stationMap["Mount Baker"] =             {74, 73, 35, 34};
+  stationMap["Columbia City"] =           {72, 71, 37, 36};
+  stationMap["Othello"] =                 {70, 69, 39, 38};
+  stationMap["Rainier Beach"] =           {68, 67, 41, 40};
+  stationMap["Tukwila Int'l Blvd"] =      {66, 65, 43, 42};
+  stationMap["SeaTac/Airport"] =          {64, 63, 45, 44};
+  stationMap["Angle Lake"] =              {62, 61, 47, 46};
+  stationMap["Kent Des Moines"] =         {60, 59, 49, 48};
+  stationMap["Star Lake"] =               {58, 57, 51, 50};
+  stationMap["Federal Way Downtown"] =    {56, 55, 53, 52};
 
   // 2 Line stations
-  stationMap["Downtown Redmond"] =        {111, 110, 158, 157};
-  stationMap["Marymoor Village"] =        {113, 112, 156, 155};
-  stationMap["Redmond Technology"] =      {115, 114, 154, 153};
-  stationMap["Overlake Village"] =        {117, 116, 152, 151};
-  stationMap["BelRed"] =                  {119, 118, 150, 149};
-  stationMap["Spring District"] =         {121, 120, 148, 147};
-  stationMap["Wilburton"] =               {123, 122, 146, 145};
-  stationMap["Bellevue Downtown"] =       {125, 124, 144, 143};
-  stationMap["East Main"] =               {127, 126, 142, 141};
-  stationMap["South Bellevue"] =          {129, 128, 140, 139};
-  stationMap["Mercer Island"] =           {131, 130, 138, 137};
-  stationMap["Judkins Park"] =            {133, 132, 136, 135};
+  stationMap["Downtown Redmond"] =        {158, 157, 111, 110};
+  stationMap["Marymoor Village"] =        {156, 155, 113, 112};
+  stationMap["Redmond Technology"] =      {154, 153, 115, 114};
+  stationMap["Overlake Village"] =        {152, 151, 117, 116};
+  stationMap["BelRed"] =                  {150, 149, 119, 118};
+  stationMap["Spring District"] =         {148, 147, 121, 120};
+  stationMap["Wilburton"] =               {146, 145, 123, 122};
+  stationMap["Bellevue Downtown"] =       {144, 143, 125, 124};
+  stationMap["East Main"] =               {142, 141, 127, 126};
+  stationMap["South Bellevue"] =          {140, 139, 129, 128};
+  stationMap["Mercer Island"] =           {138, 137, 131, 130};
+  stationMap["Judkins Park"] =            {136, 135, 133, 132};
 }
 
 void LEDController::setup() {

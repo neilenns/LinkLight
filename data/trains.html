@@ -273,20 +273,20 @@
 
     <div class="led-grid" id="ledGrid">
       <div class="led-row">
-        <span class="led-row-label">Line 2 southbound</span>
-        <div class="leds-container" id="leds-Line 2 southbound"></div>
-      </div>
-      <div class="led-row">
         <span class="led-row-label">Line 2 northbound</span>
         <div class="leds-container" id="leds-Line 2 northbound"></div>
       </div>
       <div class="led-row">
-        <span class="led-row-label">Line 1 southbound</span>
-        <div class="leds-container" id="leds-Line 1 southbound"></div>
+        <span class="led-row-label">Line 2 southbound</span>
+        <div class="leds-container" id="leds-Line 2 southbound"></div>
       </div>
       <div class="led-row">
         <span class="led-row-label">Line 1 northbound</span>
         <div class="leds-container" id="leds-Line 1 northbound"></div>
+      </div>
+      <div class="led-row">
+        <span class="led-row-label">Line 1 southbound</span>
+        <div class="leds-container" id="leds-Line 1 southbound"></div>
       </div>
     </div>
 
@@ -386,6 +386,8 @@
             html +=
               '<div class="led-square' +
               (hasTrains ? " has-trains" : "") +
+              '" id="led-' +
+              ledIndex +
               '" style="background-color:' +
               color +
               ';"';

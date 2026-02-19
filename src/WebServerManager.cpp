@@ -275,14 +275,12 @@ void WebServerManager::handleUpdateFirmware() {
     if (!Update.begin(UPDATE_SIZE_UNKNOWN, U_FLASH)) {
       String error = "Update begin failed: " + String(Update.errorString());
       LINK_LOGE(LOG_TAG, "%s", error.c_str());
-      server.send(500, "text/plain", error);
       Update.printError(Serial);
     }
   } else if (upload.status == UPLOAD_FILE_WRITE) {
     // Write firmware data
     if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
-      String error = "Update write failed";
-      LINK_LOGE(LOG_TAG, "%s", error.c_str());
+      LINK_LOGE(LOG_TAG, "Update write failed");
       Update.printError(Serial);
     }
   } else if (upload.status == UPLOAD_FILE_END) {
@@ -297,6 +295,10 @@ void WebServerManager::handleUpdateFirmware() {
       server.send(500, "text/plain", error);
       Update.printError(Serial);
     }
+  } else if (upload.status == UPLOAD_FILE_ABORTED) {
+    Update.end();
+    LINK_LOGE(LOG_TAG, "Update aborted");
+    server.send(500, "text/plain", "Update aborted");
   }
 }
 
@@ -310,14 +312,12 @@ void WebServerManager::handleUpdateFilesystem() {
     if (!Update.begin(UPDATE_SIZE_UNKNOWN, U_SPIFFS)) {
       String error = "Update begin failed: " + String(Update.errorString());
       LINK_LOGE(LOG_TAG, "%s", error.c_str());
-      server.send(500, "text/plain", error);
       Update.printError(Serial);
     }
   } else if (upload.status == UPLOAD_FILE_WRITE) {
     // Write filesystem data
     if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
-      String error = "Update write failed";
-      LINK_LOGE(LOG_TAG, "%s", error.c_str());
+      LINK_LOGE(LOG_TAG, "Update write failed");
       Update.printError(Serial);
     }
   } else if (upload.status == UPLOAD_FILE_END) {
@@ -332,6 +332,10 @@ void WebServerManager::handleUpdateFilesystem() {
       server.send(500, "text/plain", error);
       Update.printError(Serial);
     }
+  } else if (upload.status == UPLOAD_FILE_ABORTED) {
+    Update.end();
+    LINK_LOGE(LOG_TAG, "Update aborted");
+    server.send(500, "text/plain", "Update aborted");
   }
 }
 

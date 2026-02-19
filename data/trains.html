@@ -174,7 +174,6 @@
       }
       tr.focused-train td {
         background-color: #1e3a2e;
-        outline: 1px solid #4ec9b0;
       }
       tbody tr {
         cursor: pointer;
@@ -426,9 +425,15 @@
               ? "dir-northbound"
               : "dir-southbound";
           const lineClass = train.line === 1 ? "line-1" : "line-2";
-          const focusedClass = train.vehicleId === focusedVehicleId ? " focused-train" : "";
+          const focusedClass =
+            train.vehicleId === focusedVehicleId ? " focused-train" : "";
 
-          html += '<tr data-vehicle-id="' + escapeHtml(train.vehicleId) + '" class="' + focusedClass.trim() + '">';
+          html +=
+            '<tr data-vehicle-id="' +
+            escapeHtml(train.vehicleId) +
+            '" class="' +
+            focusedClass.trim() +
+            '">';
           html += "<td>" + escapeHtml(train.vehicleId) + "</td>";
           html += '<td class="' + lineClass + '">Line ' + train.line + "</td>";
           html +=
@@ -622,11 +627,13 @@
         ledPopup.hidePopover();
       });
 
-      document.getElementById("trainTableBody").addEventListener("click", function (e) {
-        const row = e.target.closest("tr[data-vehicle-id]");
-        if (!row) return;
-        setFocus(row.dataset.vehicleId);
-      });
+      document
+        .getElementById("trainTableBody")
+        .addEventListener("click", function (e) {
+          const row = e.target.closest("tr[data-vehicle-id]");
+          if (!row) return;
+          setFocus(row.dataset.vehicleId);
+        });
 
       function setFocus(vehicleId) {
         focusedVehicleId = focusedVehicleId === vehicleId ? "" : vehicleId;
@@ -641,7 +648,9 @@
         }
 
         if (ws && ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify({ type: "setFocus", vehicleId: focusedVehicleId }));
+          ws.send(
+            JSON.stringify({ type: "setFocus", vehicleId: focusedVehicleId }),
+          );
         }
 
         if (lastTrains !== null) {

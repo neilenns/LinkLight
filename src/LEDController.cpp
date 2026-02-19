@@ -291,17 +291,29 @@ void LEDController::serializeLEDState(String& output) const {
   for (const LEDRowDef& row : LED_ROW_DEFS) {
     JsonObject rowObj = rows.add<JsonObject>();
     rowObj["label"] = row.label;
-    JsonArray leds = rowObj["leds"].to<JsonArray>();
 
-    // Walk the LEDs in the correct direction for this row (descending or ascending index).
+    // Include the total LED count so the browser knows how many squares to render,
+    // plus the start index and direction so it can compute physical LED indices.
+    int count = row.descending ? (row.start - row.end + 1) : (row.end - row.start + 1);
+    rowObj["count"] = count;
+    rowObj["start"] = row.start;
+    rowObj["descending"] = row.descending;
+
+    // Only emit LEDs that have at least one train — empty LEDs are implicitly off.
+    JsonArray leds = rowObj["leds"].to<JsonArray>();
     int step = row.descending ? -1 : 1;
     for (int ledIndex = row.start; row.descending ? (ledIndex >= row.end) : (ledIndex <= row.end); ledIndex += step) {
+      const std::vector<TrainAtLED>& trains = trainTracker.getTrainsAtLED(ledIndex);
+      if (trains.empty()) {
+        continue;
+      }
+
       JsonObject led = leds.add<JsonObject>();
       led["index"] = ledIndex;
 
       // Add the vehicleId for each train present at this LED position.
       JsonArray trainIds = led["trainIds"].to<JsonArray>();
-      for (const TrainAtLED& train : trainTracker.getTrainsAtLED(ledIndex)) {
+      for (const TrainAtLED& train : trains) {
         trainIds.add(train.vehicleId);
       }
     }

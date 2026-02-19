@@ -394,10 +394,23 @@
           const container = document.getElementById("leds-" + row.label);
           if (!container) return;
 
+          // Build a sparse map of physicalLEDIndex → trainIds from the non-empty LEDs in the message.
+          const ledMap = {};
+          if (row.leds) {
+            row.leds.forEach(function (led) {
+              ledMap[led.index] = led.trainIds;
+            });
+          }
+
+          // Render count squares. Compute the physical LED index for each position using the
+          // row's start index and direction, then look it up in the map. Absent = off.
           let html = "";
-          row.leds.forEach(function (led) {
-            const color = getLEDColorFromTrainIds(led.trainIds || []);
-            const hasTrains = led.trainIds && led.trainIds.length > 0;
+          const step = row.descending ? -1 : 1;
+          for (let pos = 0; pos < row.count; pos++) {
+            const ledIndex = row.start + pos * step;
+            const ids = ledMap[ledIndex] || [];
+            const color = getLEDColorFromTrainIds(ids);
+            const hasTrains = ids.length > 0;
             html +=
               '<div class="led-square' +
               (hasTrains ? " has-trains" : "") +
@@ -405,10 +418,10 @@
               color +
               ';"';
             if (hasTrains) {
-              html += ' data-ids="' + escapeHtml(led.trainIds.join(",")) + '"';
+              html += ' data-ids="' + escapeHtml(ids.join(",")) + '"';
             }
             html += "></div>";
-          });
+          }
           container.innerHTML = html;
         });
       }

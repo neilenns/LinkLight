@@ -44,11 +44,15 @@ jobs:
       - name: Build firmware
         run: platformio run
 
+      - name: Build filesystem
+        run: platformio run --target buildfs
+
       - name: Prepare artifacts
         run: |
           mkdir -p artifacts
           cp .pio/build/seeed_xiao_esp32s3/firmware.bin artifacts/LinkLight-firmware.bin
           cp .pio/build/seeed_xiao_esp32s3/firmware.elf artifacts/LinkLight-firmware.elf
+          cp .pio/build/seeed_xiao_esp32s3/littlefs.bin artifacts/LinkLight-littlefs.bin
 
       - name: Create artifact zip
         run: |
@@ -82,6 +86,7 @@ jobs:
             The artifact contains:
             - \`LinkLight-firmware.bin\` - Firmware binary for flashing
             - \`LinkLight-firmware.elf\` - ELF file for debugging
+            - \`LinkLight-littlefs.bin\` - Filesystem image for flashing
 
             *Artifacts will be available for 30 days.*`;
 

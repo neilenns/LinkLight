@@ -3,6 +3,14 @@
   <head>
     <title>LinkLight - Logs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+    ></script>
     <style>
       html,
       body {
@@ -11,8 +19,8 @@
         padding: 0;
         overflow: hidden;
       }
+
       body {
-        font-family: "Courier New", monospace;
         background-color: #1e1e1e;
         color: #d4d4d4;
         display: flex;
@@ -20,69 +28,41 @@
         padding: 20px;
         box-sizing: border-box;
       }
+
       h1 {
         color: #4ec9b0;
-        font-family: Arial, sans-serif;
+        font-family: var(--sl-font-sans);
         margin: 0 0 10px 0;
         flex-shrink: 0;
       }
+
       .controls {
         margin: 20px 0;
         padding: 15px;
         background-color: #252526;
-        border-radius: 4px;
+        border-radius: var(--sl-border-radius-medium);
         display: flex;
-        gap: 15px;
+        gap: 10px;
         align-items: center;
         flex-wrap: wrap;
         flex-shrink: 0;
       }
-      .controls label {
-        font-family: Arial, sans-serif;
-        margin-right: 5px;
+
+      sl-select {
+        min-width: 150px;
       }
-      .controls select,
-      .controls button {
-        padding: 8px 12px;
-        background-color: #3c3c3c;
-        color: #d4d4d4;
-        border: 1px solid #555;
-        border-radius: 4px;
-        cursor: pointer;
-        font-family: Arial, sans-serif;
-      }
-      .controls button:hover {
-        background-color: #505050;
-      }
-      .controls button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-      .controls select:focus,
-      .controls button:focus {
-        outline: 2px solid #0066cc;
-      }
-      a.home-link {
-        display: inline-block;
-        padding: 8px 16px;
-        background-color: #0066cc;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        font-family: Arial, sans-serif;
-      }
-      a.home-link:hover {
-        background-color: #0052a3;
-      }
+
       .log-container {
         background-color: #1e1e1e;
         border: 1px solid #3c3c3c;
-        border-radius: 4px;
+        border-radius: var(--sl-border-radius-medium);
         padding: 15px;
         flex: 1;
         overflow-y: auto;
         min-height: 0;
+        font-family: "Courier New", monospace;
       }
+
       .log-entry {
         margin: 4px 0;
         padding: 4px 8px;
@@ -91,102 +71,74 @@
         line-height: 1.4;
         white-space: pre;
       }
+
       .log-entry:hover {
         background-color: #2d2d30;
       }
+
       .log-timestamp {
         color: #858585;
         font-size: 11px;
         margin-right: 10px;
       }
+
       .log-tag {
         font-weight: bold;
         margin-right: 10px;
       }
+
       .log-level-I {
         color: #4ec9b0;
       }
+
       .log-level-W {
         color: #dcdcaa;
       }
+
       .log-level-E {
         color: #f48771;
       }
+
       .log-level-D {
         color: #9cdcfe;
       }
+
       .log-level-V {
         color: #c586c0;
       }
-      .connection-status {
-        color: #858585;
-        font-size: 12px;
-      }
-      .connection-status.connected {
-        color: #4ec9b0;
-      }
-      .connection-status.disconnected {
-        color: #f48771;
-      }
-      .paused-indicator {
-        background-color: #5a4d1d;
-        color: #dcdcaa;
-        padding: 10px;
-        border-radius: 4px;
-        text-align: center;
-        margin: 10px 0;
-        display: none;
-        flex-shrink: 0;
-      }
-      .paused-indicator.visible {
-        display: block;
-      }
-      .status {
-        margin: 10px 0;
-        padding: 10px;
-        background-color: #252526;
-        border-radius: 4px;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        flex-shrink: 0;
-      }
-      .status.error {
-        background-color: #5a1d1d;
-        color: #f48771;
-      }
-      .status.success {
-        background-color: #1d5a1d;
-        color: #4ec9b0;
-      }
     </style>
   </head>
-  <body>
-    <h1>LinkLight - System Logs</h1>
+  <body class="sl-theme-dark">
+    <h1>LinkLight - System logs</h1>
 
     <div class="controls">
-      <a href="/" class="home-link">Home</a>
+      <sl-button href="/" size="small">Home</sl-button>
 
-      <label for="levelFilter">Filter Level:</label>
-      <select
+      <sl-select
         id="levelFilter"
+        size="small"
+        value="all"
         aria-label="Filter logs by level"
-        onchange="filterLogs()"
       >
-        <option value="all">All</option>
-        <option value="E">Error</option>
-        <option value="W">Warning</option>
-        <option value="I">Info</option>
-        <option value="D">Debug</option>
-        <option value="V">Verbose</option>
-      </select>
+        <sl-option value="all">All</sl-option>
+        <sl-option value="E">Error</sl-option>
+        <sl-option value="W">Warning</sl-option>
+        <sl-option value="I">Info</sl-option>
+        <sl-option value="D">Debug</sl-option>
+        <sl-option value="V">Verbose</sl-option>
+      </sl-select>
 
-      <button id="pauseButton" onclick="togglePause()">Pause</button>
-      <button onclick="clearDisplay()">Clear Display</button>
+      <sl-button id="pauseButton" size="small">Pause</sl-button>
+      <sl-button id="clearButton" size="small">Clear display</sl-button>
 
-      <span class="connection-status" id="connectionStatus">Connecting...</span>
+      <sl-badge id="connectionStatus" variant="neutral">Connecting...</sl-badge>
     </div>
 
-    <div id="status" class="status" style="display: none"></div>
+    <sl-alert
+      id="status"
+      variant="danger"
+      style="flex-shrink: 0; margin: 0 0 10px 0;"
+    ></sl-alert>
 
     <div class="log-container" id="logContainer">
       <div style="color: #858585; text-align: center; padding: 20px">
@@ -200,6 +152,15 @@
       let ws = null;
       let reconnectTimer = null;
       let wsPort = 81; // WebSocket port
+
+      const pauseButton = document.getElementById("pauseButton");
+      const clearButton = document.getElementById("clearButton");
+      const levelFilter = document.getElementById("levelFilter");
+      const statusAlert = document.getElementById("status");
+
+      levelFilter.addEventListener("sl-change", filterLogs);
+      pauseButton.addEventListener("click", togglePause);
+      clearButton.addEventListener("click", clearDisplay);
 
       function formatTimestamp(ms) {
         const seconds = Math.floor(ms / 1000);
@@ -225,7 +186,7 @@
 
       function displayLogs() {
         const container = document.getElementById("logContainer");
-        const filter = document.getElementById("levelFilter").value;
+        const filter = levelFilter.value;
 
         let filteredLogs = allLogs;
         if (filter !== "all") {
@@ -283,41 +244,37 @@
 
       function togglePause() {
         isPaused = !isPaused;
-        const button = document.getElementById("pauseButton");
 
         if (isPaused) {
-          button.textContent = "Resume";
+          pauseButton.textContent = "Resume";
         } else {
-          button.textContent = "Pause";
+          pauseButton.textContent = "Pause";
           // Refresh display when resuming
           displayLogs();
         }
       }
 
       function updateStatus(type, message) {
-        const statusDiv = document.getElementById("status");
-        statusDiv.textContent = message;
-        statusDiv.className =
-          "status " +
-          (type === "error" ? "error" : type === "success" ? "success" : "");
-        statusDiv.style.display = "block";
+        statusAlert.variant = type === "error" ? "danger" : "success";
+        statusAlert.textContent = message;
+        statusAlert.open = true;
 
         // Hide success messages after 3 seconds
         if (type === "success") {
           setTimeout(() => {
-            statusDiv.style.display = "none";
+            statusAlert.open = false;
           }, 3000);
         }
       }
 
       function updateConnectionStatus(connected) {
-        const statusSpan = document.getElementById("connectionStatus");
+        const badge = document.getElementById("connectionStatus");
         if (connected) {
-          statusSpan.textContent = "Connected";
-          statusSpan.className = "connection-status connected";
+          badge.textContent = "Connected";
+          badge.variant = "success";
         } else {
-          statusSpan.textContent = "Disconnected";
-          statusSpan.className = "connection-status disconnected";
+          badge.textContent = "Disconnected";
+          badge.variant = "danger";
         }
       }
 

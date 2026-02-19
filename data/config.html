@@ -1,124 +1,214 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>LinkLight Configuration</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { color: #0066cc; }
-    h2 { color: #0066cc; margin-top: 30px; }
-    form { max-width: 400px; }
-    label { display: block; margin: 10px 0 5px; font-weight: bold; }
-    input, select { width: 100%; padding: 8px; margin-bottom: 15px; box-sizing: border-box; }
-    input[type="color"] { height: 50px; cursor: pointer; }
-    button { padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
-    button:hover { background-color: #0052a3; }
-    button.test-station { background-color: #28a745; }
-    button.test-station:hover { background-color: #218838; }
-    a { display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; }
-    .test-section { margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 4px; max-width: 400px; }
-    .feedback { margin-top: 10px; padding: 10px; border-radius: 4px; display: none; }
-    .feedback.success { background-color: #d4edda; color: #155724; display: block; }
-    .feedback.error { background-color: #f8d7da; color: #721c24; display: block; }
-    .color-section { margin-top: 30px; padding: 20px; background-color: #f0f8ff; border-radius: 4px; }
-  </style>
-  <script>
-    // Set the selected timezone on page load
-    window.addEventListener('DOMContentLoaded', function() {
-      var savedTimezone = '{{timezone}}';
-      var select = document.querySelector('select[name="timezone"]');
-      if (select && savedTimezone) {
-        select.value = savedTimezone;
+  <head>
+    <title>LinkLight - Configuration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+    ></script>
+    <style>
+      body {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        padding: 20px;
+        box-sizing: border-box;
+        font-family: var(--sl-font-sans);
+        max-width: 600px;
       }
-    });
-    
-    function testStation() {
-      var stationSelect = document.querySelector('select[name="testStation"]');
-      var feedbackDiv = document.getElementById('test-feedback');
-      
-      if (!stationSelect || !stationSelect.value) {
-        feedbackDiv.className = 'feedback error';
-        feedbackDiv.textContent = 'Please select a station';
-        return;
+
+      h1 {
+        color: #4ec9b0;
+        margin: 0 0 20px 0;
       }
-      
-      feedbackDiv.className = 'feedback';
-      feedbackDiv.textContent = 'Testing...';
-      feedbackDiv.style.display = 'block';
-      
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/test-station', true);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      
-      xhr.onload = function() {
-        if (xhr.status === 200) {
-          feedbackDiv.className = 'feedback success';
-          feedbackDiv.textContent = 'Station LEDs are now lit! Northbound = Green, Southbound = Blue';
-        } else {
-          feedbackDiv.className = 'feedback error';
-          feedbackDiv.textContent = 'Error testing station: ' + xhr.statusText;
-        }
-      };
-      
-      xhr.onerror = function() {
-        feedbackDiv.className = 'feedback error';
-        feedbackDiv.textContent = 'Network error occurred';
-      };
-      
-      xhr.send('stationName=' + encodeURIComponent(stationSelect.value));
-    }
-  </script>
-</head>
-<body>
-  <h1>LinkLight Configuration</h1>
-  <form method='POST' action='/config'>
-    <label>Hostname:</label>
-    <input type='text' name='hostname' value='{{hostname}}' placeholder='LinkLight'>
-    <label>API Key:</label>
-    <input type='text' name='apiKey' value='{{apiKey}}' placeholder='Enter OneBusAway API key'>
-    <label>Timezone:</label>
-    <select name='timezone'>
-      <option value='PST8PDT,M3.2.0,M11.1.0'>Pacific Time (with DST)</option>
-      <option value='PST8'>Pacific Standard Time (no DST)</option>
-      <option value='MST7MDT,M3.2.0,M11.1.0'>Mountain Time (with DST)</option>
-      <option value='MST7'>Mountain Standard Time (no DST)</option>
-      <option value='CST6CDT,M3.2.0,M11.1.0'>Central Time (with DST)</option>
-      <option value='CST6'>Central Standard Time (no DST)</option>
-      <option value='EST5EDT,M3.2.0,M11.1.0'>Eastern Time (with DST)</option>
-      <option value='EST5'>Eastern Standard Time (no DST)</option>
-      <option value='UTC0'>UTC</option>
-    </select>
-    <label>Refresh Interval (seconds):</label>
-    <input type='number' name='updateInterval' value='{{updateInterval}}' min='15' max='60' placeholder='30'>
-    
-    <div class='color-section'>
-      <h2>LED Color Settings</h2>
-      <label>Line 1 Color:</label>
-      <input type='color' name='line1Color' value='{{line1Color}}'>
-      
-      <label>Line 2 Color:</label>
-      <input type='color' name='line2Color' value='{{line2Color}}'>
-      
-      <label>Overlap Color (when both lines are at same spot):</label>
-      <input type='color' name='sharedColor' value='{{sharedColor}}'>
+
+      .controls {
+        margin-bottom: 20px;
+      }
+
+      .form-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #252526;
+        border-radius: var(--sl-border-radius-medium);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .section-heading {
+        color: #9cdcfe;
+        font-size: var(--sl-font-size-medium);
+        font-weight: var(--sl-font-weight-semibold);
+        margin: 0;
+      }
+
+      .color-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .color-row sl-color-picker {
+        flex-shrink: 0;
+      }
+
+      .color-label {
+        font-size: var(--sl-font-size-small);
+        color: #d4d4d4;
+      }
+    </style>
+  </head>
+  <body class="sl-theme-dark">
+    <h1>LinkLight - Configuration</h1>
+
+    <div class="controls">
+      <sl-button href="/" size="small">Home</sl-button>
     </div>
-    
-    <button type='submit'>Save Configuration</button>
-  </form>
-  
-  <div class='test-section'>
-    <h2>Test Station LEDs</h2>
-    <label>Select Station:</label>
-    <select name='testStation'>
-      <option value=''>Choose a station...</option>
-      {{#stations}}
-      <option value='{{name}}'>{{name}}</option>
-      {{/stations}}
-    </select>
-    <button type='button' class='test-station' onclick='testStation()'>Test Station LEDs</button>
-    <div id='test-feedback' class='feedback'></div>
-  </div>
-  
-  <a href='/'>Back to Home</a>
-</body>
+
+    <form method="POST" action="/config">
+      <div class="form-section">
+        <sl-input
+          label="Hostname"
+          name="hostname"
+          value="{{hostname}}"
+          placeholder="LinkLight"
+        ></sl-input>
+        <sl-input
+          label="API key"
+          name="apiKey"
+          value="{{apiKey}}"
+          placeholder="Enter OneBusAway API key"
+        ></sl-input>
+        <sl-select label="Timezone" name="timezone" value="{{timezone}}">
+          <sl-option value="PST8PDT,M3.2.0,M11.1.0"
+            >Pacific Time (with DST)</sl-option
+          >
+          <sl-option value="PST8">Pacific Standard Time (no DST)</sl-option>
+          <sl-option value="MST7MDT,M3.2.0,M11.1.0"
+            >Mountain Time (with DST)</sl-option
+          >
+          <sl-option value="MST7">Mountain Standard Time (no DST)</sl-option>
+          <sl-option value="CST6CDT,M3.2.0,M11.1.0"
+            >Central Time (with DST)</sl-option
+          >
+          <sl-option value="CST6">Central Standard Time (no DST)</sl-option>
+          <sl-option value="EST5EDT,M3.2.0,M11.1.0"
+            >Eastern Time (with DST)</sl-option
+          >
+          <sl-option value="EST5">Eastern Standard Time (no DST)</sl-option>
+          <sl-option value="UTC0">UTC</sl-option>
+        </sl-select>
+        <sl-input
+          label="Refresh interval (seconds)"
+          name="updateInterval"
+          type="number"
+          value="{{updateInterval}}"
+          min="15"
+          max="60"
+        ></sl-input>
+      </div>
+
+      <div class="form-section">
+        <p class="section-heading">LED color settings</p>
+        <div class="color-row">
+          <sl-color-picker
+            name="line1Color"
+            value="{{line1Color}}"
+            format="hex"
+            no-format-toggle
+            size="small"
+            label="Line 1 color"
+          ></sl-color-picker>
+          <span class="color-label">Line 1 color</span>
+        </div>
+        <div class="color-row">
+          <sl-color-picker
+            name="line2Color"
+            value="{{line2Color}}"
+            format="hex"
+            no-format-toggle
+            size="small"
+            label="Line 2 color"
+          ></sl-color-picker>
+          <span class="color-label">Line 2 color</span>
+        </div>
+        <div class="color-row">
+          <sl-color-picker
+            name="sharedColor"
+            value="{{sharedColor}}"
+            format="hex"
+            no-format-toggle
+            size="small"
+            label="Overlap color (when both lines are at same spot)"
+          ></sl-color-picker>
+          <span class="color-label">Overlap color (when both lines are at same spot)</span>
+        </div>
+      </div>
+
+      <sl-button type="submit" variant="primary">Save configuration</sl-button>
+    </form>
+
+    <div class="form-section" style="margin-top: 20px">
+      <p class="section-heading">Test station LEDs</p>
+      <sl-select id="testStationSelect" label="Select station">
+        <sl-option value="">Choose a station...</sl-option>
+        {{#stations}}
+        <sl-option value="{{name}}">{{name}}</sl-option>
+        {{/stations}}
+      </sl-select>
+      <div>
+        <sl-button onclick="testStation()">Test station LEDs</sl-button>
+      </div>
+      <sl-alert id="test-feedback" variant="success" closable></sl-alert>
+    </div>
+
+    <script>
+      function testStation() {
+        var stationSelect = document.getElementById("testStationSelect");
+        var feedbackAlert = document.getElementById("test-feedback");
+
+        if (!stationSelect || !stationSelect.value) {
+          feedbackAlert.variant = "danger";
+          feedbackAlert.textContent = "Please select a station";
+          feedbackAlert.open = true;
+          return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/test-station", true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded",
+        );
+
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            feedbackAlert.variant = "success";
+            feedbackAlert.textContent =
+              "Station LEDs are now lit! Northbound = Green, Southbound = Blue";
+          } else {
+            feedbackAlert.variant = "danger";
+            feedbackAlert.textContent =
+              "Error testing station: " + xhr.statusText;
+          }
+          feedbackAlert.open = true;
+        };
+
+        xhr.onerror = function () {
+          feedbackAlert.variant = "danger";
+          feedbackAlert.textContent = "Network error occurred";
+          feedbackAlert.open = true;
+        };
+
+        xhr.send(
+          "stationName=" + encodeURIComponent(stationSelect.value),
+        );
+      }
+    </script>
+  </body>
 </html>

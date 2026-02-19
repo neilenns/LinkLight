@@ -251,10 +251,10 @@ const std::map<String, StationLEDMapping>& LEDController::getStationMap() const 
 }
 
 // Logs the train counts in four rows, one for each LED segment of the physical layout.
-// 00:01:30[I] LEDController:Line 2 southbound:       0 0 1 0 1 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0
-// 00:01:30[I] LEDController:Line 2 northbound:       0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0
-// 00:01:30[I] LEDController:Line 1 southbound: 0 0 2 1 1 0 0 0 0 1 0 0 0 0 2 0 1 0 0 0 0 0 0 1 0 0 0 3 0 0 0 0 0 0 1 0 1 1 1 1 0 0 1 0 0 0 0 1 0 0 1 0 1 0 0
-// 00:01:30[I] LEDController:Line 1 northbound: 0 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0 1 0 0 0 0 0 0 0 2 0 0 1 0 0 1 0 1 0 1 0 1 0 0 0 1 0 0 0 2 0 1 0 1 0 4 0 0
+// 00:16:43[I] LEDController:Line 2 northbound:       0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0
+// 00:16:43[I] LEDController:Line 2 southbound:       1 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0
+// 00:16:43[I] LEDController:Line 1 northbound: 0 1 1 1 3 0 1 0 3 0 0 0 2 1 1 0 2 0 1 1 0 0 1 0 0 1 0 0 2 0 1 0 1 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0 0
+// 00:16:43[I] LEDController:Line 1 southbound: 0 1 0 0 1 0 1 0 0 0 0 1 1 0 0 0 1 0 1 0 1 0 1 1 0 1 1 1 0 0 1 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 0 1 0 1 0 0
 void LEDController::logTrainCounts() const {
   // Iterate over all four physical LED rows and log the count of trains at each LED position.
   for (const LEDRowDef& row : LED_ROW_DEFS) {

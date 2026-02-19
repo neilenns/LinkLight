@@ -44,11 +44,15 @@ jobs:
       - name: Build firmware
         run: platformio run
 
+      - name: Build filesystem
+        run: platformio run --target buildfs
+
       - name: Prepare artifacts
         run: |
           mkdir -p artifacts
           cp .pio/build/seeed_xiao_esp32s3/firmware.bin artifacts/LinkLight-firmware.bin
           cp .pio/build/seeed_xiao_esp32s3/firmware.elf artifacts/LinkLight-firmware.elf
+          cp .pio/build/seeed_xiao_esp32s3/littlefs.bin artifacts/LinkLight-littlefs.bin
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -80,6 +84,7 @@ jobs:
           files: |
             artifacts/LinkLight-firmware.bin
             artifacts/LinkLight-firmware.elf
+            artifacts/LinkLight-littlefs.bin
           draft: false
           prerelease: false
           generate_release_notes: true

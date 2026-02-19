@@ -2,40 +2,40 @@
 #define LEDTRAINTRACKER_H
 
 #include <NeoPixelBus.h>
+#include <vector>
 #include "config.h"
 #include "colors.h"
 
 // Forward declaration of Line enum from TrainDataManager.h
 enum class Line;
 
-// Structure to track train counts for both lines at a single LED
-struct LEDTrainCounts {
-  int line1Count = 0;
-  int line2Count = 0;
+// Structure to represent a single train at an LED position
+struct TrainAtLED {
+  String vehicleId;
+  Line line;
 };
 
-// Class to track train counts at each LED position
+// Class to track trains at each LED position
 class LEDTrainTracker {
 public:
   LEDTrainTracker();
   
-  // Increment the count of trains for a specific line at a specific LED
-  void incrementTrainCount(int ledIndex, Line line);
+  // Add a train at a specific LED
+  void addTrain(int ledIndex, Line line, const String& vehicleId);
   
-  // Reset all train counts to zero
+  // Reset all trains for all LEDs
   void reset();
   
-  // Display the trains on the LED strip based on current counts
+  // Display the trains on the LED strip based on current state
   // Yellow for both lines, line color for single line, black for no trains
   void display(NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Apa106Method>& strip);
-  
-  // Log the train counts for northbound (0-53) and southbound (108-56) stations
-  void logTrainCounts();
+
+  // Get read-only access to the trains at a specific LED
+  const std::vector<TrainAtLED>& getTrainsAtLED(int ledIndex) const;
   
 private:
-  // Array to track train counts for each LED using a struct
-  // Index represents LED position (0-113)
-  LEDTrainCounts ledCounts[LED_COUNT];
+  // Array of train lists, one per LED
+  std::vector<TrainAtLED> ledTrains[LED_COUNT];
 };
 
 #endif // LEDTRAINTRACKER_H

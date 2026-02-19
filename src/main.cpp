@@ -80,6 +80,9 @@ void loop() {
     
     // Display current train positions on LEDs
     ledController.displayTrainPositions();
+    
+    // Broadcast updated LED state to connected WebSocket clients
+    webServerManager.broadcastLEDState();
 
     dumpMemoryStats();
 

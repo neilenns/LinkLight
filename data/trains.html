@@ -73,18 +73,44 @@
       .connection-status.disconnected {
         color: #f48771;
       }
-      .paused-indicator {
-        background-color: #5a4d1d;
-        color: #dcdcaa;
-        padding: 10px;
+      .led-grid {
+        padding: 12px 15px;
+        background-color: #252526;
         border-radius: 4px;
-        text-align: center;
-        margin: 10px 0;
-        display: none;
+        margin: 0 0 10px 0;
+        flex-shrink: 0;
+        overflow-x: auto;
+      }
+      .led-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .led-row:last-child {
+        margin-bottom: 0;
+      }
+      .led-row-label {
+        width: 150px;
+        min-width: 150px;
+        font-size: 11px;
+        color: #858585;
+      }
+      .leds-container {
+        display: flex;
+        gap: 2px;
+      }
+      .led-square {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background-color: #1a1a1a;
         flex-shrink: 0;
       }
-      .paused-indicator.visible {
-        display: block;
+      .led-square.has-trains {
+        cursor: pointer;
+        outline: 1px solid rgba(255, 255, 255, 0.15);
       }
       .table-container {
         flex: 1;
@@ -112,14 +138,30 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      th:nth-child(1) { width: 10%; }  /* Vehicle ID */
-      th:nth-child(2) { width: 7%; }   /* Line */
-      th:nth-child(3) { width: 12%; }  /* Direction */
-      th:nth-child(4) { width: 16%; }  /* Headsign */
-      th:nth-child(5) { width: 12%; }  /* State */
-      th:nth-child(6) { width: 16%; }  /* Closest stop */
-      th:nth-child(7) { width: 16%; }  /* Next stop */
-      th:nth-child(8) { width: 11%; }  /* Next stop (dist) */
+      th:nth-child(1) {
+        width: 10%;
+      } /* Vehicle ID */
+      th:nth-child(2) {
+        width: 7%;
+      } /* Line */
+      th:nth-child(3) {
+        width: 12%;
+      } /* Direction */
+      th:nth-child(4) {
+        width: 16%;
+      } /* Headsign */
+      th:nth-child(5) {
+        width: 12%;
+      } /* State */
+      th:nth-child(6) {
+        width: 16%;
+      } /* Closest stop */
+      th:nth-child(7) {
+        width: 16%;
+      } /* Next stop */
+      th:nth-child(8) {
+        width: 11%;
+      } /* Next stop (dist) */
       td {
         padding: 8px 12px;
         border-bottom: 1px solid #2d2d30;
@@ -159,6 +201,52 @@
         font-size: 12px;
         margin-left: auto;
       }
+      /* LED hover popup */
+      .led-popup {
+        position: fixed;
+        inset: auto;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: transparent;
+        z-index: 100;
+        max-width: 280px;
+        cursor: text;
+      }
+      .led-popup:not(:popover-open) {
+        display: none;
+      }
+      .train-card {
+        background-color: #2d2d30;
+        border: 1px solid #3c3c3c;
+        border-radius: 4px;
+        padding: 8px 10px;
+        margin-bottom: 6px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .train-card:last-child {
+        margin-bottom: 0;
+      }
+      .train-card-header {
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+      .train-card-header.line-1 {
+        color: #4ec9b0;
+      }
+      .train-card-header.line-2 {
+        color: #569cd6;
+      }
+      .train-card-row {
+        color: #9cdcfe;
+      }
+      .train-card-state-at {
+        color: #4ec9b0;
+      }
+      .train-card-state-moving {
+        color: #9cdcfe;
+      }
     </style>
   </head>
   <body>
@@ -171,9 +259,26 @@
       <span class="last-updated" id="lastUpdated"></span>
     </div>
 
-    <div class="paused-indicator" id="pausedIndicator">
-      Updates paused. Click Resume to see the latest data.
+    <div class="led-grid" id="ledGrid">
+      <div class="led-row">
+        <span class="led-row-label">Line 2 southbound</span>
+        <div class="leds-container" id="leds-Line 2 southbound"></div>
+      </div>
+      <div class="led-row">
+        <span class="led-row-label">Line 2 northbound</span>
+        <div class="leds-container" id="leds-Line 2 northbound"></div>
+      </div>
+      <div class="led-row">
+        <span class="led-row-label">Line 1 southbound</span>
+        <div class="leds-container" id="leds-Line 1 southbound"></div>
+      </div>
+      <div class="led-row">
+        <span class="led-row-label">Line 1 northbound</span>
+        <div class="leds-container" id="leds-Line 1 northbound"></div>
+      </div>
     </div>
+
+    <div class="led-popup" id="ledPopup" popover="manual"></div>
 
     <div class="table-container">
       <table id="trainTable">
@@ -200,30 +305,95 @@
     <script>
       let isPaused = false;
       let pendingTrains = null;
+      let pendingLEDs = null;
       let ws = null;
       let reconnectTimer = null;
       let wsPort = 81;
+      let trainLookup = {};
 
       function togglePause() {
         isPaused = !isPaused;
         const button = document.getElementById("pauseButton");
-        const indicator = document.getElementById("pausedIndicator");
 
         if (isPaused) {
           button.textContent = "Resume";
-          indicator.classList.add("visible");
         } else {
           button.textContent = "Pause";
-          indicator.classList.remove("visible");
           if (pendingTrains !== null) {
             renderTrains(pendingTrains);
             pendingTrains = null;
           }
+          if (pendingLEDs !== null) {
+            renderLEDs(pendingLEDs);
+            pendingLEDs = null;
+          }
         }
+      }
+
+      function getLEDColorFromTrainIds(trainIds) {
+        let hasLine1 = false;
+        let hasLine2 = false;
+        for (const id of trainIds) {
+          const train = trainLookup[id];
+          if (!train) continue;
+          if (train.line === 1) hasLine1 = true;
+          if (train.line === 2) hasLine2 = true;
+        }
+        if (hasLine1 && hasLine2) return "#DDDD00";
+        if (hasLine1) return "#00c700";
+        if (hasLine2) return "#0000ff";
+        return "#1a1a1a";
+      }
+
+      function renderLEDs(ledsData) {
+        if (!ledsData.rows) return;
+
+        ledsData.rows.forEach(function (row) {
+          const container = document.getElementById("leds-" + row.label);
+          if (!container) return;
+
+          // Build a sparse map of physicalLEDIndex → trainIds from the non-empty LEDs in the message.
+          const ledMap = {};
+          if (row.leds) {
+            row.leds.forEach(function (led) {
+              ledMap[led.index] = led.trainIds;
+            });
+          }
+
+          // Render count squares. Compute the physical LED index for each position using the
+          // row's start index and direction, then look it up in the map. Absent = off.
+          let html = "";
+          const step = row.descending ? -1 : 1;
+          for (let pos = 0; pos < row.count; pos++) {
+            const ledIndex = row.start + pos * step;
+            const ids = ledMap[ledIndex] || [];
+            const color = getLEDColorFromTrainIds(ids);
+            const hasTrains = ids.length > 0;
+            html +=
+              '<div class="led-square' +
+              (hasTrains ? " has-trains" : "") +
+              '" style="background-color:' +
+              color +
+              ';"';
+            if (hasTrains) {
+              html += ' data-ids="' + escapeHtml(ids.join(",")) + '"';
+            }
+            html += "></div>";
+          }
+          container.innerHTML = html;
+        });
       }
 
       function renderTrains(trains) {
         const tbody = document.getElementById("trainTableBody");
+
+        // Update train lookup used by the LED grid popup and colour computation
+        trainLookup = {};
+        if (trains) {
+          trains.forEach(function (t) {
+            trainLookup[t.vehicleId] = t;
+          });
+        }
 
         if (!trains || trains.length === 0) {
           tbody.innerHTML =
@@ -243,12 +413,7 @@
 
           html += "<tr>";
           html += "<td>" + escapeHtml(train.vehicleId) + "</td>";
-          html +=
-            '<td class="' +
-            lineClass +
-            '">Line ' +
-            train.line +
-            "</td>";
+          html += '<td class="' + lineClass + '">Line ' + train.line + "</td>";
           html +=
             '<td class="' +
             dirClass +
@@ -292,6 +457,154 @@
         }
       }
 
+      // LED hover popup (native dialog)
+      const ledGrid = document.getElementById("ledGrid");
+      const ledPopup = document.getElementById("ledPopup");
+      let popupHideTimer = null;
+
+      function clearPopupHideTimer() {
+        if (popupHideTimer) {
+          clearTimeout(popupHideTimer);
+          popupHideTimer = null;
+        }
+      }
+
+      function schedulePopupHide() {
+        clearPopupHideTimer();
+        popupHideTimer = setTimeout(function () {
+          if (ledPopup.matches(":popover-open")) {
+            ledPopup.hidePopover();
+          }
+        }, 120);
+      }
+
+      function buildPopupHtml(ids) {
+        let html = "";
+        ids.forEach(function (id) {
+          const train = trainLookup[id];
+          if (!train) return;
+          const headerClass = train.line === 1 ? "line-1" : "line-2";
+          const stateClass =
+            train.state === "At Station"
+              ? "train-card-state-at"
+              : "train-card-state-moving";
+          html += '<div class="train-card">';
+          html +=
+            '<div class="train-card-header ' +
+            headerClass +
+            '">Vehicle ' +
+            escapeHtml(train.vehicleId) +
+            " &mdash; Line " +
+            train.line +
+            "</div>";
+          html +=
+            '<div class="train-card-row">' +
+            escapeHtml(train.direction) +
+            " &bull; " +
+            escapeHtml(train.headsign) +
+            "</div>";
+          html +=
+            '<div class="' +
+            stateClass +
+            '">' +
+            escapeHtml(train.state) +
+            "</div>";
+          html +=
+            '<div class="train-card-row">Closest: ' +
+            escapeHtml(train.closestStop) +
+            "</div>";
+          html +=
+            '<div class="train-card-row">Next: ' +
+            escapeHtml(train.nextStop) +
+            "</div>";
+          html +=
+            '<div class="train-card-row">Next stop offset: ' +
+            train.nextStopOffset +
+            "</div>";
+          html += "</div>";
+        });
+        return html;
+      }
+
+      function positionPopup(square) {
+        const rect = square.getBoundingClientRect();
+        let x = rect.left;
+        let y = rect.bottom + 4;
+
+        ledPopup.style.left = x + "px";
+        ledPopup.style.top = y + "px";
+
+        const popupRect = ledPopup.getBoundingClientRect();
+        if (popupRect.right > window.innerWidth) {
+          x = window.innerWidth - popupRect.width - 4;
+          ledPopup.style.left = x + "px";
+        }
+        if (popupRect.bottom > window.innerHeight) {
+          y = rect.top - popupRect.height - 4;
+          ledPopup.style.top = y + "px";
+        }
+      }
+
+      function showPopupForSquare(square) {
+        const ids = square.dataset.ids ? square.dataset.ids.split(",") : [];
+        if (!ids.length) return;
+
+        const html = buildPopupHtml(ids);
+        if (!html) return;
+
+        ledPopup.innerHTML = html;
+        if (!ledPopup.matches(":popover-open")) {
+          ledPopup.showPopover();
+        }
+        positionPopup(square);
+      }
+
+      ledGrid.addEventListener("pointerover", function (e) {
+        const square = e.target.closest(".led-square.has-trains");
+        if (!square) return;
+        clearPopupHideTimer();
+        showPopupForSquare(square);
+      });
+
+      ledGrid.addEventListener("pointerout", function (e) {
+        const square = e.target.closest(".led-square.has-trains");
+        if (!square) return;
+
+        if (
+          e.relatedTarget &&
+          (e.relatedTarget.closest(".led-square.has-trains") ||
+            e.relatedTarget.closest("#ledPopup"))
+        ) {
+          return;
+        }
+        schedulePopupHide();
+      });
+
+      ledPopup.addEventListener("pointerenter", function () {
+        clearPopupHideTimer();
+      });
+
+      ledPopup.addEventListener("pointerleave", function (e) {
+        if (
+          e.relatedTarget &&
+          e.relatedTarget.closest(".led-square.has-trains")
+        ) {
+          return;
+        }
+        schedulePopupHide();
+      });
+
+      document.addEventListener("pointerdown", function (e) {
+        if (!ledPopup.matches(":popover-open")) return;
+        if (
+          e.target.closest("#ledPopup") ||
+          e.target.closest(".led-square.has-trains")
+        ) {
+          return;
+        }
+        ledPopup.hidePopover();
+      });
+
       function connectWebSocket() {
         const host = window.location.hostname;
         ws = new WebSocket("ws://" + host + ":" + wsPort);
@@ -312,6 +625,12 @@
                 pendingTrains = data.trains;
               } else {
                 renderTrains(data.trains);
+              }
+            } else if (data.type === "leds") {
+              if (isPaused) {
+                pendingLEDs = data;
+              } else {
+                renderLEDs(data);
               }
             }
           } catch (e) {

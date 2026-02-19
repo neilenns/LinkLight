@@ -344,6 +344,9 @@ void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, ui
       
       // Send current train data to the newly connected client
       sendTrainData(clientNum);
+      
+      // Send current LED state to the newly connected client
+      sendLEDState(clientNum);
       break;
     }
       
@@ -379,5 +382,21 @@ void WebServerManager::broadcastLog(const char* level, const char* tag, const ch
   serializeJson(doc, jsonResponse);
   
   // Broadcast to all connected clients
+  webSocket.broadcastTXT(jsonResponse);
+}
+
+void WebServerManager::sendLEDState(uint8_t clientNum) {
+  String jsonResponse;
+  ledController.serializeLEDState(jsonResponse);
+  webSocket.sendTXT(clientNum, jsonResponse);
+}
+
+void WebServerManager::broadcastLEDState() {
+  if (webSocket.connectedClients() == 0) {
+    return;
+  }
+
+  String jsonResponse;
+  ledController.serializeLEDState(jsonResponse);
   webSocket.broadcastTXT(jsonResponse);
 }

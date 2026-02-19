@@ -3,8 +3,29 @@
 #include "LogManager.h"
 #include "colors.h"
 #include "PreferencesManager.h"
+#include <ArduinoJson.h>
+#include "PSRAMJsonAllocator.h"
 
 static const char* LOG_TAG = "LEDController";
+
+// Row definitions shared by logTrainCounts() and serializeLEDState().
+// The extra spaces in the Line 2 log prefixes are intentional and align the digits with how things look
+// on the physical LED layout, with the between-station LEDs between Judkins Park and ID/Chinatown
+// aligning above ID/Chinatown.
+struct LEDRowDef {
+  const char* label;
+  const char* logPrefix;
+  int start;
+  int end;
+  bool descending;
+};
+
+static const LEDRowDef LED_ROW_DEFS[] = {
+  { "Line 2 southbound", "Line 2 southbound:       ", 159, 135, true  },
+  { "Line 2 northbound", "Line 2 northbound:       ", 110, 134, false },
+  { "Line 1 southbound", "Line 1 southbound: ",       109,  55, true  },
+  { "Line 1 northbound", "Line 1 northbound: ",         0,  54, false },
+};
 
 LEDController ledController;
 
@@ -102,7 +123,7 @@ void LEDController::setAllLEDs(const RgbColor& color) {
   }
 }
 
-int LEDController::getTrainLEDIndex(const TrainData& train) {
+int LEDController::getTrainLEDIndex(const TrainData& train) const {
   int ledIndex = -1;
 
   // Determine if train is northbound or southbound
@@ -164,8 +185,8 @@ void LEDController::displayTrainPositions() {
     int ledIndex = getTrainLEDIndex(train);
     
     if (ledIndex >= 0) {
-      // Increment the count for this train's line at this LED
-      trainTracker.incrementTrainCount(ledIndex, train.line);
+      // Record this train at its LED index
+      trainTracker.addTrain(ledIndex, train.line, train.vehicleId);
       
       LINK_LOGD(LOG_TAG, "Train %s at LED %d (closest: %s, next: %s, state: %s, dir: %s, line: %d)", 
                 train.vehicleId.c_str(), ledIndex, 
@@ -178,7 +199,7 @@ void LEDController::displayTrainPositions() {
   }
   
   // Log train counts for debugging
-  trainTracker.logTrainCounts();
+  logTrainCounts();
   
   // Display all trains on the LED strip
   trainTracker.display(strip);
@@ -227,4 +248,70 @@ void LEDController::testStationLEDs(const String& stationName) {
 
 const std::map<String, StationLEDMapping>& LEDController::getStationMap() const {
   return stationMap;
+}
+
+// Logs the train counts in four rows, one for each LED segment of the physical layout.
+// 00:01:30[I] LEDController:Line 2 southbound:       0 0 1 0 1 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0
+// 00:01:30[I] LEDController:Line 2 northbound:       0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0
+// 00:01:30[I] LEDController:Line 1 southbound: 0 0 2 1 1 0 0 0 0 1 0 0 0 0 2 0 1 0 0 0 0 0 0 1 0 0 0 3 0 0 0 0 0 0 1 0 1 1 1 1 0 0 1 0 0 0 0 1 0 0 1 0 1 0 0
+// 00:01:30[I] LEDController:Line 1 northbound: 0 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0 1 0 0 0 0 0 0 0 2 0 0 1 0 0 1 0 1 0 1 0 1 0 0 0 1 0 0 0 2 0 1 0 1 0 4 0 0
+void LEDController::logTrainCounts() const {
+  // Iterate over all four physical LED rows and log the count of trains at each LED position.
+  for (const LEDRowDef& row : LED_ROW_DEFS) {
+    String log = row.logPrefix;
+
+    // Walk the LEDs in the correct direction for this row (descending or ascending index).
+    int step = row.descending ? -1 : 1;
+    for (int ledIndex = row.start; row.descending ? (ledIndex >= row.end) : (ledIndex <= row.end); ledIndex += step) {
+      log += String(trainTracker.getTrainsAtLED(ledIndex).size());
+      if (ledIndex != row.end) {
+        log += " ";
+      }
+    }
+
+    LINK_LOGI(LOG_TAG, "%s", log.c_str());
+  }
+}
+
+void LEDController::serializeLEDState(String& output) const {
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  doc["type"] = "leds";
+
+  // Build the 4 rows of LED data. Each LED carries only its vehicleIds;
+  // the browser derives the colour from its existing train data.
+  JsonArray rows = doc["rows"].to<JsonArray>();
+
+  // Iterate over the four physical LED rows and build the JSON representation.
+  for (const LEDRowDef& row : LED_ROW_DEFS) {
+    JsonObject rowObj = rows.add<JsonObject>();
+    rowObj["label"] = row.label;
+
+    // Include the total LED count so the browser knows how many squares to render,
+    // plus the start index and direction so it can compute physical LED indices.
+    int count = row.descending ? (row.start - row.end + 1) : (row.end - row.start + 1);
+    rowObj["count"] = count;
+    rowObj["start"] = row.start;
+    rowObj["descending"] = row.descending;
+
+    // Only emit LEDs that have at least one train — empty LEDs are implicitly off.
+    JsonArray leds = rowObj["leds"].to<JsonArray>();
+    int step = row.descending ? -1 : 1;
+    for (int ledIndex = row.start; row.descending ? (ledIndex >= row.end) : (ledIndex <= row.end); ledIndex += step) {
+      const std::vector<TrainAtLED>& trains = trainTracker.getTrainsAtLED(ledIndex);
+      if (trains.empty()) {
+        continue;
+      }
+
+      JsonObject led = leds.add<JsonObject>();
+      led["index"] = ledIndex;
+
+      // Add the vehicleId for each train present at this LED position.
+      JsonArray trainIds = led["trainIds"].to<JsonArray>();
+      for (const TrainAtLED& train : trains) {
+        trainIds.add(train.vehicleId);
+      }
+    }
+  }
+
+  serializeJson(doc, output);
 }

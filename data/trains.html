@@ -151,14 +151,30 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      th:nth-child(1) { width: 10%; }  /* Vehicle ID */
-      th:nth-child(2) { width: 7%; }   /* Line */
-      th:nth-child(3) { width: 12%; }  /* Direction */
-      th:nth-child(4) { width: 16%; }  /* Headsign */
-      th:nth-child(5) { width: 12%; }  /* State */
-      th:nth-child(6) { width: 16%; }  /* Closest stop */
-      th:nth-child(7) { width: 16%; }  /* Next stop */
-      th:nth-child(8) { width: 11%; }  /* Next stop (dist) */
+      th:nth-child(1) {
+        width: 10%;
+      } /* Vehicle ID */
+      th:nth-child(2) {
+        width: 7%;
+      } /* Line */
+      th:nth-child(3) {
+        width: 12%;
+      } /* Direction */
+      th:nth-child(4) {
+        width: 16%;
+      } /* Headsign */
+      th:nth-child(5) {
+        width: 12%;
+      } /* State */
+      th:nth-child(6) {
+        width: 16%;
+      } /* Closest stop */
+      th:nth-child(7) {
+        width: 16%;
+      } /* Next stop */
+      th:nth-child(8) {
+        width: 11%;
+      } /* Next stop (dist) */
       td {
         padding: 8px 12px;
         border-bottom: 1px solid #2d2d30;
@@ -201,10 +217,17 @@
       /* LED hover popup */
       .led-popup {
         position: fixed;
-        display: none;
+        inset: auto;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: transparent;
         z-index: 100;
         max-width: 280px;
         cursor: text;
+      }
+      .led-popup:not(:popover-open) {
+        display: none;
       }
       .train-card {
         background-color: #2d2d30;
@@ -272,7 +295,7 @@
       </div>
     </div>
 
-    <div class="led-popup" id="ledPopup"></div>
+    <div class="led-popup" id="ledPopup" popover="manual"></div>
 
     <div class="table-container">
       <table id="trainTable">
@@ -419,12 +442,7 @@
 
           html += "<tr>";
           html += "<td>" + escapeHtml(train.vehicleId) + "</td>";
-          html +=
-            '<td class="' +
-            lineClass +
-            '">Line ' +
-            train.line +
-            "</td>";
+          html += '<td class="' + lineClass + '">Line ' + train.line + "</td>";
           html +=
             '<td class="' +
             dirClass +
@@ -468,16 +486,28 @@
         }
       }
 
-      // LED hover popup
+      // LED hover popup (native dialog)
       const ledGrid = document.getElementById("ledGrid");
       const ledPopup = document.getElementById("ledPopup");
+      let popupHideTimer = null;
 
-      ledGrid.addEventListener("mouseover", function (e) {
-        const square = e.target.closest(".led-square.has-trains");
-        if (!square) return;
-        const ids = square.dataset.ids ? square.dataset.ids.split(",") : [];
-        if (!ids.length) return;
+      function clearPopupHideTimer() {
+        if (popupHideTimer) {
+          clearTimeout(popupHideTimer);
+          popupHideTimer = null;
+        }
+      }
 
+      function schedulePopupHide() {
+        clearPopupHideTimer();
+        popupHideTimer = setTimeout(function () {
+          if (ledPopup.matches(":popover-open")) {
+            ledPopup.hidePopover();
+          }
+        }, 120);
+      }
+
+      function buildPopupHtml(ids) {
         let html = "";
         ids.forEach(function (id) {
           const train = trainLookup[id];
@@ -522,48 +552,86 @@
             "</div>";
           html += "</div>";
         });
+        return html;
+      }
 
-        if (!html) return;
-        ledPopup.innerHTML = html;
-        ledPopup.style.display = "block";
-
+      function positionPopup(square) {
         const rect = square.getBoundingClientRect();
         let x = rect.left;
         let y = rect.bottom + 4;
+
         ledPopup.style.left = x + "px";
         ledPopup.style.top = y + "px";
 
-        // Adjust if popup goes off right edge
         const popupRect = ledPopup.getBoundingClientRect();
         if (popupRect.right > window.innerWidth) {
           x = window.innerWidth - popupRect.width - 4;
           ledPopup.style.left = x + "px";
         }
-        // Adjust if popup goes off bottom edge
         if (popupRect.bottom > window.innerHeight) {
           y = rect.top - popupRect.height - 4;
           ledPopup.style.top = y + "px";
         }
+      }
+
+      function showPopupForSquare(square) {
+        const ids = square.dataset.ids ? square.dataset.ids.split(",") : [];
+        if (!ids.length) return;
+
+        const html = buildPopupHtml(ids);
+        if (!html) return;
+
+        ledPopup.innerHTML = html;
+        if (!ledPopup.matches(":popover-open")) {
+          ledPopup.showPopover();
+        }
+        positionPopup(square);
+      }
+
+      ledGrid.addEventListener("pointerover", function (e) {
+        const square = e.target.closest(".led-square.has-trains");
+        if (!square) return;
+        clearPopupHideTimer();
+        showPopupForSquare(square);
       });
 
-      ledGrid.addEventListener("mouseout", function (e) {
-        // Keep popup visible if mouse is moving onto the popup or another LED square
+      ledGrid.addEventListener("pointerout", function (e) {
+        const square = e.target.closest(".led-square.has-trains");
+        if (!square) return;
+
         if (
           e.relatedTarget &&
-          (e.relatedTarget.closest(".led-square") ||
+          (e.relatedTarget.closest(".led-square.has-trains") ||
             e.relatedTarget.closest("#ledPopup"))
         ) {
           return;
         }
-        ledPopup.style.display = "none";
+        schedulePopupHide();
       });
 
-      ledPopup.addEventListener("mouseout", function (e) {
-        // Hide popup when mouse leaves it, unless moving back onto an LED square
-        if (e.relatedTarget && e.relatedTarget.closest(".led-square")) {
+      ledPopup.addEventListener("pointerenter", function () {
+        clearPopupHideTimer();
+      });
+
+      ledPopup.addEventListener("pointerleave", function (e) {
+        if (
+          e.relatedTarget &&
+          e.relatedTarget.closest(".led-square.has-trains")
+        ) {
           return;
         }
-        ledPopup.style.display = "none";
+        schedulePopupHide();
+      });
+
+      document.addEventListener("pointerdown", function (e) {
+        if (!ledPopup.matches(":popover-open")) return;
+        if (
+          e.target.closest("#ledPopup") ||
+          e.target.closest(".led-square.has-trains")
+        ) {
+          return;
+        }
+        ledPopup.hidePopover();
       });
 
       function connectWebSocket() {

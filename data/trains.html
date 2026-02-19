@@ -3,6 +3,14 @@
   <head>
     <title>LinkLight - Train Status</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+    ></script>
     <style>
       html,
       body {
@@ -12,7 +20,7 @@
         overflow: hidden;
       }
       body {
-        font-family: Arial, sans-serif;
+        font-family: var(--sl-font-sans);
         background-color: #1e1e1e;
         color: #d4d4d4;
         display: flex;
@@ -29,54 +37,17 @@
         margin: 20px 0;
         padding: 15px;
         background-color: #252526;
-        border-radius: 4px;
+        border-radius: var(--sl-border-radius-medium);
         display: flex;
         gap: 15px;
         align-items: center;
         flex-wrap: wrap;
         flex-shrink: 0;
       }
-      .controls button {
-        padding: 8px 12px;
-        background-color: #3c3c3c;
-        color: #d4d4d4;
-        border: 1px solid #555;
-        border-radius: 4px;
-        cursor: pointer;
-        font-family: Arial, sans-serif;
-      }
-      .controls button:hover {
-        background-color: #505050;
-      }
-      .controls button:focus {
-        outline: 2px solid #0066cc;
-      }
-      a.home-link {
-        display: inline-block;
-        padding: 8px 16px;
-        background-color: #0066cc;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        font-family: Arial, sans-serif;
-      }
-      a.home-link:hover {
-        background-color: #0052a3;
-      }
-      .connection-status {
-        color: #858585;
-        font-size: 12px;
-      }
-      .connection-status.connected {
-        color: #4ec9b0;
-      }
-      .connection-status.disconnected {
-        color: #f48771;
-      }
       .led-grid {
         padding: 12px 15px;
         background-color: #252526;
-        border-radius: 4px;
+        border-radius: var(--sl-border-radius-medium);
         margin: 0 0 10px 0;
         flex-shrink: 0;
         overflow-x: auto;
@@ -179,7 +150,6 @@
         cursor: pointer;
       }
       .focus-indicator {
-        color: #4ec9b0;
         font-size: 13px;
         display: none;
       }
@@ -260,14 +230,14 @@
       }
     </style>
   </head>
-  <body>
+  <body class="sl-theme-dark">
     <h1>LinkLight - Train Status</h1>
 
     <div class="controls">
-      <a href="/" class="home-link">Home</a>
-      <button id="pauseButton" onclick="togglePause()">Pause</button>
-      <span class="connection-status" id="connectionStatus">Connecting...</span>
-      <span class="focus-indicator" id="focusIndicator"></span>
+      <sl-button href="/" size="small">Home</sl-button>
+      <sl-button id="pauseButton" size="small">Pause</sl-button>
+      <sl-badge id="connectionStatus" variant="neutral" pill>Connecting...</sl-badge>
+      <sl-badge id="focusIndicator" class="focus-indicator" variant="primary" pill></sl-badge>
       <span class="last-updated" id="lastUpdated"></span>
     </div>
 
@@ -471,13 +441,13 @@
       }
 
       function updateConnectionStatus(connected) {
-        const statusSpan = document.getElementById("connectionStatus");
+        const badge = document.getElementById("connectionStatus");
         if (connected) {
-          statusSpan.textContent = "Connected";
-          statusSpan.className = "connection-status connected";
+          badge.textContent = "Connected";
+          badge.variant = "success";
         } else {
-          statusSpan.textContent = "Disconnected";
-          statusSpan.className = "connection-status disconnected";
+          badge.textContent = "Disconnected";
+          badge.variant = "danger";
         }
       }
 
@@ -643,7 +613,7 @@
         const indicator = document.getElementById("focusIndicator");
         if (focusedVehicleId) {
           indicator.textContent = "Focused: " + focusedVehicleId;
-          indicator.style.display = "inline";
+          indicator.style.display = "";
         } else {
           indicator.textContent = "";
           indicator.style.display = "none";
@@ -706,6 +676,10 @@
       }
 
       connectWebSocket();
+
+      document
+        .getElementById("pauseButton")
+        .addEventListener("click", togglePause);
     </script>
   </body>
 </html>

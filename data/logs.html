@@ -27,11 +27,11 @@
         flex-direction: column;
         padding: 20px;
         box-sizing: border-box;
+        font-family: var(--sl-font-sans);
       }
 
       h1 {
         color: #4ec9b0;
-        font-family: var(--sl-font-sans);
         margin: 0 0 10px 0;
         flex-shrink: 0;
       }
@@ -60,7 +60,7 @@
         flex: 1;
         overflow-y: auto;
         min-height: 0;
-        font-family: "Courier New", monospace;
+        font-family: var(--sl-font-mono);
       }
 
       .log-entry {
@@ -131,13 +131,15 @@
       <sl-button id="pauseButton" size="small">Pause</sl-button>
       <sl-button id="clearButton" size="small">Clear display</sl-button>
 
-      <sl-badge id="connectionStatus" variant="neutral">Connecting...</sl-badge>
+      <sl-badge id="connectionStatus" variant="neutral" pill
+        >Connecting...</sl-badge
+      >
     </div>
 
     <sl-alert
       id="status"
       variant="danger"
-      style="flex-shrink: 0; margin: 0 0 10px 0;"
+      style="flex-shrink: 0; margin: 0 0 10px 0"
     ></sl-alert>
 
     <div class="log-container" id="logContainer">

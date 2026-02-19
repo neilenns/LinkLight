@@ -277,12 +277,6 @@ void LEDController::serializeLEDState(String& output) const {
   JsonDocument doc(PSRAMJsonAllocator::instance());
   doc["type"] = "leds";
 
-  // Add configured colors so the browser can render each square correctly
-  JsonObject colors = doc["colors"].to<JsonObject>();
-  colors["line1"] = preferencesManager.getLine1Color();
-  colors["line2"] = preferencesManager.getLine2Color();
-  colors["shared"] = preferencesManager.getSharedColor();
-
   // Build the 4 rows of LED data. Each LED carries only its vehicleIds;
   // the browser derives the colour from its existing train data.
   JsonArray rows = doc["rows"].to<JsonArray>();

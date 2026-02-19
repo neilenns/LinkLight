@@ -326,7 +326,6 @@
       let ws = null;
       let reconnectTimer = null;
       let wsPort = 81;
-      let ledColors = { line1: "#001000", line2: "#000023", shared: "#232300" };
       let trainLookup = {};
 
       function togglePause() {
@@ -351,23 +350,6 @@
         }
       }
 
-      function scaleLEDColor(hex) {
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        const max = Math.max(r, g, b, 1);
-        const scale = 200 / max;
-        return (
-          "rgb(" +
-          Math.min(255, Math.round(r * scale)) +
-          "," +
-          Math.min(255, Math.round(g * scale)) +
-          "," +
-          Math.min(255, Math.round(b * scale)) +
-          ")"
-        );
-      }
-
       function getLEDColorFromTrainIds(trainIds) {
         let hasLine1 = false;
         let hasLine2 = false;
@@ -377,17 +359,13 @@
           if (train.line === 1) hasLine1 = true;
           if (train.line === 2) hasLine2 = true;
         }
-        if (hasLine1 && hasLine2) return scaleLEDColor(ledColors.shared);
-        if (hasLine1) return scaleLEDColor(ledColors.line1);
-        if (hasLine2) return scaleLEDColor(ledColors.line2);
+        if (hasLine1 && hasLine2) return "#ffff00";
+        if (hasLine1) return "#0000ff";
+        if (hasLine2) return "#00ff00";
         return "#1a1a1a";
       }
 
       function renderLEDs(ledsData) {
-        if (ledsData.colors) {
-          ledColors = ledsData.colors;
-        }
-
         if (!ledsData.rows) return;
 
         ledsData.rows.forEach(function (row) {

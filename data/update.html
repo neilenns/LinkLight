@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LinkLight - Firmware Update</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #0066cc; }
+    h2 { color: #0066cc; margin-top: 30px; }
+    .update-section { 
+      margin: 20px 0; 
+      padding: 20px; 
+      background-color: #f8f9fa; 
+      border-radius: 4px; 
+      max-width: 600px; 
+    }
+    .warning { 
+      margin: 20px 0; 
+      padding: 15px; 
+      background-color: #fff3cd; 
+      border-left: 4px solid #ffc107;
+      border-radius: 4px;
+      max-width: 600px;
+    }
+    .info { 
+      margin: 10px 0; 
+      padding: 10px; 
+      background-color: #d1ecf1; 
+      border-left: 4px solid #0c5460;
+      border-radius: 4px;
+    }
+    label { display: block; margin: 10px 0 5px; font-weight: bold; }
+    input[type="file"] { 
+      width: 100%; 
+      padding: 8px; 
+      margin-bottom: 15px; 
+      box-sizing: border-box; 
+    }
+    button { 
+      padding: 10px 20px; 
+      background-color: #0066cc; 
+      color: white; 
+      border: none; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      margin-right: 10px;
+    }
+    button:hover { background-color: #0052a3; }
+    button:disabled { 
+      background-color: #cccccc; 
+      cursor: not-allowed; 
+    }
+    button.danger { background-color: #dc3545; }
+    button.danger:hover { background-color: #c82333; }
+    a { 
+      display: inline-block; 
+      margin-top: 20px; 
+      color: #0066cc; 
+      text-decoration: none; 
+    }
+    .progress-container {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      margin: 10px 0;
+      display: none;
+    }
+    .progress-bar {
+      width: 0%;
+      height: 30px;
+      background-color: #0066cc;
+      border-radius: 4px;
+      text-align: center;
+      line-height: 30px;
+      color: white;
+      transition: width 0.3s;
+    }
+    .feedback { 
+      margin-top: 10px; 
+      padding: 10px; 
+      border-radius: 4px; 
+      display: none; 
+    }
+    .feedback.success { 
+      background-color: #d4edda; 
+      color: #155724; 
+      display: block; 
+    }
+    .feedback.error { 
+      background-color: #f8d7da; 
+      color: #721c24; 
+      display: block; 
+    }
+    .feedback.info { 
+      background-color: #d1ecf1; 
+      color: #0c5460; 
+      display: block; 
+    }
+  </style>
+  <script>
+    function uploadFirmware() {
+      var fileInput = document.getElementById('firmware-file');
+      var progressContainer = document.getElementById('firmware-progress-container');
+      var progressBar = document.getElementById('firmware-progress-bar');
+      var feedbackDiv = document.getElementById('firmware-feedback');
+      var uploadBtn = document.getElementById('firmware-upload-btn');
+      
+      if (!fileInput.files[0]) {
+        feedbackDiv.className = 'feedback error';
+        feedbackDiv.textContent = 'Please select a firmware file';
+        return;
+      }
+      
+      var file = fileInput.files[0];
+      
+      // Validate file extension
+      if (!file.name.endsWith('.bin')) {
+        feedbackDiv.className = 'feedback error';
+        feedbackDiv.textContent = 'Invalid file type. Please select a .bin file';
+        return;
+      }
+      
+      uploadBtn.disabled = true;
+      feedbackDiv.className = 'feedback';
+      feedbackDiv.style.display = 'none';
+      progressContainer.style.display = 'block';
+      progressBar.style.width = '0%';
+      progressBar.textContent = '0%';
+      
+      var xhr = new XMLHttpRequest();
+      
+      xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+          var percentComplete = (e.loaded / e.total) * 100;
+          progressBar.style.width = percentComplete + '%';
+          progressBar.textContent = Math.round(percentComplete) + '%';
+        }
+      });
+      
+      xhr.addEventListener('load', function() {
+        if (xhr.status === 200) {
+          progressBar.style.width = '100%';
+          progressBar.textContent = '100%';
+          feedbackDiv.className = 'feedback success';
+          feedbackDiv.textContent = 'Firmware uploaded successfully! Device is rebooting...';
+          setTimeout(function() {
+            feedbackDiv.className = 'feedback info';
+            feedbackDiv.textContent = 'Device is rebooting. This page will refresh in 15 seconds...';
+            setTimeout(function() {
+              window.location.href = '/';
+            }, 15000);
+          }, 2000);
+        } else {
+          progressBar.style.width = '0%';
+          feedbackDiv.className = 'feedback error';
+          feedbackDiv.textContent = 'Upload failed: ' + xhr.responseText;
+          uploadBtn.disabled = false;
+        }
+      });
+      
+      xhr.addEventListener('error', function() {
+        progressBar.style.width = '0%';
+        feedbackDiv.className = 'feedback error';
+        feedbackDiv.textContent = 'Network error occurred during upload';
+        uploadBtn.disabled = false;
+      });
+      
+      xhr.open('POST', '/update-firmware', true);
+      xhr.send(file);
+    }
+    
+    function uploadFilesystem() {
+      var fileInput = document.getElementById('filesystem-file');
+      var progressContainer = document.getElementById('filesystem-progress-container');
+      var progressBar = document.getElementById('filesystem-progress-bar');
+      var feedbackDiv = document.getElementById('filesystem-feedback');
+      var uploadBtn = document.getElementById('filesystem-upload-btn');
+      
+      if (!fileInput.files[0]) {
+        feedbackDiv.className = 'feedback error';
+        feedbackDiv.textContent = 'Please select a filesystem file';
+        return;
+      }
+      
+      var file = fileInput.files[0];
+      
+      // Validate file extension
+      if (!file.name.endsWith('.bin')) {
+        feedbackDiv.className = 'feedback error';
+        feedbackDiv.textContent = 'Invalid file type. Please select a .bin file';
+        return;
+      }
+      
+      uploadBtn.disabled = true;
+      feedbackDiv.className = 'feedback';
+      feedbackDiv.style.display = 'none';
+      progressContainer.style.display = 'block';
+      progressBar.style.width = '0%';
+      progressBar.textContent = '0%';
+      
+      var xhr = new XMLHttpRequest();
+      
+      xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+          var percentComplete = (e.loaded / e.total) * 100;
+          progressBar.style.width = percentComplete + '%';
+          progressBar.textContent = Math.round(percentComplete) + '%';
+        }
+      });
+      
+      xhr.addEventListener('load', function() {
+        if (xhr.status === 200) {
+          progressBar.style.width = '100%';
+          progressBar.textContent = '100%';
+          feedbackDiv.className = 'feedback success';
+          feedbackDiv.textContent = 'Filesystem uploaded successfully! Device is rebooting...';
+          setTimeout(function() {
+            feedbackDiv.className = 'feedback info';
+            feedbackDiv.textContent = 'Device is rebooting. This page will refresh in 15 seconds...';
+            setTimeout(function() {
+              window.location.href = '/';
+            }, 15000);
+          }, 2000);
+        } else {
+          progressBar.style.width = '0%';
+          feedbackDiv.className = 'feedback error';
+          feedbackDiv.textContent = 'Upload failed: ' + xhr.responseText;
+          uploadBtn.disabled = false;
+        }
+      });
+      
+      xhr.addEventListener('error', function() {
+        progressBar.style.width = '0%';
+        feedbackDiv.className = 'feedback error';
+        feedbackDiv.textContent = 'Network error occurred during upload';
+        uploadBtn.disabled = false;
+      });
+      
+      xhr.open('POST', '/update-filesystem', true);
+      xhr.send(file);
+    }
+  </script>
+</head>
+<body>
+  <h1>LinkLight - Firmware Update</h1>
+  
+  <div class='warning'>
+    <strong>⚠ Warning:</strong> Uploading firmware or filesystem will restart the device. 
+    Make sure you have the correct files before uploading. Do not power off the device during the update process.
+  </div>
+  
+  <div class='update-section'>
+    <h2>Firmware Update</h2>
+    <div class='info'>
+      Upload a new firmware binary (.bin file) to update the device software.
+      The firmware file is typically named <code>firmware.bin</code>.
+    </div>
+    <label for='firmware-file'>Select Firmware File:</label>
+    <input type='file' id='firmware-file' accept='.bin'>
+    <button id='firmware-upload-btn' onclick='uploadFirmware()'>Upload Firmware</button>
+    <div id='firmware-progress-container' class='progress-container'>
+      <div id='firmware-progress-bar' class='progress-bar'>0%</div>
+    </div>
+    <div id='firmware-feedback' class='feedback'></div>
+  </div>
+  
+  <div class='update-section'>
+    <h2>Filesystem Update</h2>
+    <div class='info'>
+      Upload a new filesystem binary (.bin file) to update the web interface and configuration files.
+      The filesystem file is typically named <code>littlefs.bin</code>.
+    </div>
+    <label for='filesystem-file'>Select Filesystem File:</label>
+    <input type='file' id='filesystem-file' accept='.bin'>
+    <button id='filesystem-upload-btn' class='danger' onclick='uploadFilesystem()'>Upload Filesystem</button>
+    <div id='filesystem-progress-container' class='progress-container'>
+      <div id='filesystem-progress-bar' class='progress-bar'>0%</div>
+    </div>
+    <div id='filesystem-feedback' class='feedback'></div>
+  </div>
+  
+  <a href='/'>Back to Home</a>
+</body>
+</html>

@@ -18,6 +18,9 @@ private:
   void handleTestStation();
   void handleLogs();
   void handleLogsData();
+  void handleUpdate();
+  void handleUpdateFirmware();
+  void handleUpdateFilesystem();
   void handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length);
   
   WebServer server{WEB_SERVER_PORT};

@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <ArduinoJson.h>
 #include <Ministache.h>
+#include <Update.h>
 #include "LogManager.h"
 #include "FileSystemManager.h"
 #include "PreferencesManager.h"
@@ -23,6 +24,9 @@ void WebServerManager::setup() {
   server.on("/test-station", HTTP_POST, [this]() { this->handleTestStation(); });
   server.on("/logs", HTTP_GET, [this]() { this->handleLogs(); });
   server.on("/api/logs", HTTP_GET, [this]() { this->handleLogsData(); });
+  server.on("/update", HTTP_GET, [this]() { this->handleUpdate(); });
+  server.on("/update-firmware", HTTP_POST, [this]() { this->handleUpdateFirmware(); });
+  server.on("/update-filesystem", HTTP_POST, [this]() { this->handleUpdateFilesystem(); });
   
   // Start server
   server.begin();
@@ -249,6 +253,86 @@ void WebServerManager::handleLogsData() {
   serializeJson(doc, jsonResponse);
   
   server.send(200, "application/json", jsonResponse);
+}
+
+void WebServerManager::handleUpdate() {
+  String html = fileSystemManager.readFile("/update.html");
+  if (html.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load update.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
+  
+  server.send(200, "text/html", html);
+}
+
+void WebServerManager::handleUpdateFirmware() {
+  HTTPUpload& upload = server.upload();
+  
+  if (upload.status == UPLOAD_FILE_START) {
+    LINK_LOGI(LOG_TAG, "Update firmware: %s", upload.filename.c_str());
+    
+    // Start update with max available space for firmware
+    if (!Update.begin(UPDATE_SIZE_UNKNOWN, U_FLASH)) {
+      String error = "Update begin failed: " + String(Update.errorString());
+      LINK_LOGE(LOG_TAG, "%s", error.c_str());
+      server.send(500, "text/plain", error);
+      Update.printError(Serial);
+    }
+  } else if (upload.status == UPLOAD_FILE_WRITE) {
+    // Write firmware data
+    if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+      String error = "Update write failed";
+      LINK_LOGE(LOG_TAG, "%s", error.c_str());
+      Update.printError(Serial);
+    }
+  } else if (upload.status == UPLOAD_FILE_END) {
+    if (Update.end(true)) {
+      LINK_LOGI(LOG_TAG, "Update success: %u bytes", upload.totalSize);
+      server.send(200, "text/plain", "OK");
+      delay(1000);
+      ESP.restart();
+    } else {
+      String error = "Update end failed: " + String(Update.errorString());
+      LINK_LOGE(LOG_TAG, "%s", error.c_str());
+      server.send(500, "text/plain", error);
+      Update.printError(Serial);
+    }
+  }
+}
+
+void WebServerManager::handleUpdateFilesystem() {
+  HTTPUpload& upload = server.upload();
+  
+  if (upload.status == UPLOAD_FILE_START) {
+    LINK_LOGI(LOG_TAG, "Update filesystem: %s", upload.filename.c_str());
+    
+    // Start update with max available space for filesystem (LittleFS)
+    if (!Update.begin(UPDATE_SIZE_UNKNOWN, U_SPIFFS)) {
+      String error = "Update begin failed: " + String(Update.errorString());
+      LINK_LOGE(LOG_TAG, "%s", error.c_str());
+      server.send(500, "text/plain", error);
+      Update.printError(Serial);
+    }
+  } else if (upload.status == UPLOAD_FILE_WRITE) {
+    // Write filesystem data
+    if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+      String error = "Update write failed";
+      LINK_LOGE(LOG_TAG, "%s", error.c_str());
+      Update.printError(Serial);
+    }
+  } else if (upload.status == UPLOAD_FILE_END) {
+    if (Update.end(true)) {
+      LINK_LOGI(LOG_TAG, "Update success: %u bytes", upload.totalSize);
+      server.send(200, "text/plain", "OK");
+      delay(1000);
+      ESP.restart();
+    } else {
+      String error = "Update end failed: " + String(Update.errorString());
+      LINK_LOGE(LOG_TAG, "%s", error.c_str());
+      server.send(500, "text/plain", error);
+      Update.printError(Serial);
+    }
+  }
 }
 
 void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length) {

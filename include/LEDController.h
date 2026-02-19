@@ -26,6 +26,9 @@ public:
   const std::map<String, StationLEDMapping>& getStationMap() const;
   int getTrainLEDIndex(const TrainData& train) const;
 
+  // Log train counts across all four LED rows (moved here from LEDTrainTracker)
+  void logTrainCounts() const;
+
   // Serialize current LED state to JSON string for WebSocket broadcasting
   void serializeLEDState(String& output) const;
 

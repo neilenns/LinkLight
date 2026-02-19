@@ -345,24 +345,24 @@
         );
       }
 
-      function getLEDColor(state) {
-        if (state === "line1") return scaleLEDColor(ledColors.line1);
-        if (state === "line2") return scaleLEDColor(ledColors.line2);
-        if (state === "shared") return scaleLEDColor(ledColors.shared);
+      function getLEDColorFromTrainIds(trainIds) {
+        let hasLine1 = false;
+        let hasLine2 = false;
+        for (const id of trainIds) {
+          const train = trainLookup[id];
+          if (!train) continue;
+          if (train.line === 1) hasLine1 = true;
+          if (train.line === 2) hasLine2 = true;
+        }
+        if (hasLine1 && hasLine2) return scaleLEDColor(ledColors.shared);
+        if (hasLine1) return scaleLEDColor(ledColors.line1);
+        if (hasLine2) return scaleLEDColor(ledColors.line2);
         return "#1a1a1a";
       }
 
       function renderLEDs(ledsData) {
         if (ledsData.colors) {
           ledColors = ledsData.colors;
-        }
-
-        // Build train lookup from vehicleId to train detail
-        trainLookup = {};
-        if (ledsData.trains) {
-          ledsData.trains.forEach(function (t) {
-            trainLookup[t.vehicleId] = t;
-          });
         }
 
         if (!ledsData.rows) return;
@@ -373,7 +373,7 @@
 
           let html = "";
           row.leds.forEach(function (led) {
-            const color = getLEDColor(led.state);
+            const color = getLEDColorFromTrainIds(led.trainIds || []);
             const hasTrains = led.trainIds && led.trainIds.length > 0;
             html +=
               '<div class="led-square' +
@@ -392,6 +392,14 @@
 
       function renderTrains(trains) {
         const tbody = document.getElementById("trainTableBody");
+
+        // Update train lookup used by the LED grid popup and colour computation
+        trainLookup = {};
+        if (trains) {
+          trains.forEach(function (t) {
+            trainLookup[t.vehicleId] = t;
+          });
+        }
 
         if (!trains || trains.length === 0) {
           tbody.innerHTML =

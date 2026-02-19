@@ -3,6 +3,10 @@
 #include "LogManager.h"
 #include "colors.h"
 #include "PreferencesManager.h"
+#include <ArduinoJson.h>
+#include "PSRAMJsonAllocator.h"
+#include <map>
+#include <vector>
 
 static const char* LOG_TAG = "LEDController";
 
@@ -102,7 +106,7 @@ void LEDController::setAllLEDs(const RgbColor& color) {
   }
 }
 
-int LEDController::getTrainLEDIndex(const TrainData& train) {
+int LEDController::getTrainLEDIndex(const TrainData& train) const {
   int ledIndex = -1;
 
   // Determine if train is northbound or southbound
@@ -227,4 +231,89 @@ void LEDController::testStationLEDs(const String& stationName) {
 
 const std::map<String, StationLEDMapping>& LEDController::getStationMap() const {
   return stationMap;
+}
+
+void LEDController::serializeLEDState(String& output) const {
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  doc["type"] = "leds";
+
+  // Add configured colors
+  JsonObject colors = doc["colors"].to<JsonObject>();
+  colors["line1"] = preferencesManager.getLine1Color();
+  colors["line2"] = preferencesManager.getLine2Color();
+  colors["shared"] = preferencesManager.getSharedColor();
+
+  // Get current LED counts from tracker
+  const LEDTrainCounts* counts = trainTracker.getLEDCounts();
+
+  // Build per-LED train ID map using same logic as displayTrainPositions
+  const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
+  String focusedVehicleId = preferencesManager.getFocusedVehicleId();
+  std::map<int, std::vector<String>> trainIdsByLED;
+  for (const TrainData& train : trains) {
+    if (!focusedVehicleId.isEmpty() && train.vehicleId != focusedVehicleId) {
+      continue;
+    }
+    int ledIndex = getTrainLEDIndex(train);
+    trainIdsByLED[ledIndex].push_back(train.vehicleId);
+  }
+
+  // Add train lookup data (detail for hover popups)
+  JsonArray trainsArray = doc["trains"].to<JsonArray>();
+  for (const TrainData& train : trains) {
+    if (!focusedVehicleId.isEmpty() && train.vehicleId != focusedVehicleId) {
+      continue;
+    }
+    JsonObject t = trainsArray.add<JsonObject>();
+    t["vehicleId"] = train.vehicleId;
+    t["line"] = static_cast<int>(train.line);
+    t["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
+    t["headsign"] = train.tripHeadsign;
+    t["state"] = train.state == TrainState::AT_STATION ? "At Station" : "Moving";
+    t["closestStop"] = train.closestStopName;
+    t["nextStop"] = train.nextStopName;
+    t["nextStopOffset"] = train.nextStopTimeOffset;
+  }
+
+  // Build the 4 rows of LED data matching logTrainCounts layout
+  JsonArray rows = doc["rows"].to<JsonArray>();
+
+  struct RowDef { const char* label; int start; int end; bool descending; };
+  const RowDef rowDefs[] = {
+    { "Line 2 southbound", 159, 135, true  },
+    { "Line 2 northbound", 110, 134, false },
+    { "Line 1 southbound", 109,  55, true  },
+    { "Line 1 northbound",   0,  54, false },
+  };
+
+  for (const RowDef& rd : rowDefs) {
+    JsonObject row = rows.add<JsonObject>();
+    row["label"] = rd.label;
+    JsonArray leds = row["leds"].to<JsonArray>();
+    int step = rd.descending ? -1 : 1;
+    for (int i = rd.start; rd.descending ? (i >= rd.end) : (i <= rd.end); i += step) {
+      JsonObject led = leds.add<JsonObject>();
+      led["index"] = i;
+      bool hasLine1 = counts[i].line1Count > 0;
+      bool hasLine2 = counts[i].line2Count > 0;
+      if (hasLine1 && hasLine2) {
+        led["state"] = "shared";
+      } else if (hasLine1) {
+        led["state"] = "line1";
+      } else if (hasLine2) {
+        led["state"] = "line2";
+      } else {
+        led["state"] = "off";
+      }
+      JsonArray trainIds = led["trainIds"].to<JsonArray>();
+      auto it = trainIdsByLED.find(i);
+      if (it != trainIdsByLED.end()) {
+        for (const String& id : it->second) {
+          trainIds.add(id);
+        }
+      }
+    }
+  }
+
+  serializeJson(doc, output);
 }

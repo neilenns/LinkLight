@@ -24,6 +24,10 @@ public:
   void displayTrainPositions();
   void testStationLEDs(const String& stationName);
   const std::map<String, StationLEDMapping>& getStationMap() const;
+  int getTrainLEDIndex(const TrainData& train) const;
+
+  // Serialize current LED state to JSON string for WebSocket broadcasting
+  void serializeLEDState(String& output) const;
 
 private:
 // Setup for WS2815 LEDs. Yes, it's using Apa106 method, but according to https://github.com/Makuna/NeoPixelBus/pull/795#issuecomment-2466545330
@@ -39,7 +43,6 @@ NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Apa106Method> strip{LED_COUNT, LED_PIN};
   
   void initializeStationMaps();
   void setAllLEDs(const RgbColor& color);
-  int getTrainLEDIndex(const TrainData& train);
 };
 
 extern LEDController ledController;

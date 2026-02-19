@@ -31,6 +31,9 @@ public:
   
   // Log the train counts for northbound (0-53) and southbound (108-56) stations
   void logTrainCounts();
+
+  // Get read-only access to the LED counts array
+  const LEDTrainCounts* getLEDCounts() const { return ledCounts; }
   
 private:
   // Array to track train counts for each LED using a struct

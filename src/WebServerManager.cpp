@@ -23,6 +23,7 @@ void WebServerManager::setup() {
   server.on("/test-station", HTTP_POST, [this]() { this->handleTestStation(); });
   server.on("/logs", HTTP_GET, [this]() { this->handleLogs(); });
   server.on("/api/logs", HTTP_GET, [this]() { this->handleLogsData(); });
+  server.on("/trains", HTTP_GET, [this]() { this->handleTrains(); });
   
   // Start server
   server.begin();
@@ -251,6 +252,66 @@ void WebServerManager::handleLogsData() {
   server.send(200, "application/json", jsonResponse);
 }
 
+void WebServerManager::handleTrains() {
+  String html = fileSystemManager.readFile("/trains.html");
+  if (html.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load trains.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
+  
+  server.send(200, "text/html", html);
+}
+
+void WebServerManager::sendTrainData(uint8_t clientNum) {
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  doc["type"] = "trains";
+  JsonArray trainsArray = doc["trains"].to<JsonArray>();
+  
+  const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
+  for (const TrainData& train : trains) {
+    JsonObject trainObj = trainsArray.add<JsonObject>();
+    trainObj["vehicleId"] = train.vehicleId;
+    trainObj["line"] = static_cast<int>(train.line);
+    trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
+    trainObj["headsign"] = train.tripHeadsign;
+    trainObj["state"] = train.state == TrainState::AT_STATION ? "At Station" : "Moving";
+    trainObj["closestStop"] = train.closestStopName;
+    trainObj["nextStop"] = train.nextStopName;
+    trainObj["nextStopOffset"] = train.nextStopTimeOffset;
+  }
+  
+  String jsonResponse;
+  serializeJson(doc, jsonResponse);
+  webSocket.sendTXT(clientNum, jsonResponse);
+}
+
+void WebServerManager::broadcastTrainData() {
+  if (webSocket.connectedClients() == 0) {
+    return;
+  }
+  
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  doc["type"] = "trains";
+  JsonArray trainsArray = doc["trains"].to<JsonArray>();
+  
+  const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
+  for (const TrainData& train : trains) {
+    JsonObject trainObj = trainsArray.add<JsonObject>();
+    trainObj["vehicleId"] = train.vehicleId;
+    trainObj["line"] = static_cast<int>(train.line);
+    trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
+    trainObj["headsign"] = train.tripHeadsign;
+    trainObj["state"] = train.state == TrainState::AT_STATION ? "At Station" : "Moving";
+    trainObj["closestStop"] = train.closestStopName;
+    trainObj["nextStop"] = train.nextStopName;
+    trainObj["nextStopOffset"] = train.nextStopTimeOffset;
+  }
+  
+  String jsonResponse;
+  serializeJson(doc, jsonResponse);
+  webSocket.broadcastTXT(jsonResponse);
+}
+
 void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length) {
   switch(type) {
     case WStype_DISCONNECTED:
@@ -280,6 +341,9 @@ void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, ui
       String jsonResponse;
       serializeJson(doc, jsonResponse);
       webSocket.sendTXT(clientNum, jsonResponse);
+      
+      // Send current train data to the newly connected client
+      sendTrainData(clientNum);
       break;
     }
       

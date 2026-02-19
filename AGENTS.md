@@ -252,6 +252,10 @@ GitHub Actions will automatically:
 
 ## Important Considerations
 
+### Design Requirements
+
+- Do not use emojis anywhere in the web interface or any user-facing content.
+
 ### Memory Management
 
 - ESP32-S3 has PSRAM enabled (`-DBOARD_HAS_PSRAM`)

@@ -10,6 +10,7 @@ LinkLight is a project to display the current position of SoundTransit Link ligh
 
 - **WiFi Provisioning**: Easy WiFi setup using WiFiManager with captive portal
 - **OTA Updates**: Over-the-air firmware updates via WiFi (no USB cable needed)
+- **Web-based Firmware Updates**: Upload firmware and filesystem updates directly from the web interface
 - **LED Control**: WS2812 LED strip control using NeoPixelBus library
 - **Web Configuration**: Simple web interface to configure home station and API settings
 - **Persistent Storage**: Configuration saved to ESP32 flash memory
@@ -72,7 +73,9 @@ LinkLight is a project to display the current position of SoundTransit Link ligh
 
 #### OTA Upload (Over-The-Air)
 
-After the initial upload, you can update the firmware wirelessly:
+After the initial upload, you can update the firmware wirelessly using either:
+
+**Method 1: PlatformIO OTA (for developers)**
 
 1. Make sure your computer is on the same network as the ESP32
 
@@ -90,7 +93,26 @@ After the initial upload, you can update the firmware wirelessly:
    - Click "Upload" in PlatformIO or press `Ctrl+Alt+U`
    - The firmware will be uploaded over WiFi instead of USB
 
-**Note:** OTA uploads only work for firmware. Filesystem uploads still require a USB connection.
+**Method 2: Web-based OTA (recommended for end users)**
+
+1. Navigate to your ESP32's IP address in a web browser
+
+2. Click "Firmware Update" from the home page
+
+3. Upload new firmware:
+   - Click "Select Firmware File" and choose the `firmware.bin` file
+   - Click "Upload Firmware" and wait for the upload to complete
+   - The device will automatically reboot with the new firmware
+
+4. Upload new filesystem (if needed):
+   - Click "Select Filesystem File" and choose the `littlefs.bin` file
+   - Click "Upload Filesystem" and wait for the upload to complete
+   - The device will automatically reboot with the new filesystem
+
+**Note:** 
+- With web-based OTA, both firmware and filesystem can be updated without a USB connection
+- Firmware files can be obtained from GitHub releases or built locally with PlatformIO
+- Make sure to use the correct `.bin` files - `firmware.bin` for firmware updates and `littlefs.bin` for filesystem updates
 
 ### First-Time Setup
 
@@ -133,7 +155,9 @@ LinkLight/
 ├── data/               # Static HTML files for web interface
 │   ├── index.html      # Main page
 │   ├── config.html     # Configuration page
-│   └── config_saved.html  # Configuration saved confirmation
+│   ├── config_saved.html  # Configuration saved confirmation
+│   ├── logs.html       # System logs page
+│   └── update.html     # Firmware/filesystem update page
 ├── include/            # Header files
 │   └── config.h        # Configuration constants
 ├── src/                # Source code
@@ -171,6 +195,25 @@ The device hostname for OTA is set to `LinkLight` by default. You can find the d
 - Check your router's DHCP client list
 
 To enable password protection for OTA updates, edit `include/config.h` and set `OTA_PASSWORD` to a non-empty string.
+
+#### Obtaining Firmware Files for Web-based Updates
+
+**From GitHub Releases:**
+1. Go to the [Releases page](https://github.com/neilenns/LinkLight/releases)
+2. Download `firmware.bin` for firmware updates
+3. Download `littlefs.bin` for filesystem updates (if available)
+
+**Build Locally:**
+```bash
+# Build firmware
+pio run
+
+# Build filesystem image
+pio run --target buildfs
+
+# Firmware binary will be at: .pio/build/seeed_xiao_esp32s3/firmware.bin
+# Filesystem binary will be at: .pio/build/seeed_xiao_esp32s3/littlefs.bin
+```
 
 ### GitHub Actions
 

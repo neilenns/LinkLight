@@ -73,19 +73,6 @@
       .connection-status.disconnected {
         color: #f48771;
       }
-      .paused-indicator {
-        background-color: #5a4d1d;
-        color: #dcdcaa;
-        padding: 10px;
-        border-radius: 4px;
-        text-align: center;
-        margin: 10px 0;
-        display: none;
-        flex-shrink: 0;
-      }
-      .paused-indicator.visible {
-        display: block;
-      }
       .led-grid {
         padding: 12px 15px;
         background-color: #252526;
@@ -272,10 +259,6 @@
       <span class="last-updated" id="lastUpdated"></span>
     </div>
 
-    <div class="paused-indicator" id="pausedIndicator">
-      Updates paused. Click Resume to see the latest data.
-    </div>
-
     <div class="led-grid" id="ledGrid">
       <div class="led-row">
         <span class="led-row-label">Line 2 southbound</span>
@@ -331,14 +314,11 @@
       function togglePause() {
         isPaused = !isPaused;
         const button = document.getElementById("pauseButton");
-        const indicator = document.getElementById("pausedIndicator");
 
         if (isPaused) {
           button.textContent = "Resume";
-          indicator.classList.add("visible");
         } else {
           button.textContent = "Pause";
-          indicator.classList.remove("visible");
           if (pendingTrains !== null) {
             renderTrains(pendingTrains);
             pendingTrains = null;
@@ -361,7 +341,7 @@
         }
         if (hasLine1 && hasLine2) return "#ffff00";
         if (hasLine1) return "#0000ff";
-        if (hasLine2) return "#00ff00";
+        if (hasLine2) return "#00c700";
         return "#1a1a1a";
       }
 

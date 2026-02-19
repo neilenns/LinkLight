@@ -172,6 +172,18 @@
       tr:hover td {
         background-color: #2d2d30;
       }
+      tr.focused-train td {
+        background-color: #1e3a2e;
+        outline: 1px solid #4ec9b0;
+      }
+      tbody tr {
+        cursor: pointer;
+      }
+      .focus-indicator {
+        color: #4ec9b0;
+        font-size: 13px;
+        display: none;
+      }
       .state-at-station {
         color: #4ec9b0;
         font-weight: bold;
@@ -256,6 +268,7 @@
       <a href="/" class="home-link">Home</a>
       <button id="pauseButton" onclick="togglePause()">Pause</button>
       <span class="connection-status" id="connectionStatus">Connecting...</span>
+      <span class="focus-indicator" id="focusIndicator"></span>
       <span class="last-updated" id="lastUpdated"></span>
     </div>
 
@@ -310,6 +323,8 @@
       let reconnectTimer = null;
       let wsPort = 81;
       let trainLookup = {};
+      let lastTrains = null;
+      let focusedVehicleId = "";
 
       function togglePause() {
         isPaused = !isPaused;
@@ -385,6 +400,7 @@
       }
 
       function renderTrains(trains) {
+        lastTrains = trains;
         const tbody = document.getElementById("trainTableBody");
 
         // Update train lookup used by the LED grid popup and colour computation
@@ -410,8 +426,9 @@
               ? "dir-northbound"
               : "dir-southbound";
           const lineClass = train.line === 1 ? "line-1" : "line-2";
+          const focusedClass = train.vehicleId === focusedVehicleId ? " focused-train" : "";
 
-          html += "<tr>";
+          html += '<tr data-vehicle-id="' + escapeHtml(train.vehicleId) + '" class="' + focusedClass.trim() + '">';
           html += "<td>" + escapeHtml(train.vehicleId) + "</td>";
           html += '<td class="' + lineClass + '">Line ' + train.line + "</td>";
           html +=
@@ -604,6 +621,33 @@
         }
         ledPopup.hidePopover();
       });
+
+      document.getElementById("trainTableBody").addEventListener("click", function (e) {
+        const row = e.target.closest("tr[data-vehicle-id]");
+        if (!row) return;
+        setFocus(row.dataset.vehicleId);
+      });
+
+      function setFocus(vehicleId) {
+        focusedVehicleId = focusedVehicleId === vehicleId ? "" : vehicleId;
+
+        const indicator = document.getElementById("focusIndicator");
+        if (focusedVehicleId) {
+          indicator.textContent = "Focused: " + focusedVehicleId;
+          indicator.style.display = "inline";
+        } else {
+          indicator.textContent = "";
+          indicator.style.display = "none";
+        }
+
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: "setFocus", vehicleId: focusedVehicleId }));
+        }
+
+        if (lastTrains !== null) {
+          renderTrains(lastTrains);
+        }
+      }
 
       function connectWebSocket() {
         const host = window.location.hostname;

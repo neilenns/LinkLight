@@ -70,23 +70,10 @@ void WebServerManager::handleConfig() {
   data["apiKey"] = preferencesManager.getApiKey();
   data["hostname"] = preferencesManager.getHostname();
   data["timezone"] = preferencesManager.getTimezone();
-  data["focusedVehicleId"] = preferencesManager.getFocusedVehicleId();
   data["updateInterval"] = preferencesManager.getUpdateInterval();
   data["line1Color"] = preferencesManager.getLine1Color();
   data["line2Color"] = preferencesManager.getLine2Color();
   data["sharedColor"] = preferencesManager.getSharedColor();
-  
-  // Add train data for the dropdown
-  JsonArray trainsArray = data["trains"].to<JsonArray>();
-  const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
-  
-  for (const TrainData& train : trains) {
-    JsonObject trainObj = trainsArray.add<JsonObject>();
-    trainObj["vehicleId"] = train.vehicleId;
-    trainObj["station"] = train.state == TrainState::AT_STATION ? train.closestStopName : train.nextStopName;
-    trainObj["line"] = String("Line ") + String(static_cast<int>(train.line));
-    trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
-  }
   
   // Add station data for the test dropdown
   JsonArray stationsArray = data["stations"].to<JsonArray>();
@@ -146,12 +133,6 @@ void WebServerManager::handleSaveConfig() {
       timezone = DEFAULT_TIMEZONE;
     }
     preferencesManager.setTimezone(timezone);
-  }
-  
-  // Handle focused train ID (not persisted)
-  if (server.hasArg("focusedVehicleId")) {
-    String focusedVehicleId = server.arg("focusedVehicleId");
-    preferencesManager.setFocusedVehicleId(focusedVehicleId);
   }
   
   // Handle update interval with validation (15-60 seconds)
@@ -351,8 +332,20 @@ void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, ui
     }
       
     case WStype_TEXT:
-      // Handle incoming text messages if needed
+      // Handle incoming text messages
       LINK_LOGD(LOG_TAG, "WebSocket message from client #%u: %s", clientNum, payload);
+      {
+        JsonDocument doc(PSRAMJsonAllocator::instance());
+        DeserializationError error = deserializeJson(doc, payload, length);
+        if (!error) {
+          const char* type = doc["type"] | "";
+          if (strcmp(type, "setFocus") == 0) {
+            const char* vehicleId = doc["vehicleId"] | "";
+            preferencesManager.setFocusedVehicleId(String(vehicleId));
+            LINK_LOGD(LOG_TAG, "Focused vehicle ID set to: %s", vehicleId);
+          }
+        }
+      }
       break;
       
     case WStype_ERROR:

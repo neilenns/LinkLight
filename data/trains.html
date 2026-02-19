@@ -1,0 +1,337 @@
+<!doctype html>
+<html>
+  <head>
+    <title>LinkLight - Train Status</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      h1 {
+        color: #4ec9b0;
+        margin: 0 0 10px 0;
+        flex-shrink: 0;
+      }
+      .controls {
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #252526;
+        border-radius: 4px;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+      }
+      .controls button {
+        padding: 8px 12px;
+        background-color: #3c3c3c;
+        color: #d4d4d4;
+        border: 1px solid #555;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+      }
+      .controls button:hover {
+        background-color: #505050;
+      }
+      .controls button:focus {
+        outline: 2px solid #0066cc;
+      }
+      a.home-link {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #0066cc;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-family: Arial, sans-serif;
+      }
+      a.home-link:hover {
+        background-color: #0052a3;
+      }
+      .connection-status {
+        color: #858585;
+        font-size: 12px;
+      }
+      .connection-status.connected {
+        color: #4ec9b0;
+      }
+      .connection-status.disconnected {
+        color: #f48771;
+      }
+      .paused-indicator {
+        background-color: #5a4d1d;
+        color: #dcdcaa;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        margin: 10px 0;
+        display: none;
+        flex-shrink: 0;
+      }
+      .paused-indicator.visible {
+        display: block;
+      }
+      .table-container {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        table-layout: fixed;
+      }
+      thead {
+        position: sticky;
+        top: 0;
+        background-color: #252526;
+        z-index: 1;
+      }
+      th {
+        padding: 10px 12px;
+        text-align: left;
+        color: #9cdcfe;
+        border-bottom: 2px solid #3c3c3c;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      th:nth-child(1) { width: 10%; }  /* Vehicle ID */
+      th:nth-child(2) { width: 7%; }   /* Line */
+      th:nth-child(3) { width: 12%; }  /* Direction */
+      th:nth-child(4) { width: 16%; }  /* Headsign */
+      th:nth-child(5) { width: 12%; }  /* State */
+      th:nth-child(6) { width: 16%; }  /* Closest stop */
+      th:nth-child(7) { width: 16%; }  /* Next stop */
+      th:nth-child(8) { width: 11%; }  /* Next stop (dist) */
+      td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #2d2d30;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      tr:hover td {
+        background-color: #2d2d30;
+      }
+      .state-at-station {
+        color: #4ec9b0;
+        font-weight: bold;
+      }
+      .state-moving {
+        color: #9cdcfe;
+      }
+      .dir-northbound {
+        color: #dcdcaa;
+      }
+      .dir-southbound {
+        color: #c586c0;
+      }
+      .line-1 {
+        color: #4ec9b0;
+      }
+      .line-2 {
+        color: #569cd6;
+      }
+      .no-trains {
+        color: #858585;
+        text-align: center;
+        padding: 40px;
+      }
+      .last-updated {
+        color: #858585;
+        font-size: 12px;
+        margin-left: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LinkLight - Train Status</h1>
+
+    <div class="controls">
+      <a href="/" class="home-link">Home</a>
+      <button id="pauseButton" onclick="togglePause()">Pause</button>
+      <span class="connection-status" id="connectionStatus">Connecting...</span>
+      <span class="last-updated" id="lastUpdated"></span>
+    </div>
+
+    <div class="paused-indicator" id="pausedIndicator">
+      Updates paused. Click Resume to see the latest data.
+    </div>
+
+    <div class="table-container">
+      <table id="trainTable">
+        <thead>
+          <tr>
+            <th>Vehicle ID</th>
+            <th>Line</th>
+            <th>Direction</th>
+            <th>Headsign</th>
+            <th>State</th>
+            <th>Closest stop</th>
+            <th>Next stop</th>
+            <th>Next stop (dist)</th>
+          </tr>
+        </thead>
+        <tbody id="trainTableBody">
+          <tr>
+            <td colspan="8" class="no-trains">Waiting for train data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      let isPaused = false;
+      let pendingTrains = null;
+      let ws = null;
+      let reconnectTimer = null;
+      let wsPort = 81;
+
+      function togglePause() {
+        isPaused = !isPaused;
+        const button = document.getElementById("pauseButton");
+        const indicator = document.getElementById("pausedIndicator");
+
+        if (isPaused) {
+          button.textContent = "Resume";
+          indicator.classList.add("visible");
+        } else {
+          button.textContent = "Pause";
+          indicator.classList.remove("visible");
+          if (pendingTrains !== null) {
+            renderTrains(pendingTrains);
+            pendingTrains = null;
+          }
+        }
+      }
+
+      function renderTrains(trains) {
+        const tbody = document.getElementById("trainTableBody");
+
+        if (!trains || trains.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="8" class="no-trains">No trains found.</td></tr>';
+          return;
+        }
+
+        let html = "";
+        trains.forEach(function (train) {
+          const stateClass =
+            train.state === "At Station" ? "state-at-station" : "state-moving";
+          const dirClass =
+            train.direction === "Northbound"
+              ? "dir-northbound"
+              : "dir-southbound";
+          const lineClass = train.line === 1 ? "line-1" : "line-2";
+
+          html += "<tr>";
+          html += "<td>" + escapeHtml(train.vehicleId) + "</td>";
+          html +=
+            '<td class="' +
+            lineClass +
+            '">Line ' +
+            train.line +
+            "</td>";
+          html +=
+            '<td class="' +
+            dirClass +
+            '">' +
+            escapeHtml(train.direction) +
+            "</td>";
+          html += "<td>" + escapeHtml(train.headsign) + "</td>";
+          html +=
+            '<td class="' +
+            stateClass +
+            '">' +
+            escapeHtml(train.state) +
+            "</td>";
+          html += "<td>" + escapeHtml(train.closestStop) + "</td>";
+          html += "<td>" + escapeHtml(train.nextStop) + "</td>";
+          html += "<td>" + train.nextStopOffset + "</td>";
+          html += "</tr>";
+        });
+
+        tbody.innerHTML = html;
+
+        const now = new Date();
+        document.getElementById("lastUpdated").textContent =
+          "Last updated: " + now.toLocaleTimeString();
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function updateConnectionStatus(connected) {
+        const statusSpan = document.getElementById("connectionStatus");
+        if (connected) {
+          statusSpan.textContent = "Connected";
+          statusSpan.className = "connection-status connected";
+        } else {
+          statusSpan.textContent = "Disconnected";
+          statusSpan.className = "connection-status disconnected";
+        }
+      }
+
+      function connectWebSocket() {
+        const host = window.location.hostname;
+        ws = new WebSocket("ws://" + host + ":" + wsPort);
+
+        ws.onopen = function () {
+          updateConnectionStatus(true);
+          if (reconnectTimer) {
+            clearTimeout(reconnectTimer);
+            reconnectTimer = null;
+          }
+        };
+
+        ws.onmessage = function (event) {
+          try {
+            const data = JSON.parse(event.data);
+            if (data.type === "trains") {
+              if (isPaused) {
+                pendingTrains = data.trains;
+              } else {
+                renderTrains(data.trains);
+              }
+            }
+          } catch (e) {
+            console.error("Error parsing WebSocket message:", e);
+          }
+        };
+
+        ws.onerror = function (error) {
+          console.error("WebSocket error:", error);
+        };
+
+        ws.onclose = function () {
+          updateConnectionStatus(false);
+          reconnectTimer = setTimeout(function () {
+            connectWebSocket();
+          }, 3000);
+        };
+      }
+
+      connectWebSocket();
+    </script>
+  </body>
+</html>

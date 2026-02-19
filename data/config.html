@@ -13,12 +13,9 @@
     input[type="color"] { height: 50px; cursor: pointer; }
     button { padding: 10px 20px; background-color: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
     button:hover { background-color: #0052a3; }
-    button.clear-focus { background-color: #dc3545; margin-left: 10px; }
-    button.clear-focus:hover { background-color: #c82333; }
     button.test-station { background-color: #28a745; }
     button.test-station:hover { background-color: #218838; }
     a { display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; }
-    .button-group { display: flex; gap: 10px; }
     .test-section { margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 4px; max-width: 400px; }
     .feedback { margin-top: 10px; padding: 10px; border-radius: 4px; display: none; }
     .feedback.success { background-color: #d4edda; color: #155724; display: block; }
@@ -33,20 +30,7 @@
       if (select && savedTimezone) {
         select.value = savedTimezone;
       }
-      
-      var savedFocusedVehicleId = '{{focusedVehicleId}}';
-      var focusSelect = document.querySelector('select[name="focusedVehicleId"]');
-      if (focusSelect && savedFocusedVehicleId) {
-        focusSelect.value = savedFocusedVehicleId;
-      }
     });
-    
-    function clearFocus() {
-      var focusSelect = document.querySelector('select[name="focusedVehicleId"]');
-      if (focusSelect) {
-        focusSelect.value = '';
-      }
-    }
     
     function testStation() {
       var stationSelect = document.querySelector('select[name="testStation"]');
@@ -119,17 +103,7 @@
       <input type='color' name='sharedColor' value='{{sharedColor}}'>
     </div>
     
-    <label>Focused Train (for debugging):</label>
-    <select name='focusedVehicleId'>
-      <option value=''>All Trains</option>
-      {{#trains}}
-      <option value='{{vehicleId}}'>{{vehicleId}} - {{station}} - {{line}} {{direction}}</option>
-      {{/trains}}
-    </select>
-    <div class='button-group'>
-      <button type='submit'>Save Configuration</button>
-      <button type='button' class='clear-focus' onclick='clearFocus()'>Clear Focus</button>
-    </div>
+    <button type='submit'>Save Configuration</button>
   </form>
   
   <div class='test-section'>

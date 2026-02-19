@@ -255,6 +255,7 @@ GitHub Actions will automatically:
 ### Design Requirements
 
 - Do not use emojis anywhere in the web interface or any user-facing content.
+- Use sentence case (not title case) for all table headers and UI labels.
 
 ### Memory Management
 

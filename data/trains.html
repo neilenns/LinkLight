@@ -95,6 +95,7 @@
         width: 100%;
         border-collapse: collapse;
         font-size: 14px;
+        table-layout: fixed;
       }
       thead {
         position: sticky;
@@ -108,10 +109,23 @@
         color: #9cdcfe;
         border-bottom: 2px solid #3c3c3c;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
+      th:nth-child(1) { width: 10%; }  /* Vehicle ID */
+      th:nth-child(2) { width: 7%; }   /* Line */
+      th:nth-child(3) { width: 12%; }  /* Direction */
+      th:nth-child(4) { width: 16%; }  /* Headsign */
+      th:nth-child(5) { width: 12%; }  /* State */
+      th:nth-child(6) { width: 16%; }  /* Closest stop */
+      th:nth-child(7) { width: 16%; }  /* Next stop */
+      th:nth-child(8) { width: 11%; }  /* Next stop (dist) */
       td {
         padding: 8px 12px;
         border-bottom: 1px solid #2d2d30;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       tr:hover td {
         background-color: #2d2d30;
@@ -170,9 +184,9 @@
             <th>Direction</th>
             <th>Headsign</th>
             <th>State</th>
-            <th>Closest Stop</th>
-            <th>Next Stop</th>
-            <th>Next Stop (sec)</th>
+            <th>Closest stop</th>
+            <th>Next stop</th>
+            <th>Next stop (dist)</th>
           </tr>
         </thead>
         <tbody id="trainTableBody">

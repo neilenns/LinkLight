@@ -203,8 +203,8 @@
         position: fixed;
         display: none;
         z-index: 100;
-        pointer-events: none;
         max-width: 280px;
+        cursor: text;
       }
       .train-card {
         background-color: #2d2d30;
@@ -517,9 +517,9 @@
             escapeHtml(train.nextStop) +
             "</div>";
           html +=
-            '<div class="train-card-row">ETA: ' +
+            '<div class="train-card-row">Next stop offset: ' +
             train.nextStopOffset +
-            "s</div>";
+            "</div>";
           html += "</div>";
         });
 
@@ -547,9 +547,23 @@
       });
 
       ledGrid.addEventListener("mouseout", function (e) {
-        if (!e.relatedTarget || !e.relatedTarget.closest(".led-square")) {
-          ledPopup.style.display = "none";
+        // Keep popup visible if mouse is moving onto the popup or another LED square
+        if (
+          e.relatedTarget &&
+          (e.relatedTarget.closest(".led-square") ||
+            e.relatedTarget.closest("#ledPopup"))
+        ) {
+          return;
         }
+        ledPopup.style.display = "none";
+      });
+
+      ledPopup.addEventListener("mouseout", function (e) {
+        // Hide popup when mouse leaves it, unless moving back onto an LED square
+        if (e.relatedTarget && e.relatedTarget.closest(".led-square")) {
+          return;
+        }
+        ledPopup.style.display = "none";
       });
 
       function connectWebSocket() {

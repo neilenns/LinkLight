@@ -256,15 +256,19 @@ const std::map<String, StationLEDMapping>& LEDController::getStationMap() const 
 // 00:01:30[I] LEDController:Line 1 southbound: 0 0 2 1 1 0 0 0 0 1 0 0 0 0 2 0 1 0 0 0 0 0 0 1 0 0 0 3 0 0 0 0 0 0 1 0 1 1 1 1 0 0 1 0 0 0 0 1 0 0 1 0 1 0 0
 // 00:01:30[I] LEDController:Line 1 northbound: 0 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0 1 0 0 0 0 0 0 0 2 0 0 1 0 0 1 0 1 0 1 0 1 0 0 0 1 0 0 0 2 0 1 0 1 0 4 0 0
 void LEDController::logTrainCounts() const {
-  for (const LEDRowDef& rd : LED_ROW_DEFS) {
-    String log = rd.logPrefix;
-    int step = rd.descending ? -1 : 1;
-    for (int i = rd.start; rd.descending ? (i >= rd.end) : (i <= rd.end); i += step) {
-      log += String(trainTracker.getTrainsAtLED(i).size());
-      if (i != rd.end) {
+  // Iterate over all four physical LED rows and log the count of trains at each LED position.
+  for (const LEDRowDef& row : LED_ROW_DEFS) {
+    String log = row.logPrefix;
+
+    // Walk the LEDs in the correct direction for this row (descending or ascending index).
+    int step = row.descending ? -1 : 1;
+    for (int ledIndex = row.start; row.descending ? (ledIndex >= row.end) : (ledIndex <= row.end); ledIndex += step) {
+      log += String(trainTracker.getTrainsAtLED(ledIndex).size());
+      if (ledIndex != row.end) {
         log += " ";
       }
     }
+
     LINK_LOGI(LOG_TAG, "%s", log.c_str());
   }
 }
@@ -283,17 +287,22 @@ void LEDController::serializeLEDState(String& output) const {
   // the browser derives the colour from its existing train data.
   JsonArray rows = doc["rows"].to<JsonArray>();
 
-  for (const LEDRowDef& rd : LED_ROW_DEFS) {
-    JsonObject row = rows.add<JsonObject>();
-    row["label"] = rd.label;
-    JsonArray leds = row["leds"].to<JsonArray>();
-    int step = rd.descending ? -1 : 1;
-    for (int i = rd.start; rd.descending ? (i >= rd.end) : (i <= rd.end); i += step) {
+  // Iterate over the four physical LED rows and build the JSON representation.
+  for (const LEDRowDef& row : LED_ROW_DEFS) {
+    JsonObject rowObj = rows.add<JsonObject>();
+    rowObj["label"] = row.label;
+    JsonArray leds = rowObj["leds"].to<JsonArray>();
+
+    // Walk the LEDs in the correct direction for this row (descending or ascending index).
+    int step = row.descending ? -1 : 1;
+    for (int ledIndex = row.start; row.descending ? (ledIndex >= row.end) : (ledIndex <= row.end); ledIndex += step) {
       JsonObject led = leds.add<JsonObject>();
-      led["index"] = i;
+      led["index"] = ledIndex;
+
+      // Add the vehicleId for each train present at this LED position.
       JsonArray trainIds = led["trainIds"].to<JsonArray>();
-      for (const TrainAtLED& t : trainTracker.getTrainsAtLED(i)) {
-        trainIds.add(t.vehicleId);
+      for (const TrainAtLED& train : trainTracker.getTrainsAtLED(ledIndex)) {
+        trainIds.add(train.vehicleId);
       }
     }
   }

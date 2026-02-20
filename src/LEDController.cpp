@@ -105,9 +105,6 @@ void LEDController::startupAnimation() {
     strip.SetPixelColor(LED_COUNT - 1 - i, COLOR_BLACK);
     strip.Show();
   }
-  // Turn all LEDs off at the end of the self-test
-  setAllLEDs(COLOR_BLACK);
-  strip.Show();
 
   LINK_LOGD(LOG_TAG, "LEDs initialized");
 }

@@ -25,6 +25,11 @@ private:
   void handleLogs();
   void handleLogsData();
   void handleTrains();
+  void handleUpdate();
+  void handleUpdateFirmware();
+  void handleUpdateFirmwareUpload();
+  void handleUpdateFilesystem();
+  void handleUpdateFilesystemUpload();
   void handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length);
   
   WebServer server{WEB_SERVER_PORT};

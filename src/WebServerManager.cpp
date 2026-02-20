@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <ArduinoJson.h>
 #include <Ministache.h>
+#include <Update.h>
 #include "LogManager.h"
 #include "FileSystemManager.h"
 #include "PreferencesManager.h"
@@ -24,6 +25,13 @@ void WebServerManager::setup() {
   server.on("/logs", HTTP_GET, [this]() { this->handleLogs(); });
   server.on("/api/logs", HTTP_GET, [this]() { this->handleLogsData(); });
   server.on("/trains", HTTP_GET, [this]() { this->handleTrains(); });
+  server.on("/update", HTTP_GET, [this]() { this->handleUpdate(); });
+  server.on("/update/firmware", HTTP_POST,
+    [this]() { this->handleUpdateFirmware(); },
+    [this]() { this->handleUpdateFirmwareUpload(); });
+  server.on("/update/filesystem", HTTP_POST,
+    [this]() { this->handleUpdateFilesystem(); },
+    [this]() { this->handleUpdateFilesystemUpload(); });
   
   // Start server
   server.begin();
@@ -229,6 +237,94 @@ void WebServerManager::handleTrains() {
   }
   
   server.send(200, "text/html", html);
+}
+
+void WebServerManager::handleUpdate() {
+  String html = fileSystemManager.readFile("/update.html");
+  if (html.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load update.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
+  
+  server.send(200, "text/html", html);
+}
+
+void WebServerManager::handleUpdateFirmware() {
+  if (Update.hasError()) {
+    String error = Update.errorString();
+    LINK_LOGE(LOG_TAG, "Firmware update failed: %s", error.c_str());
+    server.send(500, "text/plain", "Update failed: " + error);
+  } else {
+    LINK_LOGI(LOG_TAG, "Firmware update successful, restarting...");
+    server.send(200, "text/plain", "OK");
+    delay(500);
+    ESP.restart();
+  }
+}
+
+void WebServerManager::handleUpdateFirmwareUpload() {
+  HTTPUpload& upload = server.upload();
+  
+  if (upload.status == UPLOAD_FILE_START) {
+    LINK_LOGI(LOG_TAG, "Firmware update start: %s", upload.filename.c_str());
+    if (!Update.begin(UPDATE_SIZE_UNKNOWN, U_FLASH)) {
+      LINK_LOGE(LOG_TAG, "Firmware update begin failed: %s", Update.errorString());
+    }
+  } else if (upload.status == UPLOAD_FILE_WRITE) {
+    if (!Update.hasError()) {
+      if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+        LINK_LOGE(LOG_TAG, "Firmware update write failed: %s", Update.errorString());
+      }
+    }
+  } else if (upload.status == UPLOAD_FILE_END) {
+    if (!Update.hasError()) {
+      if (!Update.end(true)) {
+        LINK_LOGE(LOG_TAG, "Firmware update end failed: %s", Update.errorString());
+      } else {
+        LINK_LOGI(LOG_TAG, "Firmware update complete: %u bytes", upload.totalSize);
+      }
+    }
+  }
+}
+
+void WebServerManager::handleUpdateFilesystem() {
+  if (Update.hasError()) {
+    String error = Update.errorString();
+    LINK_LOGE(LOG_TAG, "Filesystem update failed: %s", error.c_str());
+    server.send(500, "text/plain", "Update failed: " + error);
+  } else {
+    LINK_LOGI(LOG_TAG, "Filesystem update successful, restarting...");
+    server.send(200, "text/plain", "OK");
+    delay(500);
+    ESP.restart();
+  }
+}
+
+void WebServerManager::handleUpdateFilesystemUpload() {
+  HTTPUpload& upload = server.upload();
+  
+  if (upload.status == UPLOAD_FILE_START) {
+    LINK_LOGI(LOG_TAG, "Filesystem update start: %s", upload.filename.c_str());
+    // U_SPIFFS is the correct command for any filesystem partition update on ESP32,
+    // regardless of whether the partition is formatted as SPIFFS or LittleFS.
+    if (!Update.begin(UPDATE_SIZE_UNKNOWN, U_SPIFFS)) {
+      LINK_LOGE(LOG_TAG, "Filesystem update begin failed: %s", Update.errorString());
+    }
+  } else if (upload.status == UPLOAD_FILE_WRITE) {
+    if (!Update.hasError()) {
+      if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+        LINK_LOGE(LOG_TAG, "Filesystem update write failed: %s", Update.errorString());
+      }
+    }
+  } else if (upload.status == UPLOAD_FILE_END) {
+    if (!Update.hasError()) {
+      if (!Update.end(true)) {
+        LINK_LOGE(LOG_TAG, "Filesystem update end failed: %s", Update.errorString());
+      } else {
+        LINK_LOGI(LOG_TAG, "Filesystem update complete: %u bytes", upload.totalSize);
+      }
+    }
+  }
 }
 
 void WebServerManager::sendTrainData(int clientNum) {

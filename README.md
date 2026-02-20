@@ -1,19 +1,18 @@
 # LinkLight
 
-LinkLight is an ESP32-S3 firmware project that displays real-time
+LinkLight is a project that displays real-time
 [Sound Transit Link Light Rail](https://www.soundtransit.org/ride-with-us/routes-schedules/link-light-rail)
-train positions on a custom PCB with a WS2815 LED strip.
+train positions on a WS2815 LED strip.
 
 ## What it does
 
-LinkLight connects to your home WiFi network and continuously polls the
-[OneBusAway API](https://onebusaway.org/) to retrieve live train positions for
-the Seattle area Link Light Rail system. Each LED on the strip corresponds to a
-station, and lights up when a train is at or approaching that station.
+LinkLight uses the [OneBusAway API](https://onebusaway.org/) to retrieve live train positions
+for the Seattle area Link Light Rail system. Each LED on the strip corresponds to position on the
+1 and 2 line, and lights up based on train presence along the line.
 
 - Line 1 trains are shown in green (configurable)
 - Line 2 trains are shown in blue (configurable)
-- When both lines share a station, the LED lights up in yellow (configurable)
+- When trains from both lines share a section, the LED lights up in yellow (configurable)
 
 A built-in web interface lets you view real-time train status, check system
 logs, and adjust settings from any device on your network.
@@ -22,9 +21,9 @@ logs, and adjust settings from any device on your network.
 
 ### Prerequisites
 
-- SeeedStudio XIAO ESP32-S3 microcontroller
-- Compatible WS2815 LED strip (160 LEDs)
-- An [OneBusAway API key](https://onebusaway.puget-sound-api.org/p/individual.action)
+- SeeedStudio XIAO ESP32-S3 microcontroller ([Amazon](https://www.amazon.com/dp/B0BYSB66S5))
+- WS2815 LED strip (160 LEDs) ([Amazon](https://www.amazon.com/dp/B07LG6J39V))
+- A [SoundTransit OneBusAway API key](https://www.soundtransit.org/help-contacts/business-information/open-transit-data-otd)
 
 ### First-time setup
 
@@ -38,54 +37,53 @@ logs, and adjust settings from any device on your network.
    to `192.168.4.1` in your browser.
 3. **Configure WiFi** — enter your home network credentials in the captive
    portal and save. LinkLight will restart and connect to your network.
-4. **Open the web interface** — navigate to the device's IP address (shown on
-   the serial monitor at 115200 baud, or found via your router's DHCP table).
+4. **Open the web interface** — navigate to `http://linklight` in your browser.
 5. **Enter your API key** — go to the **Configuration** page and paste in your
-   OneBusAway API key. Adjust any other settings and save.
+   SoundTransit OneBusAway API key. Adjust any other settings and save.
 
 ### Web interface
 
-| Page | URL | Description |
-| --- | --- | --- |
-| Status | `/` | Shows device hostname and IP address |
-| Configuration | `/config` | Configure API key, colors, timezone, hostname |
-| Train status | `/trains` | Real-time train positions and LED state |
-| System logs | `/logs` | Recent log output from the device |
+| Page                                      | Description                                   |
+| ----------------------------------------- | --------------------------------------------- |
+| [Status](http://linklight/)               | Shows device hostname and IP address          |
+| [Configuration](http://linklight/config/) | Configure API key, colors, timezone, hostname |
+| [Train status](http://linklight/trains/)  | Real-time train positions and LED state       |
+| [System logs](http://linklight/logs/)     | Recent log output from the device             |
 
 ### Configuration options
 
-| Setting | Description | Default |
-| --- | --- | --- |
-| Hostname | mDNS hostname for the device | `LinkLight` |
-| API key | OneBusAway API key | _(none)_ |
-| Timezone | Timezone for log timestamps | Pacific Time |
-| Refresh interval | How often to poll the API (seconds) | `30` |
-| Line 1 color | LED color for Link 1 trains | Green |
-| Line 2 color | LED color for Link 2 trains | Blue |
-| Overlap color | LED color when both lines share a station | Yellow |
+| Setting          | Description                               | Default            |
+| ---------------- | ----------------------------------------- | ------------------ |
+| Hostname         | mDNS hostname for the device              | `LinkLight`        |
+| API key          | OneBusAway API key                        | _(none)_           |
+| Timezone         | Timezone for log timestamps               | Pacific Time       |
+| Refresh interval | How often to poll the API (seconds)       | `30`               |
+| Line 1 color     | LED color for Link 1 trains               | SoundTransit Green |
+| Line 2 color     | LED color for Link 2 trains               | SoundTransit Blue  |
+| Overlap color    | LED color when both lines share a station | Yellow             |
 
 ## Technical overview
 
 ### Hardware
 
-| Component | Details |
-| --- | --- |
-| Microcontroller | SeeedStudio XIAO ESP32-S3 |
-| LED strip | WS2815, 160 LEDs, data on GPIO 8 |
+| Component       | Details                          |
+| --------------- | -------------------------------- |
+| Microcontroller | SeeedStudio XIAO ESP32-S3        |
+| LED strip       | WS2815, 160 LEDs, data on GPIO 8 |
 
 ### Software stack
 
-| Component | Library / technology | Version |
-| --- | --- | --- |
-| Build system | PlatformIO | — |
-| Framework | Arduino (ESP32) | — |
-| WiFi provisioning | tzapu/WiFiManager | 2.0.17 |
-| LED control | makuna/NeoPixelBus | 2.8.x |
-| JSON parsing | bblanchon/ArduinoJson | 7.2.0 |
-| HTML templating | floatplane/Ministache | 1.0.0 |
-| WebSocket server | links2004/WebSockets | 2.6.1 |
-| Persistent storage | Preferences (built-in) | — |
-| Filesystem | LittleFS (built-in) | — |
+| Component          | Library / technology   |
+| ------------------ | ---------------------- |
+| Build system       | PlatformIO             |
+| Framework          | Arduino (ESP32)        |
+| WiFi provisioning  | tzapu/WiFiManager      |
+| LED control        | makuna/NeoPixelBus     |
+| JSON parsing       | bblanchon/ArduinoJson  |
+| HTML templating    | floatplane/Ministache  |
+| WebSocket server   | links2004/WebSockets   |
+| Persistent storage | Preferences (built-in) |
+| Filesystem         | LittleFS (built-in)    |
 
 ### Architecture
 

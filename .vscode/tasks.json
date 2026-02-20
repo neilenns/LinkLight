@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build and upload filesystem",
+            "type": "shell",
+            "command": "pio run --target buildfs --target uploadfs",
+            "problemMatcher": ["$platformio"]
+        }
+    ]
+}

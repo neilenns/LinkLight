@@ -1,15 +1,15 @@
 <!doctype html>
-<html>
+<html style="color-scheme: dark">
   <head>
     <title>LinkLight - Configuration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+      href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.2.1/dist-cdn/styles/webawesome.css"
     />
     <script
       type="module"
-      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+      src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.2.1/dist-cdn/webawesome.loader.js"
     ></script>
     <style>
       body {
@@ -17,7 +17,7 @@
         color: #d4d4d4;
         padding: 20px;
         box-sizing: border-box;
-        font-family: var(--sl-font-sans);
+        font-family: var(--wa-font-family-body);
         max-width: 600px;
       }
 
@@ -34,7 +34,7 @@
         margin-bottom: 20px;
         padding: 15px;
         background-color: #252526;
-        border-radius: var(--sl-border-radius-medium);
+        border-radius: var(--wa-border-radius-m);
         display: flex;
         flex-direction: column;
         gap: 15px;
@@ -42,8 +42,8 @@
 
       .section-heading {
         color: #9cdcfe;
-        font-size: var(--sl-font-size-medium);
-        font-weight: var(--sl-font-weight-semibold);
+        font-size: var(--wa-font-size-m);
+        font-weight: var(--wa-font-weight-semibold);
         margin: 0;
       }
 
@@ -53,120 +53,120 @@
         gap: 12px;
       }
 
-      .color-row sl-color-picker {
+      .color-row wa-color-picker {
         flex-shrink: 0;
       }
 
       .color-label {
-        font-size: var(--sl-font-size-small);
+        font-size: var(--wa-font-size-s);
         color: #d4d4d4;
       }
     </style>
   </head>
-  <body class="sl-theme-dark">
+  <body>
     <h1>LinkLight - Configuration</h1>
 
     <div class="controls">
-      <sl-button href="/" size="small">Home</sl-button>
+      <wa-button href="/" size="small">Home</wa-button>
     </div>
 
     <form method="POST" action="/config">
       <div class="form-section">
-        <sl-input
+        <wa-input
           label="Hostname"
           name="hostname"
           value="{{hostname}}"
           placeholder="LinkLight"
-        ></sl-input>
-        <sl-input
+        ></wa-input>
+        <wa-input
           label="API key"
           name="apiKey"
           value="{{apiKey}}"
           placeholder="Enter OneBusAway API key"
-        ></sl-input>
-        <sl-select label="Timezone" name="timezone" value="{{timezone}}">
-          <sl-option value="PST8PDT,M3.2.0,M11.1.0"
-            >Pacific Time (with DST)</sl-option
+        ></wa-input>
+        <wa-select label="Timezone" name="timezone" value="{{timezone}}">
+          <wa-option value="PST8PDT,M3.2.0,M11.1.0"
+            >Pacific Time (with DST)</wa-option
           >
-          <sl-option value="PST8">Pacific Standard Time (no DST)</sl-option>
-          <sl-option value="MST7MDT,M3.2.0,M11.1.0"
-            >Mountain Time (with DST)</sl-option
+          <wa-option value="PST8">Pacific Standard Time (no DST)</wa-option>
+          <wa-option value="MST7MDT,M3.2.0,M11.1.0"
+            >Mountain Time (with DST)</wa-option
           >
-          <sl-option value="MST7">Mountain Standard Time (no DST)</sl-option>
-          <sl-option value="CST6CDT,M3.2.0,M11.1.0"
-            >Central Time (with DST)</sl-option
+          <wa-option value="MST7">Mountain Standard Time (no DST)</wa-option>
+          <wa-option value="CST6CDT,M3.2.0,M11.1.0"
+            >Central Time (with DST)</wa-option
           >
-          <sl-option value="CST6">Central Standard Time (no DST)</sl-option>
-          <sl-option value="EST5EDT,M3.2.0,M11.1.0"
-            >Eastern Time (with DST)</sl-option
+          <wa-option value="CST6">Central Standard Time (no DST)</wa-option>
+          <wa-option value="EST5EDT,M3.2.0,M11.1.0"
+            >Eastern Time (with DST)</wa-option
           >
-          <sl-option value="EST5">Eastern Standard Time (no DST)</sl-option>
-          <sl-option value="UTC0">UTC</sl-option>
-        </sl-select>
-        <sl-input
+          <wa-option value="EST5">Eastern Standard Time (no DST)</wa-option>
+          <wa-option value="UTC0">UTC</wa-option>
+        </wa-select>
+        <wa-input
           label="Refresh interval (seconds)"
           name="updateInterval"
           type="number"
           value="{{updateInterval}}"
           min="15"
           max="60"
-        ></sl-input>
+        ></wa-input>
       </div>
 
       <div class="form-section">
         <p class="section-heading">LED color settings</p>
         <div class="color-row">
-          <sl-color-picker
+          <wa-color-picker
             name="line1Color"
             value="{{line1Color}}"
             format="hex"
-            no-format-toggle
+            without-format-toggle
             size="small"
             label="Line 1 color"
-          ></sl-color-picker>
+          ></wa-color-picker>
           <span class="color-label">Line 1 color</span>
         </div>
         <div class="color-row">
-          <sl-color-picker
+          <wa-color-picker
             name="line2Color"
             value="{{line2Color}}"
             format="hex"
-            no-format-toggle
+            without-format-toggle
             size="small"
             label="Line 2 color"
-          ></sl-color-picker>
+          ></wa-color-picker>
           <span class="color-label">Line 2 color</span>
         </div>
         <div class="color-row">
-          <sl-color-picker
+          <wa-color-picker
             name="sharedColor"
             value="{{sharedColor}}"
             format="hex"
-            no-format-toggle
+            without-format-toggle
             size="small"
             label="Overlap color (when both lines are at same spot)"
-          ></sl-color-picker>
+          ></wa-color-picker>
           <span class="color-label"
             >Overlap color (when both lines are at same spot)</span
           >
         </div>
       </div>
 
-      <sl-button type="submit" variant="primary">Save configuration</sl-button>
+      <wa-button type="submit" variant="brand">Save configuration</wa-button>
     </form>
 
     <div class="form-section" style="margin-top: 20px">
       <p class="section-heading">Test station LEDs</p>
-      <sl-select id="testStationSelect" label="Select station">
-        <sl-option value="">Choose a station...</sl-option>
+      <wa-select id="testStationSelect" label="Select station">
+        <wa-option value="">Choose a station...</wa-option>
         {{#stations}}
-        <sl-option value="{{id}}">{{name}}</sl-option>
+        <wa-option value="{{id}}">{{name}}</wa-option>
         {{/stations}}
-      </sl-select>
+      </wa-select>
       <div>
-        <sl-button onclick="testStation()">Test station LEDs</sl-button>
+        <wa-button onclick="testStation()">Test station LEDs</wa-button>
       </div>
-      <sl-alert id="test-feedback" variant="success" closable></sl-alert>
+      <wa-callout id="test-feedback" variant="success" hidden></wa-callout>
     </div>
 
     <script>
@@ -177,7 +177,7 @@
         if (!stationSelect || !stationSelect.value) {
           feedbackAlert.variant = "danger";
           feedbackAlert.textContent = "Please select a station";
-          feedbackAlert.open = true;
+          feedbackAlert.removeAttribute("hidden");
           return;
         }
 
@@ -197,13 +197,19 @@
             feedbackAlert.variant = "danger";
             feedbackAlert.textContent = `Error testing station: ${xhr.statusText}`;
           }
-          feedbackAlert.open = true;
+          feedbackAlert.removeAttribute("hidden");
+          setTimeout(function () {
+            feedbackAlert.setAttribute("hidden", "");
+          }, 5000);
         };
 
         xhr.onerror = function () {
           feedbackAlert.variant = "danger";
           feedbackAlert.textContent = "Network error occurred";
-          feedbackAlert.open = true;
+          feedbackAlert.removeAttribute("hidden");
+          setTimeout(function () {
+            feedbackAlert.setAttribute("hidden", "");
+          }, 5000);
         };
 
         xhr.send(`stationName=${encodeURIComponent(stationSelect.value)}`);

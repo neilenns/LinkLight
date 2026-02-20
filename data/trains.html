@@ -1,15 +1,15 @@
 <!doctype html>
-<html>
+<html style="color-scheme: dark">
   <head>
     <title>LinkLight - Train Status</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+      href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.2.1/dist-cdn/styles/webawesome.css"
     />
     <script
       type="module"
-      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+      src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.2.1/dist-cdn/webawesome.loader.js"
     ></script>
     <style>
       html,
@@ -20,7 +20,7 @@
         overflow: hidden;
       }
       body {
-        font-family: var(--sl-font-sans);
+        font-family: var(--wa-font-family-body);
         background-color: #1e1e1e;
         color: #d4d4d4;
         display: flex;
@@ -37,7 +37,7 @@
         margin: 20px 0;
         padding: 15px;
         background-color: #252526;
-        border-radius: var(--sl-border-radius-medium);
+        border-radius: var(--wa-border-radius-m);
         display: flex;
         gap: 15px;
         align-items: center;
@@ -47,7 +47,7 @@
       .led-grid {
         padding: 12px 15px;
         background-color: #252526;
-        border-radius: var(--sl-border-radius-medium);
+        border-radius: var(--wa-border-radius-m);
         margin: 0 0 10px 0;
         flex-shrink: 0;
         overflow-x: auto;
@@ -115,9 +115,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-      }
-      tr:hover td {
-        background-color: #2d2d30;
       }
       tr.focused-train td {
         background-color: #1e3a2e;
@@ -200,21 +197,21 @@
       }
     </style>
   </head>
-  <body class="sl-theme-dark">
+  <body>
     <h1>LinkLight - Train Status</h1>
 
     <div class="controls">
-      <sl-button href="/" size="small">Home</sl-button>
-      <sl-button id="pauseButton" size="small">Pause</sl-button>
-      <sl-badge id="connectionStatus" variant="neutral" pill
-        >Connecting...</sl-badge
+      <wa-button href="/" size="small">Home</wa-button>
+      <wa-button id="pauseButton" size="small">Pause</wa-button>
+      <wa-badge id="connectionStatus" variant="neutral" pill
+        >Connecting...</wa-badge
       >
-      <sl-badge
+      <wa-badge
         id="focusIndicator"
         class="focus-indicator"
-        variant="primary"
+        variant="brand"
         pill
-      ></sl-badge>
+      ></wa-badge>
       <span class="last-updated" id="lastUpdated"></span>
     </div>
 
@@ -240,7 +237,7 @@
     <div class="led-popup" id="ledPopup" popover="manual"></div>
 
     <div class="table-container">
-      <table id="trainTable">
+      <table id="trainTable" class="wa-hover-rows">
         <colgroup>
           <col style="width: 11%" />
           <col style="width: 10%" />

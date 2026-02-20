@@ -1,15 +1,15 @@
 <!doctype html>
-<html>
+<html style="color-scheme: dark">
   <head>
     <title>LinkLight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+      href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.2.1/dist-cdn/styles/webawesome.css"
     />
     <script
       type="module"
-      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+      src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.2.1/dist-cdn/webawesome.loader.js"
     ></script>
     <style>
       body {
@@ -17,7 +17,7 @@
         color: #d4d4d4;
         padding: 20px;
         box-sizing: border-box;
-        font-family: var(--sl-font-sans);
+        font-family: var(--wa-font-family-body);
         max-width: 600px;
       }
 
@@ -30,7 +30,7 @@
         margin-bottom: 20px;
         padding: 15px;
         background-color: #252526;
-        border-radius: var(--sl-border-radius-medium);
+        border-radius: var(--wa-border-radius-m);
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -40,12 +40,12 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        font-size: var(--sl-font-size-medium);
+        font-size: var(--wa-font-size-m);
       }
 
       .info-label {
         color: #9cdcfe;
-        font-weight: var(--sl-font-weight-semibold);
+        font-weight: var(--wa-font-weight-semibold);
         min-width: 100px;
       }
 
@@ -56,13 +56,13 @@
       }
     </style>
   </head>
-  <body class="sl-theme-dark">
+  <body>
     <h1>LinkLight</h1>
 
     <div class="info">
       <div class="info-row">
         <span class="info-label">Status</span>
-        <sl-badge variant="success" pill>Running</sl-badge>
+        <wa-badge variant="success" pill>Running</wa-badge>
       </div>
       <div class="info-row">
         <span class="info-label">Hostname</span>
@@ -75,9 +75,9 @@
     </div>
 
     <div class="nav-buttons">
-      <sl-button href="/config">Configuration</sl-button>
-      <sl-button href="/logs">System logs</sl-button>
-      <sl-button href="/trains">Train status</sl-button>
+      <wa-button href="/config">Configuration</wa-button>
+      <wa-button href="/logs">System logs</wa-button>
+      <wa-button href="/trains">Train status</wa-button>
     </div>
   </body>
 </html>

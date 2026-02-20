@@ -1,15 +1,15 @@
 <!doctype html>
-<html>
+<html style="color-scheme: dark">
   <head>
     <title>LinkLight - Logs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+      href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.2.1/dist-cdn/styles/webawesome.css"
     />
     <script
       type="module"
-      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+      src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.2.1/dist-cdn/webawesome.loader.js"
     ></script>
     <style>
       html,
@@ -27,7 +27,7 @@
         flex-direction: column;
         padding: 20px;
         box-sizing: border-box;
-        font-family: var(--sl-font-sans);
+        font-family: var(--wa-font-family-body);
       }
 
       h1 {
@@ -40,7 +40,7 @@
         margin: 20px 0;
         padding: 15px;
         background-color: #252526;
-        border-radius: var(--sl-border-radius-medium);
+        border-radius: var(--wa-border-radius-m);
         display: flex;
         gap: 10px;
         align-items: center;
@@ -48,19 +48,19 @@
         flex-shrink: 0;
       }
 
-      sl-select {
+      wa-select {
         min-width: 150px;
       }
 
       .log-container {
         background-color: #1e1e1e;
         border: 1px solid #3c3c3c;
-        border-radius: var(--sl-border-radius-medium);
+        border-radius: var(--wa-border-radius-m);
         padding: 15px;
         flex: 1;
         overflow-y: auto;
         min-height: 0;
-        font-family: var(--sl-font-mono);
+        font-family: var(--wa-font-family-code);
       }
 
       .log-entry {
@@ -108,39 +108,40 @@
       }
     </style>
   </head>
-  <body class="sl-theme-dark">
+  <body>
     <h1>LinkLight - System logs</h1>
 
     <div class="controls">
-      <sl-button href="/" size="small">Home</sl-button>
+      <wa-button href="/" size="small">Home</wa-button>
 
-      <sl-select
+      <wa-select
         id="levelFilter"
         size="small"
         value="all"
         aria-label="Filter logs by level"
       >
-        <sl-option value="all">All</sl-option>
-        <sl-option value="E">Error</sl-option>
-        <sl-option value="W">Warning</sl-option>
-        <sl-option value="I">Info</sl-option>
-        <sl-option value="D">Debug</sl-option>
-        <sl-option value="V">Verbose</sl-option>
-      </sl-select>
+        <wa-option value="all">All</wa-option>
+        <wa-option value="E">Error</wa-option>
+        <wa-option value="W">Warning</wa-option>
+        <wa-option value="I">Info</wa-option>
+        <wa-option value="D">Debug</wa-option>
+        <wa-option value="V">Verbose</wa-option>
+      </wa-select>
 
-      <sl-button id="pauseButton" size="small">Pause</sl-button>
-      <sl-button id="clearButton" size="small">Clear display</sl-button>
+      <wa-button id="pauseButton" size="small">Pause</wa-button>
+      <wa-button id="clearButton" size="small">Clear display</wa-button>
 
-      <sl-badge id="connectionStatus" variant="neutral" pill
-        >Connecting...</sl-badge
+      <wa-badge id="connectionStatus" variant="neutral" pill
+        >Connecting...</wa-badge
       >
     </div>
 
-    <sl-alert
+    <wa-callout
       id="status"
       variant="danger"
       style="flex-shrink: 0; margin: 0 0 10px 0"
-    ></sl-alert>
+      hidden
+    ></wa-callout>
 
     <div class="log-container" id="logContainer">
       <div style="color: #858585; text-align: center; padding: 20px">
@@ -160,7 +161,7 @@
       const levelFilter = document.getElementById("levelFilter");
       const statusAlert = document.getElementById("status");
 
-      levelFilter.addEventListener("sl-change", filterLogs);
+      levelFilter.addEventListener("change", filterLogs);
       pauseButton.addEventListener("click", togglePause);
       clearButton.addEventListener("click", clearDisplay);
 
@@ -242,12 +243,12 @@
       function updateStatus(type, message) {
         statusAlert.variant = type === "error" ? "danger" : "success";
         statusAlert.textContent = message;
-        statusAlert.open = true;
+        statusAlert.removeAttribute("hidden");
 
         // Hide success messages after 3 seconds
         if (type === "success") {
           setTimeout(() => {
-            statusAlert.open = false;
+            statusAlert.setAttribute("hidden", "");
           }, 3000);
         }
       }

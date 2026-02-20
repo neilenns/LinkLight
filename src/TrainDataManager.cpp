@@ -227,6 +227,31 @@ void TrainDataManager::fetchTrainDataForRoute(const String& routeId, Line line, 
   http.end();
 }
 
+void TrainDataManager::buildTrainJsonObject(JsonObject trainObj, const TrainData& train) const {
+  trainObj["vehicleId"] = train.vehicleId;
+  trainObj["line"] = static_cast<int>(train.line);
+  trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
+  trainObj["headsign"] = train.tripHeadsign;
+  trainObj["state"] = train.state == TrainState::AT_STATION ? "At Station" : "Moving";
+  trainObj["closestStop"] = train.closestStopName;
+  trainObj["closestStopTimeOffset"] = train.closestStopTimeOffset;
+  trainObj["nextStop"] = train.nextStopName;
+  trainObj["nextStopTimeOffset"] = train.nextStopTimeOffset;
+}
+
+void TrainDataManager::getTrainDataAsJson(String& output) const {
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  doc["type"] = "trains";
+  JsonArray trainsArray = doc["trains"].to<JsonArray>();
+
+  for (const TrainData& train : trainDataList) {
+    JsonObject trainObj = trainsArray.add<JsonObject>();
+    buildTrainJsonObject(trainObj, train);
+  }
+
+  serializeJson(doc, output);
+}
+
 void TrainDataManager::updateTrainPositions() {
   static const char* SAMPLE_DATA_PATH = "/data.json";
 

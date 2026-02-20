@@ -43,12 +43,12 @@ logs, and adjust settings from any device on your network.
 
 ### Web interface
 
-| Page                                      | Description                                   |
-| ----------------------------------------- | --------------------------------------------- |
-| [Status](http://linklight/)               | Shows device hostname and IP address          |
-| [Configuration](http://linklight/config/) | Configure API key, colors, timezone, hostname |
-| [Train status](http://linklight/trains/)  | Real-time train positions and LED state       |
-| [System logs](http://linklight/logs/)     | Recent log output from the device             |
+| Page                                        | Description                                   |
+| ------------------------------------------- | --------------------------------------------- |
+| [Status](http://linklight/)                 | Shows device hostname and IP address          |
+| [Configuration](http://linklight/config/)   | Configure API key, colors, timezone, hostname |
+| [Train status](http://linklight/trains/)    | Real-time train positions and LED state       |
+| [System logs](http://linklight/logs/)       | Recent log output from the device             |
 | [Firmware update](http://linklight/update/) | Flash firmware or filesystem over the browser |
 
 ### Configuration options

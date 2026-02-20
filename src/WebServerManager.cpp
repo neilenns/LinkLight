@@ -292,8 +292,14 @@ void WebServerManager::broadcastLog(const char* level, const char* tag, const ch
     return;
   }
   
+  LogEntry entry;
+  entry.timestamp = timestamp;
+  entry.level = String(level);
+  entry.tag = String(tag);
+  entry.message = String(message);
+
   String jsonResponse;
-  logManager.getLogEntryAsJson(level, tag, message, timestamp, jsonResponse);
+  logManager.getLogEntryAsJson(entry, jsonResponse);
   webSocket.broadcastTXT(jsonResponse);
 }
 

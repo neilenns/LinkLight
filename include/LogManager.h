@@ -23,7 +23,7 @@ public:
   void log(const char* level, const char* tag, const char* format, ...);
   esp32_psram::VectorPSRAM<LogEntry> getLogs(int maxEntries = LOG_BUFFER_SIZE);
   void getLogsAsJson(String& output, const char* messageType = nullptr) const;
-  void getLogEntryAsJson(const char* level, const char* tag, const char* message, unsigned long timestamp, String& output) const;
+  void getLogEntryAsJson(const LogEntry& entry, String& output) const;
   void clear();
   
 private:

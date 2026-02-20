@@ -100,12 +100,12 @@ void LogManager::getLogsAsJson(String& output, const char* messageType) const {
   serializeJson(doc, output);
 }
 
-void LogManager::getLogEntryAsJson(const char* level, const char* tag, const char* message, unsigned long timestamp, String& output) const {
+void LogManager::getLogEntryAsJson(const LogEntry& entry, String& output) const {
   JsonDocument doc(PSRAMJsonAllocator::instance());
   doc["type"] = "log";
-  doc["timestamp"] = timestamp;
-  doc["level"] = level;
-  doc["tag"] = tag;
-  doc["message"] = message;
+  doc["timestamp"] = entry.timestamp;
+  doc["level"] = entry.level;
+  doc["tag"] = entry.tag;
+  doc["message"] = entry.message;
   serializeJson(doc, output);
 }

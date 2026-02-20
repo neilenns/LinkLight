@@ -82,6 +82,9 @@ void WebServerManager::handleConfig() {
   for (const auto& station : stationMap) {
     JsonObject stationObj = stationsArray.add<JsonObject>();
     stationObj["name"] = station.first;
+    String stationId = station.first;
+    stationId.replace(" ", "_");
+    stationObj["id"] = stationId;
   }
   
   String output = ministache::render(html, data);
@@ -193,6 +196,7 @@ void WebServerManager::handleTestStation() {
   }
   
   String stationName = server.arg("stationName");
+  stationName.replace("_", " ");  // Convert underscores back to spaces (values in sl-option cannot include spaces)
   
   // Call the LED controller to test the station
   ledController.testStationLEDs(stationName);

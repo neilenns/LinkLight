@@ -48,10 +48,14 @@ public:
   
   // Returns the current list of train data parsed from the API or sample data
   const esp32_psram::VectorPSRAM<TrainData>& getTrainDataList() const { return trainDataList; }
+
+  // Serializes the current train data list to a JSON string
+  void getTrainDataAsJson(String& output) const;
   
 private:
   bool parseTrainDataFromJson(JsonDocument& doc, Line line);
   void fetchTrainDataForRoute(const String& routeId, Line line, const String& apiKey);
+  void buildTrainJsonObject(JsonObject trainObj, const TrainData& train) const;
   esp32_psram::VectorPSRAM<TrainData> trainDataList;
 };
 

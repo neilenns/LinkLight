@@ -1,5 +1,7 @@
 #include "LogManager.h"
 #include "WebServerManager.h"
+#include <ArduinoJson.h>
+#include "PSRAMJsonAllocator.h"
 
 static const char* LOG_TAG = "LogManager";
 
@@ -73,4 +75,27 @@ esp32_psram::VectorPSRAM<LogEntry> LogManager::getLogs(int maxEntries) {
 void LogManager::clear() {
   logBuffer.clear();
   addLog("I", LOG_TAG, "Log buffer cleared");
+}
+
+void LogManager::getLogsAsJson(String& output, const char* messageType) const {
+  size_t available = logBuffer.available();
+
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  if (messageType != nullptr) {
+    doc["type"] = messageType;
+  }
+  JsonArray logsArray = doc["logs"].to<JsonArray>();
+
+  for (size_t i = 0; i < available; i++) {
+    LogEntry entry;
+    if (logBuffer.peekAt(i, entry)) {
+      JsonObject logObj = logsArray.add<JsonObject>();
+      logObj["timestamp"] = entry.timestamp;
+      logObj["level"] = entry.level;
+      logObj["tag"] = entry.tag;
+      logObj["message"] = entry.message;
+    }
+  }
+
+  serializeJson(doc, output);
 }

@@ -76,13 +76,13 @@ void loop() {
     trainDataManager.updateTrainPositions();
     
     // Broadcast updated train data to connected WebSocket clients
-    webServerManager.broadcastTrainData();
+    webServerManager.sendTrainData();
     
     // Display current train positions on LEDs
     ledController.displayTrainPositions();
     
     // Broadcast updated LED state to connected WebSocket clients
-    webServerManager.broadcastLEDState();
+    webServerManager.sendLEDState();
 
     dumpMemoryStats();
 

@@ -261,7 +261,7 @@
         </thead>
         <tbody id="trainTableBody">
           <tr>
-            <td colspan="8" class="no-trains">Waiting for train data...</td>
+            <td colspan="6" class="no-trains">Waiting for train data...</td>
           </tr>
         </tbody>
       </table>
@@ -382,7 +382,7 @@
 
         if (!trains || trains.length === 0) {
           tbody.innerHTML =
-            '<tr><td colspan="8" class="no-trains">No trains found.</td></tr>';
+            '<tr><td colspan="6" class="no-trains">No trains found.</td></tr>';
           return;
         }
 
@@ -463,10 +463,8 @@
           html += `<div class="train-card-header ${headerClass}">Vehicle ${escapeHtml(train.vehicleId)} &mdash; Line ${train.line}</div>`;
           html += `<div class="train-card-row">To: ${escapeHtml(train.headsign)}</div>`;
           html += `<div class="${stateClass}">${escapeHtml(train.state)}</div>`;
-          html += `<div class="train-card-row">Closest: ${escapeHtml(train.closestStop)}</div>`;
-          html += `<div class="train-card-row">Time to closest: ${escapeHtml(train.closestStopTimeOffset)}</div>`;
-          html += `<div class="train-card-row">Next: ${escapeHtml(train.nextStop)}</div>`;
-          html += `<div class="train-card-row">Time to next: ${train.nextStopTimeOffset}</div>`;
+          html += `<div class="train-card-row">Closest: ${escapeHtml(train.closestStop)}, ${prettyTime(train.closestStopTimeOffset)}</div>`;
+          html += `<div class="train-card-row">Next: ${escapeHtml(train.nextStop)}, ${prettyTime(train.nextStopTimeOffset)}</div>`;
           html += "</div>";
         });
         return html;

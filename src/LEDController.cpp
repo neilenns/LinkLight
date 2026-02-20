@@ -173,13 +173,12 @@ void LEDController::displayTrainPositions() {
   // Reset train counts
   trainTracker.reset();
   
-  // Get train data from TrainDataManager
-  const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
-  
   // Get focused vehicle ID (if any)
   String focusedVehicleId = preferencesManager.getFocusedVehicleId();
   
-  // Process each train and update the tracker
+  // Process each train and update the tracker, holding the mutex for thread-safe access
+  if (trainDataManager.dataMutex) xSemaphoreTake(trainDataManager.dataMutex, portMAX_DELAY);
+  const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   for (const TrainData& train : trains) {
     // If a focused train is set, skip all other trains
     if (!focusedVehicleId.isEmpty() && train.vehicleId != focusedVehicleId) {
@@ -201,6 +200,7 @@ void LEDController::displayTrainPositions() {
                 static_cast<int>(train.line));
     }
   }
+  if (trainDataManager.dataMutex) xSemaphoreGive(trainDataManager.dataMutex);
   
   // Log train counts for debugging
   logTrainCounts();

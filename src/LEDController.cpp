@@ -64,18 +64,22 @@ void LEDController::initializeStationMaps() {
   stationMap["Federal Way Downtown"] =    {56, 55, 53, 52};
 
   // 2 Line stations
-  stationMap["Downtown Redmond"] =        {158, 157, 111, 110};
-  stationMap["Marymoor Village"] =        {156, 155, 113, 112};
-  stationMap["Redmond Technology"] =      {154, 153, 115, 114};
-  stationMap["Overlake Village"] =        {152, 151, 117, 116};
-  stationMap["BelRed"] =                  {150, 149, 119, 118};
-  stationMap["Spring District"] =         {148, 147, 121, 120};
-  stationMap["Wilburton"] =               {146, 145, 123, 122};
-  stationMap["Bellevue Downtown"] =       {144, 143, 125, 124};
-  stationMap["East Main"] =               {142, 141, 127, 126};
-  stationMap["South Bellevue"] =          {140, 139, 129, 128};
-  stationMap["Mercer Island"] =           {138, 137, 131, 130};
-  stationMap["Judkins Park"] =            {136, 135, 133, 132};
+  // These stations have the "southbound" train positions in the top LED strip
+  // and the "northbound" train positions in the bottom LED strip so things look right.
+  // At some point I'll rename northbound/southbound to be outbound/inbound or something more
+  // direction-agnostic to avoid confusion.
+  stationMap["Downtown Redmond"] =        {111, 110, 158, 157};
+  stationMap["Marymoor Village"] =        {113, 112, 156, 155};
+  stationMap["Redmond Technology"] =      {115, 114, 154, 153};
+  stationMap["Overlake Village"] =        {117, 116, 152, 151};
+  stationMap["BelRed"] =                  {119, 118, 150, 149};
+  stationMap["Spring District"] =         {121, 120, 148, 147};
+  stationMap["Wilburton"] =               {123, 122, 146, 145};
+  stationMap["Bellevue Downtown"] =       {125, 124, 144, 143};
+  stationMap["East Main"] =               {127, 126, 142, 141};
+  stationMap["South Bellevue"] =          {129, 128, 140, 139};
+  stationMap["Mercer Island"] =           {131, 130, 138, 137};
+  stationMap["Judkins Park"] =            {133, 132, 136, 135};
 }
 
 void LEDController::setup() {

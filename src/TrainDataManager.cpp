@@ -143,7 +143,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     auto tripIt = tripMap.find(train.tripId);
     if (tripIt != tripMap.end()) {
       TripInfo& tripInfo = tripIt->second;
-      train.direction = tripInfo.directionId;
+      train.direction =  tripInfo.directionId;
       train.routeId = tripInfo.routeId;
       train.tripHeadsign = tripInfo.tripHeadsign;
     }

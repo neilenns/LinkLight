@@ -116,22 +116,19 @@
         width: 7%;
       } /* Line */
       th:nth-child(3) {
-        width: 12%;
-      } /* Direction */
-      th:nth-child(4) {
-        width: 16%;
+        width: 18%;
       } /* Headsign */
-      th:nth-child(5) {
-        width: 12%;
+      th:nth-child(4) {
+        width: 14%;
       } /* State */
-      th:nth-child(6) {
-        width: 16%;
+      th:nth-child(5) {
+        width: 18%;
       } /* Closest stop */
-      th:nth-child(7) {
-        width: 16%;
+      th:nth-child(6) {
+        width: 18%;
       } /* Next stop */
-      th:nth-child(8) {
-        width: 11%;
+      th:nth-child(7) {
+        width: 15%;
       } /* Next stop (dist) */
       td {
         padding: 8px 12px;
@@ -236,8 +233,15 @@
     <div class="controls">
       <sl-button href="/" size="small">Home</sl-button>
       <sl-button id="pauseButton" size="small">Pause</sl-button>
-      <sl-badge id="connectionStatus" variant="neutral" pill>Connecting...</sl-badge>
-      <sl-badge id="focusIndicator" class="focus-indicator" variant="primary" pill></sl-badge>
+      <sl-badge id="connectionStatus" variant="neutral" pill
+        >Connecting...</sl-badge
+      >
+      <sl-badge
+        id="focusIndicator"
+        class="focus-indicator"
+        variant="primary"
+        pill
+      ></sl-badge>
       <span class="last-updated" id="lastUpdated"></span>
     </div>
 
@@ -268,7 +272,6 @@
           <tr>
             <th>Vehicle ID</th>
             <th>Line</th>
-            <th>Direction</th>
             <th>Headsign</th>
             <th>State</th>
             <th>Closest stop</th>
@@ -392,10 +395,6 @@
         trains.forEach(function (train) {
           const stateClass =
             train.state === "At Station" ? "state-at-station" : "state-moving";
-          const dirClass =
-            train.direction === "Northbound"
-              ? "dir-northbound"
-              : "dir-southbound";
           const lineClass = train.line === 1 ? "line-1" : "line-2";
           const focusedClass =
             train.vehicleId === focusedVehicleId ? " focused-train" : "";
@@ -408,12 +407,6 @@
             '">';
           html += "<td>" + escapeHtml(train.vehicleId) + "</td>";
           html += '<td class="' + lineClass + '">Line ' + train.line + "</td>";
-          html +=
-            '<td class="' +
-            dirClass +
-            '">' +
-            escapeHtml(train.direction) +
-            "</td>";
           html += "<td>" + escapeHtml(train.headsign) + "</td>";
           html +=
             '<td class="' +
@@ -493,8 +486,7 @@
             "</div>";
           html +=
             '<div class="train-card-row">' +
-            escapeHtml(train.direction) +
-            " &bull; " +
+            "To: " +
             escapeHtml(train.headsign) +
             "</div>";
           html +=

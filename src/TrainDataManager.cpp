@@ -193,7 +193,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
 void TrainDataManager::fetchTrainDataForRoute(const String& routeId, Line line, const String& apiKey) {
   // Use static buffer to avoid heap allocation for URL string on every call
   char url[256];
-  snprintf(url, sizeof(url), "%s/trips-for-route/%s.json?%s=%s", 
+  snprintf(url, sizeof(url), "%s/trips-for-route/%s.json?includeSchedule=false&%s=%s", 
            API_BASE_URL, routeId.c_str(), API_KEY_PARAM, apiKey.c_str());
   
   LINK_LOGD(LOG_TAG, "Fetching data for %d Line (route: %s)", static_cast<int>(line), routeId.c_str());

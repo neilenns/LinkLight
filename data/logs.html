@@ -173,17 +173,11 @@
         const m = minutes % 60;
         const h = hours % 24;
 
-        return (
-          String(h).padStart(2, "0") +
-          ":" +
-          String(m).padStart(2, "0") +
-          ":" +
-          String(s).padStart(2, "0")
-        );
+        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
       }
 
       function getLevelClass(level) {
-        return "log-level-" + level;
+        return `log-level-${level}`;
       }
 
       function displayLogs() {
@@ -204,20 +198,9 @@
         let html = "";
         filteredLogs.forEach((log) => {
           html += '<div class="log-entry">';
-          html +=
-            '<span class="log-timestamp">' +
-            formatTimestamp(log.timestamp) +
-            "</span>";
-          html +=
-            '<span class="log-tag ' +
-            getLevelClass(log.level) +
-            '">[' +
-            log.level +
-            "] " +
-            log.tag +
-            ":</span>";
-          html +=
-            '<span class="log-message">' + escapeHtml(log.message) + "</span>";
+          html += `<span class="log-timestamp">${formatTimestamp(log.timestamp)}</span>`;
+          html += `<span class="log-tag ${getLevelClass(log.level)}">[${log.level}] ${log.tag}:</span>`;
+          html += `<span class="log-message">${escapeHtml(log.message)}</span>`;
           html += "</div>";
         });
 
@@ -284,7 +267,7 @@
         // Get the current hostname and port
         const host = window.location.hostname;
 
-        ws = new WebSocket("ws://" + host + ":" + wsPort);
+        ws = new WebSocket(`ws://${host}:${wsPort}`);
 
         ws.onopen = function () {
           console.log("WebSocket connected");

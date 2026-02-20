@@ -109,27 +109,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      th:nth-child(1) {
-        width: 10%;
-      } /* Vehicle ID */
-      th:nth-child(2) {
-        width: 7%;
-      } /* Line */
-      th:nth-child(3) {
-        width: 18%;
-      } /* Headsign */
-      th:nth-child(4) {
-        width: 14%;
-      } /* State */
-      th:nth-child(5) {
-        width: 18%;
-      } /* Closest stop */
-      th:nth-child(6) {
-        width: 18%;
-      } /* Next stop */
-      th:nth-child(7) {
-        width: 15%;
-      } /* Next stop (dist) */
       td {
         padding: 8px 12px;
         border-bottom: 1px solid #2d2d30;
@@ -262,6 +241,14 @@
 
     <div class="table-container">
       <table id="trainTable">
+        <colgroup>
+          <col style="width: 11%" />
+          <col style="width: 10%" />
+          <col style="width: 23%" />
+          <col style="width: 10%" />
+          <col style="width: 23%" />
+          <col style="width: 23%" />
+        </colgroup>
         <thead>
           <tr>
             <th>Vehicle ID</th>
@@ -270,7 +257,6 @@
             <th>State</th>
             <th>Closest stop</th>
             <th>Next stop</th>
-            <th>Next stop (dist)</th>
           </tr>
         </thead>
         <tbody id="trainTableBody">
@@ -291,6 +277,28 @@
       let trainLookup = {};
       let lastTrains = null;
       let focusedVehicleId = "";
+
+      // Takes seconds and converts it to a pretty display format.
+      function prettyTime(seconds) {
+        const isPast = seconds < 0;
+        const abs = Math.abs(seconds);
+
+        let out;
+        if (abs <= 0) {
+          return "now";
+        } else if (abs < 5) {
+          return "soon";
+        } else {
+          const m = Math.floor(abs / 60);
+          const s = abs % 60;
+
+          if (m > 0 && s > 0) out = `${m}m ${s}s`;
+          else if (m > 0) out = `${m}m`;
+          else out = `${s}s`;
+        }
+
+        return isPast ? `${out} ago` : `in ${out}`;
+      }
 
       function togglePause() {
         isPaused = !isPaused;
@@ -330,7 +338,7 @@
         if (!ledsData.rows) return;
 
         ledsData.rows.forEach(function (row) {
-          const container = document.getElementById("leds-" + row.label);
+          const container = document.getElementById(`leds-${row.label}`);
           if (!container) return;
 
           // Build a sparse map of physicalLEDIndex → trainIds from the non-empty LEDs in the message.
@@ -350,16 +358,9 @@
             const ids = ledMap[ledIndex] || [];
             const color = getLEDColorFromTrainIds(ids);
             const hasTrains = ids.length > 0;
-            html +=
-              '<div class="led-square' +
-              (hasTrains ? " has-trains" : "") +
-              '" id="led-' +
-              ledIndex +
-              '" style="background-color:' +
-              color +
-              ';"';
+            html += `<div class="led-square${hasTrains ? " has-trains" : ""}" id="led-${ledIndex}" style="background-color:${color};"`;
             if (hasTrains) {
-              html += ' data-ids="' + escapeHtml(ids.join(",")) + '"';
+              html += ` data-ids="${escapeHtml(ids.join(","))}"`;
             }
             html += "></div>";
           }
@@ -393,24 +394,13 @@
           const focusedClass =
             train.vehicleId === focusedVehicleId ? " focused-train" : "";
 
-          html +=
-            '<tr data-vehicle-id="' +
-            escapeHtml(train.vehicleId) +
-            '" class="' +
-            focusedClass.trim() +
-            '">';
-          html += "<td>" + escapeHtml(train.vehicleId) + "</td>";
-          html += '<td class="' + lineClass + '">Line ' + train.line + "</td>";
-          html += "<td>" + escapeHtml(train.headsign) + "</td>";
-          html +=
-            '<td class="' +
-            stateClass +
-            '">' +
-            escapeHtml(train.state) +
-            "</td>";
-          html += "<td>" + escapeHtml(train.closestStop) + "</td>";
-          html += "<td>" + escapeHtml(train.nextStop) + "</td>";
-          html += "<td>" + train.nextStopOffset + "</td>";
+          html += `<tr data-vehicle-id="${escapeHtml(train.vehicleId)}" class="${focusedClass.trim()}">`;
+          html += `<td>${escapeHtml(train.vehicleId)}</td>`;
+          html += `<td class="${lineClass}">Line ${train.line}</td>`;
+          html += `<td>${escapeHtml(train.headsign)}</td>`;
+          html += `<td class="${stateClass}">${escapeHtml(train.state)}</td>`;
+          html += `<td>${escapeHtml(train.closestStop)}, ${prettyTime(train.closestStopTimeOffset)}</td>`;
+          html += `<td>${escapeHtml(train.nextStop)}, ${prettyTime(train.nextStopTimeOffset)}</td>`;
           html += "</tr>";
         });
 
@@ -418,7 +408,7 @@
 
         const now = new Date();
         document.getElementById("lastUpdated").textContent =
-          "Last updated: " + now.toLocaleTimeString();
+          `Last updated: ${now.toLocaleTimeString()}`;
       }
 
       function escapeHtml(text) {
@@ -470,37 +460,13 @@
               ? "train-card-state-at"
               : "train-card-state-moving";
           html += '<div class="train-card">';
-          html +=
-            '<div class="train-card-header ' +
-            headerClass +
-            '">Vehicle ' +
-            escapeHtml(train.vehicleId) +
-            " &mdash; Line " +
-            train.line +
-            "</div>";
-          html +=
-            '<div class="train-card-row">' +
-            "To: " +
-            escapeHtml(train.headsign) +
-            "</div>";
-          html +=
-            '<div class="' +
-            stateClass +
-            '">' +
-            escapeHtml(train.state) +
-            "</div>";
-          html +=
-            '<div class="train-card-row">Closest: ' +
-            escapeHtml(train.closestStop) +
-            "</div>";
-          html +=
-            '<div class="train-card-row">Next: ' +
-            escapeHtml(train.nextStop) +
-            "</div>";
-          html +=
-            '<div class="train-card-row">Next stop offset: ' +
-            train.nextStopOffset +
-            "</div>";
+          html += `<div class="train-card-header ${headerClass}">Vehicle ${escapeHtml(train.vehicleId)} &mdash; Line ${train.line}</div>`;
+          html += `<div class="train-card-row">To: ${escapeHtml(train.headsign)}</div>`;
+          html += `<div class="${stateClass}">${escapeHtml(train.state)}</div>`;
+          html += `<div class="train-card-row">Closest: ${escapeHtml(train.closestStop)}</div>`;
+          html += `<div class="train-card-row">Time to closest: ${escapeHtml(train.closestStopTimeOffset)}</div>`;
+          html += `<div class="train-card-row">Next: ${escapeHtml(train.nextStop)}</div>`;
+          html += `<div class="train-card-row">Time to next: ${train.nextStopTimeOffset}</div>`;
           html += "</div>";
         });
         return html;
@@ -511,17 +477,17 @@
         let x = rect.left;
         let y = rect.bottom + 4;
 
-        ledPopup.style.left = x + "px";
-        ledPopup.style.top = y + "px";
+        ledPopup.style.left = `${x}px`;
+        ledPopup.style.top = `${y}px`;
 
         const popupRect = ledPopup.getBoundingClientRect();
         if (popupRect.right > window.innerWidth) {
           x = window.innerWidth - popupRect.width - 4;
-          ledPopup.style.left = x + "px";
+          ledPopup.style.left = `${x}px`;
         }
         if (popupRect.bottom > window.innerHeight) {
           y = rect.top - popupRect.height - 4;
-          ledPopup.style.top = y + "px";
+          ledPopup.style.top = `${y}px`;
         }
       }
 
@@ -598,7 +564,7 @@
 
         const indicator = document.getElementById("focusIndicator");
         if (focusedVehicleId) {
-          indicator.textContent = "Focused: " + focusedVehicleId;
+          indicator.textContent = `Focused: ${focusedVehicleId}`;
           indicator.style.display = "inline-flex";
         } else {
           indicator.textContent = "";
@@ -618,7 +584,7 @@
 
       function connectWebSocket() {
         const host = window.location.hostname;
-        ws = new WebSocket("ws://" + host + ":" + wsPort);
+        ws = new WebSocket(`ws://${host}:${wsPort}`);
 
         ws.onopen = function () {
           updateConnectionStatus(true);

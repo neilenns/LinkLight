@@ -3,7 +3,9 @@
 
 #include <WebServer.h>
 #include <WebSocketsServer.h>
+#include <ArduinoJson.h>
 #include "config.h"
+#include "TrainDataManager.h"
 
 class WebServerManager {
 public:
@@ -24,6 +26,7 @@ private:
   void handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length);
   void sendTrainData(uint8_t clientNum);
   void sendLEDState(uint8_t clientNum);
+  void buildTrainJsonObject(JsonObject trainObj, const TrainData& train);
   
   WebServer server{WEB_SERVER_PORT};
   WebSocketsServer webSocket{WEB_SOCKET_PORT};

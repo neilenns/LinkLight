@@ -146,7 +146,9 @@
             size="small"
             label="Overlap color (when both lines are at same spot)"
           ></sl-color-picker>
-          <span class="color-label">Overlap color (when both lines are at same spot)</span>
+          <span class="color-label"
+            >Overlap color (when both lines are at same spot)</span
+          >
         </div>
       </div>
 
@@ -193,8 +195,7 @@
               "Station LEDs are now lit! Northbound = Green, Southbound = Blue";
           } else {
             feedbackAlert.variant = "danger";
-            feedbackAlert.textContent =
-              "Error testing station: " + xhr.statusText;
+            feedbackAlert.textContent = `Error testing station: ${xhr.statusText}`;
           }
           feedbackAlert.open = true;
         };
@@ -205,9 +206,7 @@
           feedbackAlert.open = true;
         };
 
-        xhr.send(
-          "stationName=" + encodeURIComponent(stationSelect.value),
-        );
+        xhr.send(`stationName=${encodeURIComponent(stationSelect.value)}`);
       }
     </script>
   </body>

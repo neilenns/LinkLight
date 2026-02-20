@@ -5,8 +5,8 @@
 #include <Arduino.h>
 
 // Common LED colors used throughout the application
-static const RgbColor COLOR_BLUE = RgbColor(0, 0, 32);
-static const RgbColor COLOR_GREEN = RgbColor(0, 32, 0);
+static const RgbColor COLOR_BLUE = RgbColor(0x00, 0x7C, 0xAD); // Official SoundTransit blue
+static const RgbColor COLOR_GREEN = RgbColor(0x28, 0x81, 0x3F); // Official SoundTransit green
 static const RgbColor COLOR_YELLOW = RgbColor(32, 32, 0);
 static const RgbColor COLOR_BLACK = RgbColor(0, 0, 0);
 

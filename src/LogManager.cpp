@@ -41,7 +41,7 @@ void LogManager::addLog(const char* level, const char* tag, const char* message)
     logBuffer.pushOverwrite(entry);
     
     // Broadcast to WebSocket clients
-    webServerManager.broadcastLog(level, tag, message, entry.timestamp);
+    webServerManager.broadcastLog(entry);
   } catch (...) {
     Serial.println("[LogManager] Exception in addLog - likely memory allocation failure");
   }

@@ -5,13 +5,14 @@
 #include <WebSocketsServer.h>
 #include <ArduinoJson.h>
 #include "config.h"
+#include "LogManager.h"
 #include "TrainDataManager.h"
 
 class WebServerManager {
 public:
   void setup();
   void handleClient();
-  void broadcastLog(const char* level, const char* tag, const char* message, unsigned long timestamp);
+  void broadcastLog(const LogEntry& entry);
   void sendLogData(int clientNum = -1);
   void sendTrainData(int clientNum = -1);
   void sendLEDState(int clientNum = -1);

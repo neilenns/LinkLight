@@ -287,17 +287,11 @@ void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, ui
   }
 }
 
-void WebServerManager::broadcastLog(const char* level, const char* tag, const char* message, unsigned long timestamp) {
+void WebServerManager::broadcastLog(const LogEntry& entry) {
   if (webSocket.connectedClients() == 0) {
     return;
   }
   
-  LogEntry entry;
-  entry.timestamp = timestamp;
-  entry.level = String(level);
-  entry.tag = String(tag);
-  entry.message = String(message);
-
   String jsonResponse;
   logManager.getLogEntryAsJson(entry, jsonResponse);
   webSocket.broadcastTXT(jsonResponse);

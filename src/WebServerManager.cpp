@@ -247,6 +247,18 @@ void WebServerManager::handleTrains() {
   server.send(200, "text/html", html);
 }
 
+void WebServerManager::buildTrainJsonObject(JsonObject trainObj, const TrainData& train) {
+  trainObj["vehicleId"] = train.vehicleId;
+  trainObj["line"] = static_cast<int>(train.line);
+  trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
+  trainObj["headsign"] = train.tripHeadsign;
+  trainObj["state"] = train.state == TrainState::AT_STATION ? "At Station" : "Moving";
+  trainObj["closestStop"] = train.closestStopName;
+  trainObj["closestStopTimeOffset"] = train.closestStopTimeOffset;
+  trainObj["nextStop"] = train.nextStopName;
+  trainObj["nextStopTimeOffset"] = train.nextStopTimeOffset;
+}
+
 void WebServerManager::sendTrainData(uint8_t clientNum) {
   JsonDocument doc(PSRAMJsonAllocator::instance());
   doc["type"] = "trains";
@@ -255,14 +267,7 @@ void WebServerManager::sendTrainData(uint8_t clientNum) {
   const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   for (const TrainData& train : trains) {
     JsonObject trainObj = trainsArray.add<JsonObject>();
-    trainObj["vehicleId"] = train.vehicleId;
-    trainObj["line"] = static_cast<int>(train.line);
-    trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
-    trainObj["headsign"] = train.tripHeadsign;
-    trainObj["state"] = train.state == TrainState::AT_STATION ? "At Station" : "Moving";
-    trainObj["closestStop"] = train.closestStopName;
-    trainObj["nextStop"] = train.nextStopName;
-    trainObj["nextStopOffset"] = train.nextStopTimeOffset;
+    buildTrainJsonObject(trainObj, train);
   }
   
   String jsonResponse;
@@ -282,14 +287,7 @@ void WebServerManager::broadcastTrainData() {
   const esp32_psram::VectorPSRAM<TrainData>& trains = trainDataManager.getTrainDataList();
   for (const TrainData& train : trains) {
     JsonObject trainObj = trainsArray.add<JsonObject>();
-    trainObj["vehicleId"] = train.vehicleId;
-    trainObj["line"] = static_cast<int>(train.line);
-    trainObj["direction"] = train.direction == TrainDirection::NORTHBOUND ? "Northbound" : "Southbound";
-    trainObj["headsign"] = train.tripHeadsign;
-    trainObj["state"] = train.state == TrainState::AT_STATION ? "At Station" : "Moving";
-    trainObj["closestStop"] = train.closestStopName;
-    trainObj["nextStop"] = train.nextStopName;
-    trainObj["nextStopOffset"] = train.nextStopTimeOffset;
+    buildTrainJsonObject(trainObj, train);
   }
   
   String jsonResponse;

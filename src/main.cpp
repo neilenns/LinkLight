@@ -12,7 +12,7 @@
 #include "NTPManager.h"
 
 static const char* LOG_TAG = "LinkLight";
-static SemaphoreHandle_t trainDataReady = nullptr;
+static TaskHandle_t loopTaskHandle = nullptr;
 
 void dumpMemoryStats()
 {
@@ -29,6 +29,7 @@ void dumpMemoryStats()
 }
 
 void trainUpdateTask(void* parameter) {
+  TaskHandle_t notifyTarget = static_cast<TaskHandle_t>(parameter);
   while (true) {
     dumpMemoryStats();
 
@@ -36,7 +37,7 @@ void trainUpdateTask(void* parameter) {
 
     dumpMemoryStats();
 
-    xSemaphoreGive(trainDataReady);
+    xTaskNotifyGive(notifyTarget);
 
     unsigned long updateIntervalMs = preferencesManager.getUpdateInterval() * 1000;
     vTaskDelay(pdMS_TO_TICKS(updateIntervalMs));
@@ -73,21 +74,18 @@ void setup() {
   // Show the startup animation
   ledController.startupAnimation();
 
-  // Initialize the train data mutex and ready semaphore
+  // Initialize the train data mutex
   trainDataManager.dataMutex = xSemaphoreCreateMutex();
   if (trainDataManager.dataMutex == nullptr) {
     LINK_LOGE(LOG_TAG, "Failed to create train data mutex");
     return;
   }
 
-  trainDataReady = xSemaphoreCreateBinary();
-  if (trainDataReady == nullptr) {
-    LINK_LOGE(LOG_TAG, "Failed to create train data ready semaphore");
-    return;
-  }
+  // Capture the loop task handle so the Core 0 task can notify it
+  loopTaskHandle = xTaskGetCurrentTaskHandle();
 
-  // Start the train update task on Core 0
-  if (xTaskCreatePinnedToCore(trainUpdateTask, "TrainUpdate", 8192, NULL, 1, NULL, 0) != pdPASS) {
+  // Start the train update task on Core 0, passing the loop task handle for notifications
+  if (xTaskCreatePinnedToCore(trainUpdateTask, "TrainUpdate", 8192, loopTaskHandle, 1, NULL, 0) != pdPASS) {
     LINK_LOGE(LOG_TAG, "Failed to create train update task");
     return;
   }
@@ -103,7 +101,7 @@ void loop() {
   webServerManager.handleClient();
   
   // When the Core 0 train update task signals new data is ready, broadcast and display it
-  if (xSemaphoreTake(trainDataReady, 0) == pdTRUE) {
+  if (ulTaskNotifyTake(pdTRUE, 0) > 0) {
     // Broadcast updated train data to connected WebSocket clients
     webServerManager.sendTrainData();
     

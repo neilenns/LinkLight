@@ -30,7 +30,7 @@ public:
   void logTrainCounts() const;
 
   // Serialize current LED state to JSON string for WebSocket broadcasting
-  void serializeLEDState(String& output) const;
+  void getLEDStateAsJson(String& output) const;
 
 private:
 // Setup for WS2815 LEDs. Yes, it's using Apa106 method, but according to https://github.com/Makuna/NeoPixelBus/pull/795#issuecomment-2466545330

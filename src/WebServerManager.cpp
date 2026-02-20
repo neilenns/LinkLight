@@ -254,15 +254,9 @@ void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, ui
       IPAddress ip = webSocket.remoteIP(clientNum);
       LINK_LOGI(LOG_TAG, "WebSocket client #%u connected from %s", clientNum, ip.toString().c_str());
       
-      // Send initial logs to the newly connected client
-      String jsonResponse;
-      logManager.getLogsAsJson(jsonResponse, "initial");
-      webSocket.sendTXT(clientNum, jsonResponse);
-      
-      // Send current train data to the newly connected client
+      // Send initial data to the newly connected client
+      sendLogData(clientNum);
       sendTrainData(clientNum);
-      
-      // Send current LED state to the newly connected client
       sendLEDState(clientNum);
       break;
     }
@@ -294,29 +288,31 @@ void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, ui
 }
 
 void WebServerManager::broadcastLog(const char* level, const char* tag, const char* message, unsigned long timestamp) {
-  // Only broadcast if there are connected clients
   if (webSocket.connectedClients() == 0) {
     return;
   }
   
-  // Create JSON for the new log entry
-  JsonDocument doc(PSRAMJsonAllocator::instance());
-  doc["type"] = "log";
-  doc["timestamp"] = timestamp;
-  doc["level"] = level;
-  doc["tag"] = tag;
-  doc["message"] = message;
-  
   String jsonResponse;
-  serializeJson(doc, jsonResponse);
-  
-  // Broadcast to all connected clients
+  logManager.getLogEntryAsJson(level, tag, message, timestamp, jsonResponse);
   webSocket.broadcastTXT(jsonResponse);
+}
+
+void WebServerManager::sendLogData(int clientNum) {
+  String jsonResponse;
+  logManager.getLogsAsJson(jsonResponse, "initial");
+  if (clientNum == -1) {
+    if (webSocket.connectedClients() == 0) {
+      return;
+    }
+    webSocket.broadcastTXT(jsonResponse);
+  } else {
+    webSocket.sendTXT(static_cast<uint8_t>(clientNum), jsonResponse);
+  }
 }
 
 void WebServerManager::sendLEDState(int clientNum) {
   String jsonResponse;
-  ledController.serializeLEDState(jsonResponse);
+  ledController.getLEDStateAsJson(jsonResponse);
   if (clientNum == -1) {
     if (webSocket.connectedClients() == 0) {
       return;

@@ -8,7 +8,7 @@
 
 static const char* LOG_TAG = "LEDController";
 
-// Row definitions shared by logTrainCounts() and serializeLEDState().
+// Row definitions shared by logTrainCounts() and getLEDStateAsJson().
 struct LEDRowDef {
   const char* label;
   const char* logPrefix;
@@ -277,7 +277,7 @@ void LEDController::logTrainCounts() const {
   }
 }
 
-void LEDController::serializeLEDState(String& output) const {
+void LEDController::getLEDStateAsJson(String& output) const {
   JsonDocument doc(PSRAMJsonAllocator::instance());
   doc["type"] = "leds";
 

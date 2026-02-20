@@ -216,24 +216,8 @@ void WebServerManager::handleLogs() {
 }
 
 void WebServerManager::handleLogsData() {
-  // Get logs from LogManager
-  esp32_psram::VectorPSRAM<LogEntry> logs = logManager.getLogs();
-  
-  // Create JSON response
-  JsonDocument doc(PSRAMJsonAllocator::instance());
-  JsonArray logsArray = doc["logs"].to<JsonArray>();
-  
-  for (const auto& entry : logs) {
-    JsonObject logObj = logsArray.add<JsonObject>();
-    logObj["timestamp"] = entry.timestamp;
-    logObj["level"] = entry.level;
-    logObj["tag"] = entry.tag;
-    logObj["message"] = entry.message;
-  }
-  
   String jsonResponse;
-  serializeJson(doc, jsonResponse);
-  
+  logManager.getLogsAsJson(jsonResponse);
   server.send(200, "application/json", jsonResponse);
 }
 
@@ -247,20 +231,17 @@ void WebServerManager::handleTrains() {
   server.send(200, "text/html", html);
 }
 
-void WebServerManager::sendTrainData(uint8_t clientNum) {
+void WebServerManager::sendTrainData(int clientNum) {
   String jsonResponse;
   trainDataManager.getTrainDataAsJson(jsonResponse);
-  webSocket.sendTXT(clientNum, jsonResponse);
-}
-
-void WebServerManager::broadcastTrainData() {
-  if (webSocket.connectedClients() == 0) {
-    return;
+  if (clientNum == -1) {
+    if (webSocket.connectedClients() == 0) {
+      return;
+    }
+    webSocket.broadcastTXT(jsonResponse);
+  } else {
+    webSocket.sendTXT(static_cast<uint8_t>(clientNum), jsonResponse);
   }
-
-  String jsonResponse;
-  trainDataManager.getTrainDataAsJson(jsonResponse);
-  webSocket.broadcastTXT(jsonResponse);
 }
 
 void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length) {
@@ -273,30 +254,9 @@ void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, ui
       IPAddress ip = webSocket.remoteIP(clientNum);
       LINK_LOGI(LOG_TAG, "WebSocket client #%u connected from %s", clientNum, ip.toString().c_str());
       
-      // Send initial logs to the newly connected client
-      esp32_psram::VectorPSRAM<LogEntry> logs = logManager.getLogs();
-      
-      // Create JSON for initial logs
-      JsonDocument doc(PSRAMJsonAllocator::instance());
-      doc["type"] = "initial";
-      JsonArray logsArray = doc["logs"].to<JsonArray>();
-      
-      for (const auto& entry : logs) {
-        JsonObject logObj = logsArray.add<JsonObject>();
-        logObj["timestamp"] = entry.timestamp;
-        logObj["level"] = entry.level;
-        logObj["tag"] = entry.tag;
-        logObj["message"] = entry.message;
-      }
-      
-      String jsonResponse;
-      serializeJson(doc, jsonResponse);
-      webSocket.sendTXT(clientNum, jsonResponse);
-      
-      // Send current train data to the newly connected client
+      // Send initial data to the newly connected client
+      sendLogData(clientNum);
       sendTrainData(clientNum);
-      
-      // Send current LED state to the newly connected client
       sendLEDState(clientNum);
       break;
     }
@@ -327,39 +287,38 @@ void WebServerManager::handleWebSocketEvent(uint8_t clientNum, WStype_t type, ui
   }
 }
 
-void WebServerManager::broadcastLog(const char* level, const char* tag, const char* message, unsigned long timestamp) {
-  // Only broadcast if there are connected clients
+void WebServerManager::broadcastLog(const LogEntry& entry) {
   if (webSocket.connectedClients() == 0) {
     return;
   }
   
-  // Create JSON for the new log entry
-  JsonDocument doc(PSRAMJsonAllocator::instance());
-  doc["type"] = "log";
-  doc["timestamp"] = timestamp;
-  doc["level"] = level;
-  doc["tag"] = tag;
-  doc["message"] = message;
-  
   String jsonResponse;
-  serializeJson(doc, jsonResponse);
-  
-  // Broadcast to all connected clients
+  logManager.getLogEntryAsJson(entry, jsonResponse);
   webSocket.broadcastTXT(jsonResponse);
 }
 
-void WebServerManager::sendLEDState(uint8_t clientNum) {
+void WebServerManager::sendLogData(int clientNum) {
   String jsonResponse;
-  ledController.serializeLEDState(jsonResponse);
-  webSocket.sendTXT(clientNum, jsonResponse);
-}
-
-void WebServerManager::broadcastLEDState() {
-  if (webSocket.connectedClients() == 0) {
-    return;
+  logManager.getLogsAsJson(jsonResponse, "initial");
+  if (clientNum == -1) {
+    if (webSocket.connectedClients() == 0) {
+      return;
+    }
+    webSocket.broadcastTXT(jsonResponse);
+  } else {
+    webSocket.sendTXT(static_cast<uint8_t>(clientNum), jsonResponse);
   }
+}
 
+void WebServerManager::sendLEDState(int clientNum) {
   String jsonResponse;
-  ledController.serializeLEDState(jsonResponse);
-  webSocket.broadcastTXT(jsonResponse);
+  ledController.getLEDStateAsJson(jsonResponse);
+  if (clientNum == -1) {
+    if (webSocket.connectedClients() == 0) {
+      return;
+    }
+    webSocket.broadcastTXT(jsonResponse);
+  } else {
+    webSocket.sendTXT(static_cast<uint8_t>(clientNum), jsonResponse);
+  }
 }

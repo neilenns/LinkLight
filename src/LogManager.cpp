@@ -1,5 +1,7 @@
 #include "LogManager.h"
 #include "WebServerManager.h"
+#include <ArduinoJson.h>
+#include "PSRAMJsonAllocator.h"
 
 static const char* LOG_TAG = "LogManager";
 
@@ -39,7 +41,7 @@ void LogManager::addLog(const char* level, const char* tag, const char* message)
     logBuffer.pushOverwrite(entry);
     
     // Broadcast to WebSocket clients
-    webServerManager.broadcastLog(level, tag, message, entry.timestamp);
+    webServerManager.broadcastLog(entry);
   } catch (...) {
     Serial.println("[LogManager] Exception in addLog - likely memory allocation failure");
   }
@@ -73,4 +75,37 @@ esp32_psram::VectorPSRAM<LogEntry> LogManager::getLogs(int maxEntries) {
 void LogManager::clear() {
   logBuffer.clear();
   addLog("I", LOG_TAG, "Log buffer cleared");
+}
+
+void LogManager::getLogsAsJson(String& output, const char* messageType) const {
+  size_t available = logBuffer.available();
+
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  if (messageType != nullptr) {
+    doc["type"] = messageType;
+  }
+  JsonArray logsArray = doc["logs"].to<JsonArray>();
+
+  for (size_t i = 0; i < available; i++) {
+    LogEntry entry;
+    if (logBuffer.peekAt(i, entry)) {
+      JsonObject logObj = logsArray.add<JsonObject>();
+      logObj["timestamp"] = entry.timestamp;
+      logObj["level"] = entry.level;
+      logObj["tag"] = entry.tag;
+      logObj["message"] = entry.message;
+    }
+  }
+
+  serializeJson(doc, output);
+}
+
+void LogManager::getLogEntryAsJson(const LogEntry& entry, String& output) const {
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  doc["type"] = "log";
+  doc["timestamp"] = entry.timestamp;
+  doc["level"] = entry.level;
+  doc["tag"] = entry.tag;
+  doc["message"] = entry.message;
+  serializeJson(doc, output);
 }

@@ -49,6 +49,7 @@ logs, and adjust settings from any device on your network.
 | [Configuration](http://linklight/config/) | Configure API key, colors, timezone, hostname |
 | [Train status](http://linklight/trains/)  | Real-time train positions and LED state       |
 | [System logs](http://linklight/logs/)     | Recent log output from the device             |
+| [Firmware update](http://linklight/update/) | Flash firmware or filesystem over the browser |
 
 ### Configuration options
 
@@ -119,7 +120,8 @@ LinkLight/
 │   ├── index.html            # Status page
 │   ├── config.html           # Configuration form
 │   ├── trains.html           # Live train status
-│   └── logs.html             # System logs
+│   ├── logs.html             # System logs
+│   └── update.html           # Firmware/filesystem update
 ├── sample/                   # Sample OneBusAway API responses
 ├── platformio.ini            # PlatformIO build configuration
 └── .github/workflows/        # CI/CD pipelines

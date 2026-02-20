@@ -32,5 +32,6 @@
     "uploadfs",
     "Wilburton",
     "xiao"
-  ]
+  ],
+  "platformio-ide.disablePIOHomeStartup": true
 }

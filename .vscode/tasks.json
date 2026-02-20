@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build and Upload Filesystem (seeed_xiao_esp32s3)",
+      "type": "shell",
+      "dependsOn": [
+        "PlatformIO: Build Filesystem Image (seeed_xiao_esp32s3)",
+        "PlatformIO: Upload Filesystem Image (seeed_xiao_esp32s3)"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    }
+  ]
+}

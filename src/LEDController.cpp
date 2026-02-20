@@ -93,30 +93,18 @@ void LEDController::setup() {
 }
 
 void LEDController::startupAnimation() {
-  const int delayMs = 20;  // Delay between each color
+  const int delayMs = 10;  // Delay between each color
 
-  // Flash each LED blue
+  // Light up each LED in sequence, concurrently from each end of the strip.
   for (int i = 0; i < LED_COUNT; i++) {
-    // Show blue
     strip.SetPixelColor(i, COLOR_BLUE);
+    strip.SetPixelColor(LED_COUNT - 1 - i, COLOR_GREEN);
     strip.Show();
     delay(delayMs);
     strip.SetPixelColor(i, COLOR_BLACK);
+    strip.SetPixelColor(LED_COUNT - 1 - i, COLOR_BLACK);
     strip.Show();
   }
-
-  // Flash each LED green in the opposite direction
-  for (int i = LED_COUNT -1; i >= 0; i--) {
-    strip.SetPixelColor(i, COLOR_GREEN);
-    strip.Show();
-    delay(delayMs);
-    strip.SetPixelColor(i, COLOR_BLACK);
-    strip.Show();
-  }
-
-  // Turn all LEDs off at the end of the self-test
-  setAllLEDs(COLOR_BLACK);
-  strip.Show();
 
   LINK_LOGD(LOG_TAG, "LEDs initialized");
 }

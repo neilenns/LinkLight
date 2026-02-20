@@ -139,22 +139,15 @@ LinkLight/
 pio run
 pio run --target buildfs
 
-# Upload firmware over USB
-pio run --target upload
-
 # Upload firmware over the air (set upload_port to the device IP in platformio.ini)
 pio run --target upload --upload-protocol espota
 
-# Open serial monitor at 115200 baud
-pio device monitor -b 115200
-
-# Clean build artifacts
-pio run --target clean
+# Upload filesystem over the air
+pio run --target uploadfs
 ```
 
 The first build downloads all dependencies and the ESP32 toolchain, which may
-take several minutes. Subsequent builds are faster thanks to PlatformIO's
-dependency cache.
+take several minutes.
 
 ### CI/CD
 

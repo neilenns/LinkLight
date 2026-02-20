@@ -61,7 +61,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
   }
 
   // Reserve memory to avoid reallocations during push_back operations
-  trainDataList.reserve(list.size());
+  buildingList.reserve(list.size());
 
   for (JsonObject item : list) {
     TrainData train;
@@ -163,7 +163,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     }
 
     // Add to the list
-    trainDataList.push_back(train);
+    buildingList.push_back(train);
 
     // If a focused train is set, log only that train's data
     String focusedVehicleId = preferencesManager.getFocusedVehicleId();
@@ -244,10 +244,12 @@ void TrainDataManager::getTrainDataAsJson(String& output) const {
   doc["type"] = "trains";
   JsonArray trainsArray = doc["trains"].to<JsonArray>();
 
+  if (dataMutex) xSemaphoreTake(dataMutex, portMAX_DELAY);
   for (const TrainData& train : trainDataList) {
     JsonObject trainObj = trainsArray.add<JsonObject>();
     buildTrainJsonObject(trainObj, train);
   }
+  if (dataMutex) xSemaphoreGive(dataMutex);
 
   serializeJson(doc, output);
 }
@@ -257,8 +259,8 @@ void TrainDataManager::updateTrainPositions() {
 
   String apiKey = preferencesManager.getApiKey();
 
-  // Clear previous train data at the start of each update
-  trainDataList.clear();
+  // Clear the building list at the start of each update
+  buildingList.clear();
 
   if (apiKey.isEmpty()) {
     LINK_LOGW(LOG_TAG, "API key not configured, loading sample data from %s", SAMPLE_DATA_PATH);
@@ -266,27 +268,26 @@ void TrainDataManager::updateTrainPositions() {
     File sampleFile = LittleFS.open(SAMPLE_DATA_PATH, "r");
     if (!sampleFile) {
       LINK_LOGE(LOG_TAG, "Sample data not found.");
-      return;
+    } else {
+      JsonDocument doc(PSRAMJsonAllocator::instance());
+      DeserializationError error = deserializeJson(doc, sampleFile);
+      sampleFile.close();
+      if (error) {
+        LINK_LOGE(LOG_TAG, "Sample JSON parsing failed: %s", error.c_str());
+      } else if (parseTrainDataFromJson(doc, Line::LINE_1)) {
+        LINK_LOGI(LOG_TAG, "Successfully loaded sample train data from LittleFS");
+      }
     }
+  } else {
+    LINK_LOGD(LOG_TAG, "Updating train positions...");
 
-    JsonDocument doc(PSRAMJsonAllocator::instance());
-    DeserializationError error = deserializeJson(doc, sampleFile);
-    sampleFile.close();
-    if (error) {
-      LINK_LOGE(LOG_TAG, "Sample JSON parsing failed: %s", error.c_str());
-      return;
-    }
-
-    if (parseTrainDataFromJson(doc, Line::LINE_1)) {
-      LINK_LOGI(LOG_TAG, "Successfully loaded sample train data from LittleFS");
-    }
-
-    return;
+    // Fetch data for both lines
+    fetchTrainDataForRoute(LINE_1_ROUTE_ID, Line::LINE_1, apiKey);
+    fetchTrainDataForRoute(LINE_2_ROUTE_ID, Line::LINE_2, apiKey);
   }
 
-  LINK_LOGD(LOG_TAG, "Updating train positions...");
-
-  // Fetch data for both lines
-  fetchTrainDataForRoute(LINE_1_ROUTE_ID, Line::LINE_1, apiKey);
-  fetchTrainDataForRoute(LINE_2_ROUTE_ID, Line::LINE_2, apiKey);
+  // Swap the completed building list into the active list under mutex
+  if (dataMutex) xSemaphoreTake(dataMutex, portMAX_DELAY);
+  buildingList.swap(trainDataList);
+  if (dataMutex) xSemaphoreGive(dataMutex);
 }

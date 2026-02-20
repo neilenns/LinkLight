@@ -12,7 +12,37 @@
 #include "NTPManager.h"
 
 static const char* LOG_TAG = "LinkLight";
-unsigned long lastApiUpdate = 0; // Start at 0 to trigger immediate first update
+static TaskHandle_t loopTaskHandle = nullptr;
+
+void dumpMemoryStats()
+{
+  if (psramFound())
+  {
+    LINK_LOGD(LOG_TAG, "Total PSRAM size: %lu kB\r\n", ESP.getPsramSize() / 1024);
+    LINK_LOGD(LOG_TAG, "Free PSRAM size: %lu kB\r\n", ESP.getFreePsram() / 1024);
+    LINK_LOGD(LOG_TAG, "Available internal heap: %lu kB\n", ESP.getFreeHeap() / 1024);
+  }
+  else
+  {
+    LINK_LOGW(LOG_TAG, "No PSRAM found");
+  }
+}
+
+void trainUpdateTask(void* parameter) {
+  TaskHandle_t notifyTarget = static_cast<TaskHandle_t>(parameter);
+  while (true) {
+    dumpMemoryStats();
+
+    trainDataManager.updateTrainPositions();
+
+    dumpMemoryStats();
+
+    xTaskNotifyGive(notifyTarget);
+
+    unsigned long updateIntervalMs = preferencesManager.getUpdateInterval() * 1000;
+    vTaskDelay(pdMS_TO_TICKS(updateIntervalMs));
+  }
+}
 
 void setup() {
   Serial.begin(115200);
@@ -44,21 +74,23 @@ void setup() {
   // Show the startup animation
   ledController.startupAnimation();
 
-  LINK_LOGI(LOG_TAG, "LinkLight Ready!");
-}
+  // Initialize the train data mutex
+  trainDataManager.dataMutex = xSemaphoreCreateMutex();
+  if (trainDataManager.dataMutex == nullptr) {
+    LINK_LOGE(LOG_TAG, "Failed to create train data mutex");
+    return;
+  }
 
-void dumpMemoryStats()
-{
-  if (psramFound())
-  {
-    LINK_LOGD(LOG_TAG, "Total PSRAM size: %lu kB\r\n", ESP.getPsramSize() / 1024);
-    LINK_LOGD(LOG_TAG, "Free PSRAM size: %lu kB\r\n", ESP.getFreePsram() / 1024);
-    LINK_LOGD(LOG_TAG, "Available internal heap: %lu kB\n", ESP.getFreeHeap() / 1024);
+  // Capture the loop task handle so the Core 0 task can notify it
+  loopTaskHandle = xTaskGetCurrentTaskHandle();
+
+  // Start the train update task on Core 0, passing the loop task handle for notifications
+  if (xTaskCreatePinnedToCore(trainUpdateTask, "TrainUpdate", 8192, loopTaskHandle, 1, NULL, 0) != pdPASS) {
+    LINK_LOGE(LOG_TAG, "Failed to create train update task");
+    return;
   }
-  else
-  {
-    LINK_LOGW(LOG_TAG, "No PSRAM found");
-  }
+
+  LINK_LOGI(LOG_TAG, "LinkLight Ready!");
 }
 
 void loop() {
@@ -68,13 +100,8 @@ void loop() {
   // Handle web server requests
   webServerManager.handleClient();
   
-  // Update train positions periodically
-  unsigned long updateIntervalMs = preferencesManager.getUpdateInterval() * 1000;
-  if (millis() - lastApiUpdate > updateIntervalMs) {
-    dumpMemoryStats();
-    
-    trainDataManager.updateTrainPositions();
-    
+  // When the Core 0 train update task signals new data is ready, broadcast and display it
+  if (ulTaskNotifyTake(pdTRUE, 0) > 0) {
     // Broadcast updated train data to connected WebSocket clients
     webServerManager.sendTrainData();
     
@@ -83,10 +110,6 @@ void loop() {
     
     // Broadcast updated LED state to connected WebSocket clients
     webServerManager.sendLEDState();
-
-    dumpMemoryStats();
-
-    lastApiUpdate = millis();
   }
     
   delay(10);

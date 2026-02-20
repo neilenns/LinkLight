@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include <freertos/semphr.h>
 // Only include the PSRAM components we need to avoid compilation issues with InMemoryFS
 #include "esp32-psram/AllocatorPSRAM.h"
 #include "esp32-psram/VectorPSRAM.h"
@@ -51,12 +52,16 @@ public:
 
   // Serializes the current train data list to a JSON string
   void getTrainDataAsJson(String& output) const;
+
+  // Mutex for thread-safe access to trainDataList between cores
+  SemaphoreHandle_t dataMutex = nullptr;
   
 private:
   bool parseTrainDataFromJson(JsonDocument& doc, Line line);
   void fetchTrainDataForRoute(const String& routeId, Line line, const String& apiKey);
   void buildTrainJsonObject(JsonObject trainObj, const TrainData& train) const;
   esp32_psram::VectorPSRAM<TrainData> trainDataList;
+  esp32_psram::VectorPSRAM<TrainData> buildingList;
 };
 
 extern TrainDataManager trainDataManager;

@@ -34,6 +34,28 @@ wa-card h3 {
   background-color: var(--ll-shared-track);
 }
 
+/* Styles used to display trains as LED squares */
+[class^="led-square"] {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background-color: #1a1a1a;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.led-square-green {
+  background-color: var(--ll-sound-transit-green);
+}
+
+.led-square-blue {
+  background-color: var(--ll-sound-transit-blue);
+}
+
+.led-square-yellow {
+  background-color: var(--ll-shared-track);
+}
+
 /* 
 Use with a div to align input field labels on the left, and the input field on the right.
 Right now only targets wa-input, wa-select, and wa-color-picker. When using additional

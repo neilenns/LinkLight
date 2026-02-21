@@ -1,0 +1,12 @@
+:root {
+  --ll-sound-transit-green: #28813f;
+  --ll-sound-transit-blue: #007cad;
+}
+
+body {
+  margin: 8px;
+}
+
+h1 {
+  color: var(--ll-sound-transit-blue);
+}

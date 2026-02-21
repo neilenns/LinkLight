@@ -189,7 +189,7 @@
         let html = "";
         filteredLogs.forEach((log) => {
           html += `<div class="log-entry ${escapeHtml(getLevelClass(log.level))}">`;
-          html += `<span class="log-timestamp">${formatTimestamp(escapeHtml(log.timestamp))}</span>`;
+          html += `<span class="log-timestamp">${formatTimestamp(log.timestamp)}</span>`;
           html += `<span class="log-tag">[${escapeHtml(log.level)}] ${escapeHtml(log.tag)}:</span>`;
           html += `<span class="log-message">${escapeHtml(log.message)}</span>`;
           html += "</div>";

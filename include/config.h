@@ -34,7 +34,7 @@
 #define PREF_HOSTNAME "hostname"
 #define PREF_TIMEZONE "timezone"
 #define PREF_UPDATE_INTERVAL "updateInterval"
-#define PREF_AT_STATION_THRESHOLD "atStationThresh"
+#define PREF_AT_STATION_THRESHOLD "atStationThreshold"
 #define PREF_LINE1_COLOR "line1Color"
 #define PREF_LINE2_COLOR "line2Color"
 #define PREF_SHARED_COLOR "sharedColor"

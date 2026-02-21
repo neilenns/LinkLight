@@ -30,7 +30,7 @@
   <body>
     <h1>LinkLight - Configuration</h1>
 
-    <form method="POST" action="/config">
+    <form id="configForm" onsubmit="event.preventDefault();">
       <wa-card>
         <h3 slot="header">Settings</h3>
         <div class="label-on-left">
@@ -117,7 +117,11 @@
           ></wa-color-picker>
         </div>
 
-        <wa-button type="submit" variant="primary" slot="footer"
+        <wa-button
+          type="button"
+          variant="primary"
+          slot="footer"
+          onclick="saveConfig()"
           >Save configuration</wa-button
         >
       </wa-card>
@@ -144,6 +148,33 @@
     </wa-card>
 
     <script>
+      function saveConfig() {
+        var params = new URLSearchParams(
+          new FormData(document.getElementById("configForm")),
+        );
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/config", true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded",
+        );
+
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            notyf.success("Configuration saved");
+          } else {
+            notyf.error("Error saving configuration: " + xhr.statusText);
+          }
+        };
+
+        xhr.onerror = function () {
+          notyf.error("Network error occurred");
+        };
+
+        xhr.send(params.toString());
+      }
+
       function testStation() {
         var stationSelect = document.getElementById("testStationSelect");
 

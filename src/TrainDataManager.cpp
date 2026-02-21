@@ -156,7 +156,7 @@ bool TrainDataManager::parseTrainDataFromJson(JsonDocument& doc, Line line) {
     // doesn't work, since it misses trains that are just barely arriving at the station but leave during the data refresh window.
     // Checking for the next and closest stop IDs (or offsets) being the same also doesn't work, since that's true any time the
     // train is past the halfway point of the two stations. 
-    if (train.nextStopTimeOffset < AT_STATION_THRESHOLD) {
+    if (train.nextStopTimeOffset < (int)preferencesManager.getAtStationThreshold()) {
       train.state = TrainState::AT_STATION;
     } else {
       train.state = TrainState::MOVING;

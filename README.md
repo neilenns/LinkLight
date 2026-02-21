@@ -59,6 +59,7 @@ logs, and adjust settings from any device on your network.
 | API key          | OneBusAway API key                        | _(none)_           |
 | Timezone         | Timezone for log timestamps               | Pacific Time       |
 | Refresh interval | How often to poll the API (seconds)       | `30`               |
+| At-station threshold | Seconds before arrival a train is considered at the station | `10` |
 | Line 1 color     | LED color for Link 1 trains               | SoundTransit Green |
 | Line 2 color     | LED color for Link 2 trains               | SoundTransit Blue  |
 | Overlap color    | LED color when both lines share a station | Yellow             |

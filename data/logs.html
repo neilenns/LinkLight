@@ -1,66 +1,52 @@
 <!doctype html>
-<html>
+<html class="wa-dark wa-cloak" lang="en">
   <head>
     <title>LinkLight - Logs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      src="https://kit.webawesome.com/2ef289f478d44f55.js"
+      crossorigin="anonymous"
+    ></script>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
     />
-    <script
-      type="module"
-      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
-    ></script>
+    <link rel="stylesheet" href="global.css" />
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="/notyf.js" defer></script>
     <style>
       html,
       body {
         height: 100%;
-        margin: 0;
-        padding: 0;
         overflow: hidden;
       }
 
       body {
-        background-color: #1e1e1e;
-        color: #d4d4d4;
         display: flex;
         flex-direction: column;
         padding: 20px;
         box-sizing: border-box;
-        font-family: var(--sl-font-sans);
-      }
-
-      h1 {
-        color: #4ec9b0;
-        margin: 0 0 10px 0;
-        flex-shrink: 0;
       }
 
       .controls {
-        margin: 20px 0;
-        padding: 15px;
-        background-color: #252526;
-        border-radius: var(--sl-border-radius-medium);
         display: flex;
         gap: 10px;
+        padding-bottom: 10px;
         align-items: center;
         flex-wrap: wrap;
         flex-shrink: 0;
       }
 
-      sl-select {
-        min-width: 150px;
-      }
-
       .log-container {
-        background-color: #1e1e1e;
-        border: 1px solid #3c3c3c;
-        border-radius: var(--sl-border-radius-medium);
+        background-color: var(--wa-color-surface-raised);
+        border: var(--wa-border-style) var(--wa-border-width-s)
+          var(--wa-color-surface-border);
+        border-radius: var(--wa-border-radius-m);
         padding: 15px;
         flex: 1;
         overflow-y: auto;
         min-height: 0;
-        font-family: var(--sl-font-mono);
+        font-family: var(--wa-font-family-code);
       }
 
       .log-entry {
@@ -72,12 +58,21 @@
         white-space: pre;
       }
 
+      .log-container-message {
+        text-align: center;
+        color: var(--wa-color-neutral-on-quiet);
+      }
+
       .log-entry:hover {
-        background-color: #2d2d30;
+        background-color: color-mix(
+          in oklab,
+          var(--wa-color-brand-fill-normal),
+          var(--wa-color-mix-hover)
+        );
       }
 
       .log-timestamp {
-        color: #858585;
+        color: var(--wa-color-neutral-on-quiet);
         font-size: 11px;
         margin-right: 10px;
       }
@@ -87,65 +82,62 @@
         margin-right: 10px;
       }
 
-      .log-level-I {
-        color: #4ec9b0;
+      .log-level-I .log-tag {
+        color: var(--ll-log-level-I-on);
       }
 
-      .log-level-W {
-        color: #dcdcaa;
+      .log-level-W .log-tag {
+        color: var(--ll-log-level-W-on);
       }
 
-      .log-level-E {
-        color: #f48771;
+      .log-level-E .log-tag {
+        color: var(--ll-log-level-E-on);
       }
 
-      .log-level-D {
-        color: #9cdcfe;
+      .log-level-D .log-tag {
+        color: var(--ll-log-level-D-on);
       }
 
-      .log-level-V {
-        color: #c586c0;
+      .log-level-V .log-tag {
+        color: var(--ll-log-level-V-on);
+      }
+
+      .log-level-D .log-message {
+        color: var(--wa-color-neutral-on-quiet);
+      }
+
+      .log-level-V .log-message {
+        color: var(--wa-color-neutral-on-quiet);
       }
     </style>
   </head>
-  <body class="sl-theme-dark">
+  <body>
     <h1>LinkLight - System logs</h1>
 
     <div class="controls">
-      <sl-button href="/" size="small">Home</sl-button>
-
-      <sl-select
+      <wa-select
         id="levelFilter"
         size="small"
         value="all"
         aria-label="Filter logs by level"
       >
-        <sl-option value="all">All</sl-option>
-        <sl-option value="E">Error</sl-option>
-        <sl-option value="W">Warning</sl-option>
-        <sl-option value="I">Info</sl-option>
-        <sl-option value="D">Debug</sl-option>
-        <sl-option value="V">Verbose</sl-option>
-      </sl-select>
+        <wa-option value="all">All</wa-option>
+        <wa-option value="E">Error</wa-option>
+        <wa-option value="W">Warning</wa-option>
+        <wa-option value="I">Info</wa-option>
+        <wa-option value="D">Debug</wa-option>
+        <wa-option value="V">Verbose</wa-option>
+      </wa-select>
 
-      <sl-button id="pauseButton" size="small">Pause</sl-button>
-      <sl-button id="clearButton" size="small">Clear display</sl-button>
-
-      <sl-badge id="connectionStatus" variant="neutral" pill
-        >Connecting...</sl-badge
+      <wa-button id="pauseButton" size="small">Pause</wa-button>
+      <wa-button id="clearButton" size="small">Clear display</wa-button>
+      <wa-badge id="connectionStatus" variant="danger" pill
+        >Disconnected</wa-badge
       >
     </div>
 
-    <sl-alert
-      id="status"
-      variant="danger"
-      style="flex-shrink: 0; margin: 0 0 10px 0"
-    ></sl-alert>
-
     <div class="log-container" id="logContainer">
-      <div style="color: #858585; text-align: center; padding: 20px">
-        Connecting to log stream...
-      </div>
+      <div class="log-container-message">Connecting to log stream...</div>
     </div>
 
     <script>
@@ -158,9 +150,8 @@
       const pauseButton = document.getElementById("pauseButton");
       const clearButton = document.getElementById("clearButton");
       const levelFilter = document.getElementById("levelFilter");
-      const statusAlert = document.getElementById("status");
 
-      levelFilter.addEventListener("sl-change", filterLogs);
+      levelFilter.addEventListener("change", filterLogs);
       pauseButton.addEventListener("click", togglePause);
       clearButton.addEventListener("click", clearDisplay);
 
@@ -191,15 +182,15 @@
 
         if (filteredLogs.length === 0) {
           container.innerHTML =
-            '<div style="color: #858585; text-align: center; padding: 20px;">No logs to display</div>';
+            '<div class="log-container-message">No logs to display</div>';
           return;
         }
 
         let html = "";
         filteredLogs.forEach((log) => {
-          html += '<div class="log-entry">';
+          html += `<div class="log-entry ${escapeHtml(getLevelClass(log.level))}">`;
           html += `<span class="log-timestamp">${formatTimestamp(log.timestamp)}</span>`;
-          html += `<span class="log-tag ${getLevelClass(log.level)}">[${log.level}] ${log.tag}:</span>`;
+          html += `<span class="log-tag">[${escapeHtml(log.level)}] ${escapeHtml(log.tag)}:</span>`;
           html += `<span class="log-message">${escapeHtml(log.message)}</span>`;
           html += "</div>";
         });
@@ -239,19 +230,6 @@
         }
       }
 
-      function updateStatus(type, message) {
-        statusAlert.variant = type === "error" ? "danger" : "success";
-        statusAlert.textContent = message;
-        statusAlert.open = true;
-
-        // Hide success messages after 3 seconds
-        if (type === "success") {
-          setTimeout(() => {
-            statusAlert.open = false;
-          }, 3000);
-        }
-      }
-
       function updateConnectionStatus(connected) {
         const badge = document.getElementById("connectionStatus");
         if (connected) {
@@ -270,8 +248,8 @@
         ws = new WebSocket(`ws://${host}:${wsPort}`);
 
         ws.onopen = function () {
-          console.log("WebSocket connected");
           updateConnectionStatus(true);
+          notyf.success("Connected to logs");
 
           // Clear reconnect timer
           if (reconnectTimer) {
@@ -310,16 +288,13 @@
 
         ws.onerror = function (error) {
           console.error("WebSocket error:", error);
-          updateStatus("error", "WebSocket connection error");
+          notyf.error("WebSocket connection error");
         };
 
         ws.onclose = function () {
           console.log("WebSocket disconnected");
           updateConnectionStatus(false);
-          updateStatus(
-            "error",
-            "Disconnected from log stream. Reconnecting...",
-          );
+          notyf.error("Disconnected from log stream. Reconnecting...");
 
           // Attempt to reconnect after 3 seconds
           reconnectTimer = setTimeout(() => {

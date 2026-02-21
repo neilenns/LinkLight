@@ -4,6 +4,14 @@
   --ll-shared-track: #a1a100;
 }
 
+.wa-dark {
+  --ll-log-level-I-on: var(--wa-color-brand-on-normal);
+  --ll-log-level-W-on: var(--wa-color-warning-on-normal);
+  --ll-log-level-E-on: var(--wa-color-error-on-normal);
+  --ll-log-level-D-on: var(--wa-color-cyan-20);
+  --ll-log-level-V-on: var(--wa-color-purple-20);
+}
+
 body {
   margin: 8px;
 }

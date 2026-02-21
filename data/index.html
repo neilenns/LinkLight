@@ -1,84 +1,71 @@
 <!doctype html>
-<html>
+<html class="wa-dark" lang="en">
   <head>
+    <meta charset="utf-8" />
     <title>LinkLight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
-    />
     <script
-      type="module"
-      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+      src="https://kit.webawesome.com/2ef289f478d44f55.js"
+      crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" href="/global.css" />
     <style>
       body {
-        background-color: #1e1e1e;
-        color: #d4d4d4;
-        padding: 20px;
-        box-sizing: border-box;
-        font-family: var(--sl-font-sans);
         max-width: 600px;
       }
 
-      h1 {
-        color: #4ec9b0;
-        margin: 0 0 20px 0;
-      }
-
-      .info {
-        margin-bottom: 20px;
-        padding: 15px;
-        background-color: #252526;
-        border-radius: var(--sl-border-radius-medium);
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .info-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: var(--sl-font-size-medium);
-      }
-
       .info-label {
-        color: #9cdcfe;
-        font-weight: var(--sl-font-weight-semibold);
-        min-width: 100px;
+        font-weight: var(--wa-font-weight-semibold);
       }
 
       .nav-buttons {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
+        margin-top: 20px;
+      }
+
+      .info {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 15px 20px;
+      }
+
+      .info-item {
+        display: contents;
+      }
+
+      /* Constrain badge width to its content to prevent it from filling the grid column */
+      .info-item wa-badge {
+        width: fit-content;
       }
     </style>
   </head>
-  <body class="sl-theme-dark">
+  <body>
     <h1>LinkLight</h1>
 
-    <div class="info">
-      <div class="info-row">
-        <span class="info-label">Status</span>
-        <sl-badge variant="success" pill>Running</sl-badge>
+    <wa-card>
+      <div class="info">
+        <div class="info-item">
+          <span class="info-label">Status</span>
+          <wa-badge variant="success" pill>Running</wa-badge>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Hostname</span>
+          <span>{{hostname}}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">IP address</span>
+          <span>{{ipAddress}}</span>
+        </div>
       </div>
-      <div class="info-row">
-        <span class="info-label">Hostname</span>
-        <span>{{hostname}}</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">IP address</span>
-        <span>{{ipAddress}}</span>
-      </div>
-    </div>
+    </wa-card>
 
     <div class="nav-buttons">
-      <sl-button href="/config">Configuration</sl-button>
-      <sl-button href="/update">Firmware update</sl-button>
-      <sl-button href="/logs">System logs</sl-button>
-      <sl-button href="/trains">Train status</sl-button>
+      <wa-button href="/config">Configuration</wa-button>
+      <wa-button href="/trains">Train status</wa-button>
+      <wa-button href="/update">Firmware update</wa-button>
+      <wa-button href="/logs">System logs</wa-button>
     </div>
   </body>
 </html>

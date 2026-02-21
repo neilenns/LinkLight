@@ -1,191 +1,179 @@
 <!doctype html>
-<html>
+<html class="wa-dark" lang="en">
   <head>
+    <meta charset="utf-8" />
     <title>LinkLight - Configuration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/dark.css"
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
     />
+    <link rel="stylesheet" href="/global.css" />
     <script
-      type="module"
-      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"
+      src="https://kit.webawesome.com/2ef289f478d44f55.js"
+      crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <style>
-      body {
-        background-color: #1e1e1e;
-        color: #d4d4d4;
-        padding: 20px;
-        box-sizing: border-box;
-        font-family: var(--sl-font-sans);
-        max-width: 600px;
-      }
-
-      h1 {
-        color: #4ec9b0;
-        margin: 0 0 20px 0;
-      }
-
-      .controls {
-        margin-bottom: 20px;
-      }
-
-      .form-section {
-        margin-bottom: 20px;
-        padding: 15px;
-        background-color: #252526;
-        border-radius: var(--sl-border-radius-medium);
+      .led-test-footer {
         display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .section-heading {
-        color: #9cdcfe;
-        font-size: var(--sl-font-size-medium);
-        font-weight: var(--sl-font-weight-semibold);
-        margin: 0;
-      }
-
-      .color-row {
-        display: flex;
-        align-items: center;
         gap: 12px;
+        align-items: center;
       }
 
-      .color-row sl-color-picker {
-        flex-shrink: 0;
-      }
-
-      .color-label {
-        font-size: var(--sl-font-size-small);
-        color: #d4d4d4;
+      body {
+        width: 610px;
       }
     </style>
   </head>
-  <body class="sl-theme-dark">
+  <body>
     <h1>LinkLight - Configuration</h1>
 
-    <div class="controls">
-      <sl-button href="/" size="small">Home</sl-button>
-    </div>
-
     <form method="POST" action="/config">
-      <div class="form-section">
-        <sl-input
-          label="Hostname"
-          name="hostname"
-          value="{{hostname}}"
-          placeholder="LinkLight"
-        ></sl-input>
-        <sl-input
-          label="API key"
-          name="apiKey"
-          value="{{apiKey}}"
-          placeholder="Enter OneBusAway API key"
-        ></sl-input>
-        <sl-select label="Timezone" name="timezone" value="{{timezone}}">
-          <sl-option value="PST8PDT,M3.2.0,M11.1.0"
-            >Pacific Time (with DST)</sl-option
+      <wa-card>
+        <h3 slot="header">Settings</h3>
+        <div class="label-on-left">
+          <wa-input
+            label="Hostname"
+            name="hostname"
+            value="{{hostname}}"
+            placeholder="LinkLight"
+            hint="Used for mDNS discovery"
+          ></wa-input>
+          <wa-input
+            label="API key"
+            name="apiKey"
+            value="{{apiKey}}"
+            placeholder="Enter OneBusAway API key"
+            hint="Request an API key from SoundTransit and include it here"
+          ></wa-input>
+          <wa-select
+            label="Timezone"
+            name="timezone"
+            hint="Your local timezone"
+            value="{{timezone}}"
           >
-          <sl-option value="PST8">Pacific Standard Time (no DST)</sl-option>
-          <sl-option value="MST7MDT,M3.2.0,M11.1.0"
-            >Mountain Time (with DST)</sl-option
-          >
-          <sl-option value="MST7">Mountain Standard Time (no DST)</sl-option>
-          <sl-option value="CST6CDT,M3.2.0,M11.1.0"
-            >Central Time (with DST)</sl-option
-          >
-          <sl-option value="CST6">Central Standard Time (no DST)</sl-option>
-          <sl-option value="EST5EDT,M3.2.0,M11.1.0"
-            >Eastern Time (with DST)</sl-option
-          >
-          <sl-option value="EST5">Eastern Standard Time (no DST)</sl-option>
-          <sl-option value="UTC0">UTC</sl-option>
-        </sl-select>
-        <sl-input
-          label="Refresh interval (seconds)"
-          name="updateInterval"
-          type="number"
-          value="{{updateInterval}}"
-          min="15"
-          max="60"
-        ></sl-input>
-        <sl-input
-          label="At-station threshold (seconds)"
-          name="atStationThreshold"
-          type="number"
-          value="{{atStationThreshold}}"
-          min="0"
-          max="60"
-        ></sl-input>
-      </div>
-
-      <div class="form-section">
-        <p class="section-heading">LED color settings</p>
-        <div class="color-row">
-          <sl-color-picker
+            <wa-option value="PST8PDT,M3.2.0,M11.1.0"
+              >Pacific Time (with DST)</wa-option
+            >
+            <wa-option value="PST8">Pacific Standard Time (no DST)</wa-option>
+            <wa-option value="MST7MDT,M3.2.0,M11.1.0"
+              >Mountain Time (with DST)</wa-option
+            >
+            <wa-option value="MST7">Mountain Standard Time (no DST)</wa-option>
+            <wa-option value="CST6CDT,M3.2.0,M11.1.0"
+              >Central Time (with DST)</wa-option
+            >
+            <wa-option value="CST6">Central Standard Time (no DST)</wa-option>
+            <wa-option value="EST5EDT,M3.2.0,M11.1.0"
+              >Eastern Time (with DST)</wa-option
+            >
+            <wa-option value="EST5">Eastern Standard Time (no DST)</wa-option>
+            <wa-option value="UTC0">UTC</wa-option>
+          </wa-select>
+          <wa-number-input
+            label="Refresh interval (seconds)"
+            name="updateInterval"
+            value="{{updateInterval}}"
+            placeholder="15"
+            min="15"
+            max="60"
+            hint="How often to check for train updates"
+          ></wa-number-input>
+          <wa-number-input
+            label="At-station threshold (seconds)"
+            name="atStationThreshold"
+            value="{{atStationThreshold}}"
+            placeholder="10"
+            min="0"
+            max="60"
+            hint="How many seconds away trains can be from a station and still be considered at the station"
+          ></wa-number-input>
+          <wa-color-picker
             name="line1Color"
             value="{{line1Color}}"
             format="hex"
-            no-format-toggle
-            size="small"
-            label="Line 1 color"
-          ></sl-color-picker>
-          <span class="color-label">Line 1 color</span>
-        </div>
-        <div class="color-row">
-          <sl-color-picker
+            label="1 Line"
+            swatches="#28813f"
+            hint="Color used for 1 Line trains"
+          ></wa-color-picker>
+          <wa-color-picker
             name="line2Color"
             value="{{line2Color}}"
             format="hex"
-            no-format-toggle
-            size="small"
-            label="Line 2 color"
-          ></sl-color-picker>
-          <span class="color-label">Line 2 color</span>
-        </div>
-        <div class="color-row">
-          <sl-color-picker
+            label="2 Line"
+            swatches="#007cad"
+            hint="Color used for 2 Line trains"
+          ></wa-color-picker>
+          <wa-color-picker
             name="sharedColor"
             value="{{sharedColor}}"
             format="hex"
             no-format-toggle
-            size="small"
-            label="Overlap color (when both lines are at same spot)"
-          ></sl-color-picker>
-          <span class="color-label"
-            >Overlap color (when both lines are at same spot)</span
-          >
+            label="Shared segment"
+            swatches="#232300"
+            hint="Used when trains from both lines are on the same track segment"
+          ></wa-color-picker>
         </div>
-      </div>
 
-      <sl-button type="submit" variant="primary">Save configuration</sl-button>
+        <wa-button type="submit" variant="primary" slot="footer"
+          >Save configuration</wa-button
+        >
+      </wa-card>
     </form>
 
-    <div class="form-section" style="margin-top: 20px">
-      <p class="section-heading">Test station LEDs</p>
-      <sl-select id="testStationSelect" label="Select station">
-        <sl-option value="">Choose a station...</sl-option>
+    <wa-card>
+      <h3 slot="header">Test station LEDs</h3>
+      <p>
+        Select a station to highlight its LEDs. The northbound LED is shown in
+        green <span class="led-square-green"></span>. The southbound LED is
+        shown in blue <span class="led-square-blue"></span>. The LEDs for trains
+        on the way to the station in each direction are shown in yellow
+        <span class="led-square-yellow"></span>.
+      </p>
+      <wa-select id="testStationSelect" label="Select station">
+        <wa-option value="">Choose a station...</wa-option>
         {{#stations}}
-        <sl-option value="{{id}}">{{name}}</sl-option>
+        <wa-option value="{{id}}">{{name}}</wa-option>
         {{/stations}}
-      </sl-select>
-      <div>
-        <sl-button onclick="testStation()">Test station LEDs</sl-button>
+      </wa-select>
+      <div class="led-test-footer" slot="footer">
+        <wa-button onclick="testStation()">Test station LEDs</wa-button>
       </div>
-      <sl-alert id="test-feedback" variant="success" closable></sl-alert>
-    </div>
+    </wa-card>
 
     <script>
+      var notyf = new Notyf({
+        duration: 5000,
+        position: {
+          x: "right",
+          y: "bottom",
+        },
+        types: [
+          {
+            type: "success",
+            className: "wa-success",
+            background: "var(--ll-sound-transit-green)",
+            border: "1px solid var(--wa-color-border-quiet)",
+            color: "var(--wa-color-on-quiet)",
+            ripple: true,
+          },
+          {
+            type: "error",
+            background: "var(--wa-color-fill-quiet)",
+            border: "1px solid var(--wa-color-border-quiet)",
+            color: "var(--wa-color-on-quiet)",
+            className: "wa-danger",
+            ripple: true,
+          },
+        ],
+      });
+
       function testStation() {
         var stationSelect = document.getElementById("testStationSelect");
-        var feedbackAlert = document.getElementById("test-feedback");
 
         if (!stationSelect || !stationSelect.value) {
-          feedbackAlert.variant = "danger";
-          feedbackAlert.textContent = "Please select a station";
-          feedbackAlert.open = true;
+          notyf.error("Please select a station");
           return;
         }
 
@@ -198,20 +186,14 @@
 
         xhr.onload = function () {
           if (xhr.status === 200) {
-            feedbackAlert.variant = "success";
-            feedbackAlert.textContent =
-              "Station LEDs are now lit! Northbound = Green, Southbound = Blue";
+            notyf.success("LEDs are now lit for the selected station");
           } else {
-            feedbackAlert.variant = "danger";
-            feedbackAlert.textContent = `Error testing station: ${xhr.statusText}`;
+            notyf.error(`Error testing station: ${xhr.statusText}`);
           }
-          feedbackAlert.open = true;
         };
 
         xhr.onerror = function () {
-          feedbackAlert.variant = "danger";
-          feedbackAlert.textContent = "Network error occurred";
-          feedbackAlert.open = true;
+          notyf.error("Network error occurred");
         };
 
         xhr.send(`stationName=${encodeURIComponent(stationSelect.value)}`);

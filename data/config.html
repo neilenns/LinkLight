@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
     />
     <link rel="stylesheet" href="/global.css" />
     <script
       src="https://kit.webawesome.com/2ef289f478d44f55.js"
       crossorigin="anonymous"
     ></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <style>
       .led-test-footer {
         display: flex;
@@ -143,23 +143,34 @@
     </wa-card>
 
     <script>
+      var notyf = new Notyf({
+        duration: 5000,
+        position: {
+          x: "right",
+          y: "bottom",
+        },
+        types: [
+          {
+            type: "success",
+            className: "wa-success",
+            ripple: true,
+          },
+          {
+            type: "error",
+            background: "var(--wa-color-fill-quiet)",
+            border: "1px solid var(--wa-color-border-quiet);",
+            color: "var(--wa-color-on-quiet);",
+            className: "wa-danger",
+            ripple: true,
+          },
+        ],
+      });
+
       function testStation() {
         var stationSelect = document.getElementById("testStationSelect");
-        var feedbackAlert = document.getElementById("test-feedback");
 
         if (!stationSelect || !stationSelect.value) {
-          Toastify({
-            text: "Please select a station",
-            duration: 5000,
-            gravity: "bottom",
-            className: "wa-danger",
-            position: "right",
-            style: {
-              background: "var(--wa-color-fill-quiet)",
-              border: "1px solid var(--wa-color-border-quiet)",
-              color: "var(--wa-color-on-quiet)",
-            },
-          }).showToast();
+          notyf.error("Please select a station");
           return;
         }
 
@@ -172,47 +183,14 @@
 
         xhr.onload = function () {
           if (xhr.status === 200) {
-            Toastify({
-              text: "LEDs are now lit for the selected station",
-              duration: 5000,
-              gravity: "bottom",
-              className: "wa-success",
-              position: "right",
-              style: {
-                background: "var(--wa-color-fill-quiet)",
-                border: "1px solid var(--wa-color-border-quiet)",
-                color: "var(--wa-color-on-quiet)",
-              },
-            }).showToast();
+            notyf.success("LEDs are now lit for the selected station");
           } else {
-            Toastify({
-              text: `Error testing station: ${xhr.statusText}`,
-              duration: 5000,
-              gravity: "bottom",
-              position: "right",
-              className: "wa-danger",
-              style: {
-                background: "var(--wa-color-fill-quiet)",
-                border: "1px solid var(--wa-color-border-quiet)",
-                color: "var(--wa-color-on-quiet)",
-              },
-            }).showToast();
+            notyf.error(`Error testing station: ${xhr.statusText}`);
           }
         };
 
         xhr.onerror = function () {
-          Toastify({
-            text: "Network error occurred",
-            duration: 5000,
-            gravity: "bottom",
-            position: "right",
-            className: "wa-danger",
-            style: {
-              background: "var(--wa-color-fill-quiet)",
-              border: "1px solid var(--wa-color-border-quiet)",
-              color: "var(--wa-color-on-quiet)",
-            },
-          }).showToast();
+          notyf.error("Network error occurred");
         };
 
         xhr.send(`stationName=${encodeURIComponent(stationSelect.value)}`);

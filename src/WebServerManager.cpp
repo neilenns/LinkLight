@@ -19,15 +19,15 @@ void WebServerManager::setup() {
   
   // Register handlers
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
-  server.on("/global.css", HTTP_GET, [this]() { this->handleGlobalCss(); });
+  server.on("/global.css", HTTP_GET, [this]() { this->handleStaticFile("/global.css", "text/css"); });
   server.on("/notyf.js", HTTP_GET, [this]() { this->handleStaticFile("/notyf.js", "application/javascript"); });
   server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });
   server.on("/test-station", HTTP_POST, [this]() { this->handleTestStation(); });
-  server.on("/logs", HTTP_GET, [this]() { this->handleLogs(); });
+  server.on("/logs", HTTP_GET, [this]() { this->handleStaticFile("/logs.html", "text/html"); });
   server.on("/api/logs", HTTP_GET, [this]() { this->handleLogsData(); });
-  server.on("/trains", HTTP_GET, [this]() { this->handleTrains(); });
-  server.on("/update", HTTP_GET, [this]() { this->handleUpdate(); });
+  server.on("/trains", HTTP_GET, [this]() { this->handleStaticFile("/trains.html", "text/html"); });
+  server.on("/update", HTTP_GET, [this]() { this->handleStaticFile("/update.html", "text/html"); });
   server.on("/update/firmware", HTTP_POST,
     [this]() { this->handleUpdateFirmware(); },
     [this]() { this->handleUpdateFirmwareUpload(); });
@@ -50,16 +50,6 @@ void WebServerManager::setup() {
 void WebServerManager::handleClient() {
   server.handleClient();
   webSocket.loop();
-}
-
-void WebServerManager::handleGlobalCss() {
-  String css = fileSystemManager.readFile("/global.css");
-  if (css.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load global.css - ensure filesystem was uploaded with 'pio run --target uploadfs'");
-    return;
-  }
-  
-  server.send(200, "text/css", css);
 }
 
 void WebServerManager::handleStaticFile(const String& path, const String& contentType) {
@@ -248,40 +238,10 @@ void WebServerManager::handleTestStation() {
   server.send(200, "text/plain", "OK");
 }
 
-void WebServerManager::handleLogs() {
-  String html = fileSystemManager.readFile("/logs.html");
-  if (html.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load logs.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
-    return;
-  }
-  
-  server.send(200, "text/html", html);
-}
-
 void WebServerManager::handleLogsData() {
   String jsonResponse;
   logManager.getLogsAsJson(jsonResponse);
   server.send(200, "application/json", jsonResponse);
-}
-
-void WebServerManager::handleTrains() {
-  String html = fileSystemManager.readFile("/trains.html");
-  if (html.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load trains.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
-    return;
-  }
-  
-  server.send(200, "text/html", html);
-}
-
-void WebServerManager::handleUpdate() {
-  String html = fileSystemManager.readFile("/update.html");
-  if (html.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load update.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
-    return;
-  }
-  
-  server.send(200, "text/html", html);
 }
 
 void WebServerManager::handleUpdateFirmware() {

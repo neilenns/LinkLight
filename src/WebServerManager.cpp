@@ -212,13 +212,7 @@ void WebServerManager::handleSaveConfig() {
   
   preferencesManager.save();
   
-  String html = fileSystemManager.readFile("/config_saved.html");
-  if (html.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load config_saved.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
-    return;
-  }
-  
-  server.send(200, "text/html", html);
+  server.send(200, "text/plain", "OK");
 }
 
 void WebServerManager::handleTestStation() {

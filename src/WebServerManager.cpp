@@ -19,6 +19,7 @@ void WebServerManager::setup() {
   
   // Register handlers
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
+  server.on("/global.css", HTTP_GET, [this]() { this->handleGlobalCss(); });
   server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });
   server.on("/test-station", HTTP_POST, [this]() { this->handleTestStation(); });
@@ -48,6 +49,15 @@ void WebServerManager::setup() {
 void WebServerManager::handleClient() {
   server.handleClient();
   webSocket.loop();
+}
+
+void WebServerManager::handleGlobalCss() {
+  String html = fileSystemManager.readFile("/global.css");
+  if (html.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load global.css - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
+    server.send(200, "text/css", html);
 }
 
 void WebServerManager::handleRoot() {

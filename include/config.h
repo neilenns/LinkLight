@@ -34,6 +34,7 @@
 #define PREF_HOSTNAME "hostname"
 #define PREF_TIMEZONE "timezone"
 #define PREF_UPDATE_INTERVAL "updateInterval"
+#define PREF_AT_STATION_THRESHOLD "atStationThreshold"
 #define PREF_LINE1_COLOR "line1Color"
 #define PREF_LINE2_COLOR "line2Color"
 #define PREF_SHARED_COLOR "sharedColor"
@@ -43,6 +44,7 @@
 #define DEFAULT_HOSTNAME "LinkLight"
 #define DEFAULT_TIMEZONE "PST8PDT,M3.2.0,M11.1.0"  // Pacific Time with DST
 #define DEFAULT_UPDATE_INTERVAL 30  // Default update interval in seconds
+#define DEFAULT_AT_STATION_THRESHOLD 10  // Default at-station threshold in seconds
 #define DEFAULT_LINE1_COLOR "#28813F"  // Official SoundTransit green for Line 1
 #define DEFAULT_LINE2_COLOR "#007CAD"  // Official SoundTransit blue for Line 2
 #define DEFAULT_SHARED_COLOR "#232300"  // Yellow for shared/overlap

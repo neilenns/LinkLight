@@ -79,6 +79,7 @@ void WebServerManager::handleConfig() {
   data["hostname"] = preferencesManager.getHostname();
   data["timezone"] = preferencesManager.getTimezone();
   data["updateInterval"] = preferencesManager.getUpdateInterval();
+  data["atStationThreshold"] = preferencesManager.getAtStationThreshold();
   data["line1Color"] = preferencesManager.getLine1Color();
   data["line2Color"] = preferencesManager.getLine2Color();
   data["sharedColor"] = preferencesManager.getSharedColor();
@@ -155,6 +156,18 @@ void WebServerManager::handleSaveConfig() {
     } else {
       // Use default if out of range
       preferencesManager.setUpdateInterval(DEFAULT_UPDATE_INTERVAL);
+    }
+  }
+  
+  // Handle at-station threshold with validation (0-60 seconds)
+  if (server.hasArg("atStationThreshold")) {
+    int threshold = server.arg("atStationThreshold").toInt();
+    // Validate range: 0-60 seconds
+    if (threshold >= 0 && threshold <= 60) {
+      preferencesManager.setAtStationThreshold(threshold);
+    } else {
+      // Use default if out of range
+      preferencesManager.setAtStationThreshold(DEFAULT_AT_STATION_THRESHOLD);
     }
   }
   

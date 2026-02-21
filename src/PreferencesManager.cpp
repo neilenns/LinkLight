@@ -15,6 +15,7 @@ void PreferencesManager::load() {
   hostname = preferences.getString(PREF_HOSTNAME, DEFAULT_HOSTNAME);
   timezone = preferences.getString(PREF_TIMEZONE, DEFAULT_TIMEZONE);
   updateInterval = preferences.getUInt(PREF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL);
+  atStationThreshold = preferences.getUInt(PREF_AT_STATION_THRESHOLD, DEFAULT_AT_STATION_THRESHOLD);
   line1Color = preferences.getString(PREF_LINE1_COLOR, DEFAULT_LINE1_COLOR);
   line2Color = preferences.getString(PREF_LINE2_COLOR, DEFAULT_LINE2_COLOR);
   sharedColor = preferences.getString(PREF_SHARED_COLOR, DEFAULT_SHARED_COLOR);
@@ -34,6 +35,7 @@ void PreferencesManager::save() {
   preferences.putString(PREF_HOSTNAME, hostname);
   preferences.putString(PREF_TIMEZONE, timezone);
   preferences.putUInt(PREF_UPDATE_INTERVAL, updateInterval);
+  preferences.putUInt(PREF_AT_STATION_THRESHOLD, atStationThreshold);
   preferences.putString(PREF_LINE1_COLOR, line1Color);
   preferences.putString(PREF_LINE2_COLOR, line2Color);
   preferences.putString(PREF_SHARED_COLOR, sharedColor);

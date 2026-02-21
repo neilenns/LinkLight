@@ -27,6 +27,7 @@ void WebServerManager::setup() {
   // Javascript files
   server.on("/notyf.min.js", HTTP_GET, [this]() { this->handleStaticFile("/notyf.min.js", "application/javascript"); });
   server.on("/notyf.js", HTTP_GET, [this]() { this->handleStaticFile("/notyf.js", "application/javascript"); });
+  server.on("/webawesome.js", HTTP_GET, [this]() { this->handleStaticFile("/webawesome.js", "application/javascript"); });
 
   server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });

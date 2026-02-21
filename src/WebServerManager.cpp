@@ -52,12 +52,13 @@ void WebServerManager::handleClient() {
 }
 
 void WebServerManager::handleGlobalCss() {
-  String html = fileSystemManager.readFile("/global.css");
-  if (html.isEmpty()) {
+  String css = fileSystemManager.readFile("/global.css");
+  if (css.isEmpty()) {
     server.send(500, "text/plain", "Failed to load global.css - ensure filesystem was uploaded with 'pio run --target uploadfs'");
     return;
   }
-    server.send(200, "text/css", html);
+  
+  server.send(200, "text/css", css);
 }
 
 void WebServerManager::handleRoot() {

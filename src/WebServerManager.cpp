@@ -19,7 +19,7 @@ void WebServerManager::setup() {
   
   // Register handlers
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
-  server.on("/global.css", HTTP_GET, [this]() { this->handleGlobalCss(); });
+  server.on("/global.css", HTTP_GET, [this]() { this->handleStaticFile("/global.css", "text/css"); });
   server.on("/notyf.js", HTTP_GET, [this]() { this->handleStaticFile("/notyf.js", "application/javascript"); });
   server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });
@@ -50,16 +50,6 @@ void WebServerManager::setup() {
 void WebServerManager::handleClient() {
   server.handleClient();
   webSocket.loop();
-}
-
-void WebServerManager::handleGlobalCss() {
-  String css = fileSystemManager.readFile("/global.css");
-  if (css.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load global.css - ensure filesystem was uploaded with 'pio run --target uploadfs'");
-    return;
-  }
-  
-  server.send(200, "text/css", css);
 }
 
 void WebServerManager::handleStaticFile(const String& path, const String& contentType) {

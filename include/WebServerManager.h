@@ -19,7 +19,6 @@ public:
   
 private:
   void handleRoot();
-  void handleGlobalCss();
   void handleConfig();
   void handleSaveConfig();
   void handleTestStation();

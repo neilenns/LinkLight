@@ -22,10 +22,7 @@ private:
   void handleConfig();
   void handleSaveConfig();
   void handleTestStation();
-  void handleLogs();
   void handleLogsData();
-  void handleTrains();
-  void handleUpdate();
   void handleUpdateFirmware();
   void handleUpdateFirmwareUpload();
   void handleUpdateFilesystem();

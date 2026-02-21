@@ -32,6 +32,7 @@ private:
   void handleUpdateFilesystem();
   void handleUpdateFilesystemUpload();
   void handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length);
+  void handleStaticFile(const String& path, const String& contentType);
   
   WebServer server{WEB_SERVER_PORT};
   WebSocketsServer webSocket{WEB_SOCKET_PORT};

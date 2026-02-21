@@ -20,6 +20,7 @@ void WebServerManager::setup() {
   // Register handlers
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
   server.on("/global.css", HTTP_GET, [this]() { this->handleGlobalCss(); });
+  server.on("/notyf.js", HTTP_GET, [this]() { this->handleStaticFile("/notyf.js", "application/javascript"); });
   server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });
   server.on("/test-station", HTTP_POST, [this]() { this->handleTestStation(); });
@@ -59,6 +60,16 @@ void WebServerManager::handleGlobalCss() {
   }
   
   server.send(200, "text/css", css);
+}
+
+void WebServerManager::handleStaticFile(const String& path, const String& contentType) {
+  String content = fileSystemManager.readFile(path.c_str());
+  if (content.isEmpty()) {
+    server.send(500, "text/plain", "Failed to load " + path + " - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+    return;
+  }
+
+  server.send(200, contentType, content);
 }
 
 void WebServerManager::handleRoot() {

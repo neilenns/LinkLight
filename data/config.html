@@ -9,32 +9,6 @@
     ></script>
     <link rel="stylesheet" href="global.css" />
     <style>
-      .label-on-left {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: var(--wa-space-l);
-        align-items: center;
-
-        wa-input,
-        wa-select,
-        wa-color-picker {
-          grid-column: 1 / -1;
-          grid-row-end: span 2;
-          display: grid;
-          grid-template-columns: subgrid;
-          gap: 0 var(--wa-space-l);
-          align-items: center;
-        }
-
-        ::part(label) {
-          text-align: right;
-        }
-
-        ::part(hint) {
-          grid-column: 2;
-        }
-      }
-
       .led-test-footer {
         display: flex;
         gap: 12px;

@@ -7,7 +7,7 @@
       src="https://kit.webawesome.com/2ef289f478d44f55.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="/global.css" />
+    <link rel="stylesheet" href="global.css" />
     <style>
       .led-test-footer {
         display: flex;
@@ -61,24 +61,24 @@
             <wa-option value="EST5">Eastern Standard Time (no DST)</wa-option>
             <wa-option value="UTC0">UTC</wa-option>
           </wa-select>
-          <wa-input
+          <wa-number-input
             label="Refresh interval (seconds)"
             name="updateInterval"
-            type="number"
             value="{{updateInterval}}"
+            placeholder="15"
             min="15"
             max="60"
             hint="How often to check for train updates"
-          ></wa-input>
-          <wa-input
+          ></wa-number-input>
+          <wa-number-input
             label="At-station threshold (seconds)"
             name="atStationThreshold"
-            type="number"
             value="{{atStationThreshold}}"
+            placeholder="10"
             min="0"
             max="60"
             hint="How many seconds away trains can be from a station and still be considered at the station"
-          ></wa-input>
+          ></wa-number-input>
           <wa-color-picker
             name="line1Color"
             value="{{line1Color}}"

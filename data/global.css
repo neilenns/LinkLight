@@ -47,6 +47,7 @@ components, they will need to be added here.
 
   wa-input,
   wa-select,
+  wa-number-input,
   wa-color-picker {
     grid-column: 1 / -1;
     grid-row-end: span 2;

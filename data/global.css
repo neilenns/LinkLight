@@ -1,6 +1,7 @@
 :root {
   --ll-sound-transit-green: #28813f;
   --ll-sound-transit-blue: #007cad;
+  --ll-shared-track: #a1a100;
 }
 
 body {
@@ -9,4 +10,26 @@ body {
 
 h1 {
   color: var(--ll-sound-transit-blue);
+}
+
+wa-card {
+  margin-bottom: 12px;
+}
+
+wa-card h3 {
+  margin: 0;
+}
+
+.sound-transit-green {
+  background-color: var(--ll-sound-transit-green);
+  color: white;
+}
+
+.sound-transit-blue {
+  background-color: var(--ll-sound-transit-blue);
+  color: white;
+}
+
+.sound-transit-yellow {
+  background-color: var(--ll-shared-track);
 }

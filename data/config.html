@@ -4,16 +4,25 @@
     <meta charset="utf-8" />
     <title>LinkLight - Configuration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link rel="stylesheet" href="/global.css" />
     <script
       src="https://kit.webawesome.com/2ef289f478d44f55.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="global.css" />
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <style>
       .led-test-footer {
         display: flex;
         gap: 12px;
         align-items: center;
+      }
+
+      body {
+        width: 610px;
       }
     </style>
   </head>
@@ -130,11 +139,6 @@
       </wa-select>
       <div class="led-test-footer" slot="footer">
         <wa-button onclick="testStation()">Test station LEDs</wa-button>
-        <wa-callout
-          id="test-feedback"
-          variant="success"
-          style="display: none"
-        ></wa-callout>
       </div>
     </wa-card>
 
@@ -144,9 +148,18 @@
         var feedbackAlert = document.getElementById("test-feedback");
 
         if (!stationSelect || !stationSelect.value) {
-          feedbackAlert.variant = "danger";
-          feedbackAlert.textContent = "Please select a station";
-          feedbackAlert.open = true;
+          Toastify({
+            text: "Please select a station",
+            duration: 5000,
+            gravity: "bottom",
+            className: "wa-danger",
+            position: "right",
+            style: {
+              background: "var(--wa-color-fill-quiet)",
+              border: "1px solid var(--wa-color-border-quiet)",
+              color: "var(--wa-color-on-quiet)",
+            },
+          }).showToast();
           return;
         }
 
@@ -159,20 +172,47 @@
 
         xhr.onload = function () {
           if (xhr.status === 200) {
-            feedbackAlert.variant = "success";
-            feedbackAlert.textContent = "Station LEDs are now lit!";
-            feedbackAlert.classList.display = "";
+            Toastify({
+              text: "LEDs are now lit for the selected station",
+              duration: 5000,
+              gravity: "bottom",
+              className: "wa-success",
+              position: "right",
+              style: {
+                background: "var(--wa-color-fill-quiet)",
+                border: "1px solid var(--wa-color-border-quiet)",
+                color: "var(--wa-color-on-quiet)",
+              },
+            }).showToast();
           } else {
-            feedbackAlert.variant = "danger";
-            feedbackAlert.textContent = `Error testing station: ${xhr.statusText}`;
-            feedbackAlert.classList.display = "";
+            Toastify({
+              text: `Error testing station: ${xhr.statusText}`,
+              duration: 5000,
+              gravity: "bottom",
+              position: "right",
+              className: "wa-danger",
+              style: {
+                background: "var(--wa-color-fill-quiet)",
+                border: "1px solid var(--wa-color-border-quiet)",
+                color: "var(--wa-color-on-quiet)",
+              },
+            }).showToast();
           }
         };
 
         xhr.onerror = function () {
-          feedbackAlert.variant = "danger";
-          feedbackAlert.textContent = "Network error occurred";
-          feedbackAlert.classList.display = "";
+          Toastify({
+            text: "Network error occurred",
+            duration: 5000,
+            gravity: "bottom",
+            position: "right",
+            className: "wa-danger",
+            style: {
+              background: "var(--wa-color-fill-quiet)",
+              border: "1px solid var(--wa-color-border-quiet)",
+              color: "var(--wa-color-on-quiet)",
+            },
+          }).showToast();
         };
 
         xhr.send(`stationName=${encodeURIComponent(stationSelect.value)}`);

@@ -115,21 +115,19 @@
     <h1>LinkLight - System logs</h1>
 
     <div class="controls">
-      <div class="filter-container">
-        <wa-select
-          id="levelFilter"
-          size="small"
-          value="all"
-          aria-label="Filter logs by level"
-        >
-          <wa-option value="all">All</wa-option>
-          <wa-option value="E">Error</wa-option>
-          <wa-option value="W">Warning</wa-option>
-          <wa-option value="I">Info</wa-option>
-          <wa-option value="D">Debug</wa-option>
-          <wa-option value="V">Verbose</wa-option>
-        </wa-select>
-      </div>
+      <wa-select
+        id="levelFilter"
+        size="small"
+        value="all"
+        aria-label="Filter logs by level"
+      >
+        <wa-option value="all">All</wa-option>
+        <wa-option value="E">Error</wa-option>
+        <wa-option value="W">Warning</wa-option>
+        <wa-option value="I">Info</wa-option>
+        <wa-option value="D">Debug</wa-option>
+        <wa-option value="V">Verbose</wa-option>
+      </wa-select>
 
       <wa-button id="pauseButton" size="small">Pause</wa-button>
       <wa-button id="clearButton" size="small">Clear display</wa-button>
@@ -151,6 +149,7 @@
 
       const pauseButton = document.getElementById("pauseButton");
       const clearButton = document.getElementById("clearButton");
+      const levelFilter = document.getElementById("levelFilter");
 
       levelFilter.addEventListener("change", filterLogs);
       pauseButton.addEventListener("click", togglePause);

@@ -58,8 +58,8 @@ wa-card h3 {
 
 /* 
 Use with a div to align input field labels on the left, and the input field on the right.
-Right now only targets wa-input, wa-select, and wa-color-picker. When using additional
-components, they will need to be added here.
+Right now only targets wa-input, wa-select, wa-number-input, and wa-color-picker. When using
+additional components, they will need to be added here.
 */
 .label-on-left {
   display: grid;
@@ -69,14 +69,17 @@ components, they will need to be added here.
 
   wa-input,
   wa-select,
-  wa-number-input,
-  wa-color-picker {
+  wa-number-input {
     grid-column: 1 / -1;
     grid-row-end: span 2;
     display: grid;
     grid-template-columns: subgrid;
     gap: 0 var(--wa-space-l);
     align-items: center;
+  }
+
+  wa-color-picker {
+    grid-column: 1 / -1;
   }
 
   ::part(label) {

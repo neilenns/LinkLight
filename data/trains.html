@@ -211,13 +211,15 @@
 
     <div class="controls">
       <wa-button id="pauseButton" size="small">Pause</wa-button>
-      <wa-badge id="connectionStatus" variant="neutral" pill
+      <wa-badge id="connectionStatus" variant="neutral" appearance="filled" pill
         >Connecting...</wa-badge
       >
       <wa-badge
         id="focusIndicator"
         class="focus-indicator"
-        variant="primary"
+        variant="brand"
+        appearance="filled"
+        style="display: none"
         pill
       ></wa-badge>
       <span class="last-updated" id="lastUpdated"></span>

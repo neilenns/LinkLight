@@ -37,14 +37,12 @@
           <wa-input
             label="Hostname"
             name="hostname"
-            value="{{hostname}}"
             placeholder="LinkLight"
             hint="Used for mDNS discovery"
           ></wa-input>
           <wa-input
             label="API key"
             name="apiKey"
-            value="{{apiKey}}"
             placeholder="Enter OneBusAway API key"
             hint="Request an API key from SoundTransit and include it here"
           ></wa-input>
@@ -52,7 +50,6 @@
             label="Timezone"
             name="timezone"
             hint="Your local timezone"
-            value="{{timezone}}"
           >
             <wa-option value="PST8PDT,M3.2.0,M11.1.0"
               >Pacific Time (with DST)</wa-option
@@ -75,7 +72,6 @@
           <wa-number-input
             label="Refresh interval (seconds)"
             name="updateInterval"
-            value="{{updateInterval}}"
             placeholder="15"
             min="15"
             max="60"
@@ -84,7 +80,6 @@
           <wa-number-input
             label="At-station threshold (seconds)"
             name="atStationThreshold"
-            value="{{atStationThreshold}}"
             placeholder="10"
             min="0"
             max="60"
@@ -92,7 +87,6 @@
           ></wa-number-input>
           <wa-color-picker
             name="line1Color"
-            value="{{line1Color}}"
             format="hex"
             label="1 Line"
             swatches="#28813f"
@@ -100,7 +94,6 @@
           ></wa-color-picker>
           <wa-color-picker
             name="line2Color"
-            value="{{line2Color}}"
             format="hex"
             label="2 Line"
             swatches="#007cad"
@@ -108,7 +101,6 @@
           ></wa-color-picker>
           <wa-color-picker
             name="sharedColor"
-            value="{{sharedColor}}"
             format="hex"
             no-format-toggle
             label="Shared segment"
@@ -138,9 +130,6 @@
       </p>
       <wa-select id="testStationSelect" label="Select station">
         <wa-option value="">Choose a station...</wa-option>
-        {{#stations}}
-        <wa-option value="{{id}}">{{name}}</wa-option>
-        {{/stations}}
       </wa-select>
       <div class="led-test-footer" slot="footer">
         <wa-button onclick="testStation()">Test station LEDs</wa-button>
@@ -204,6 +193,52 @@
 
         xhr.send(`stationName=${encodeURIComponent(stationSelect.value)}`);
       }
+
+      function setFieldValue(selector, value) {
+        var el = document.querySelector(selector);
+        if (el) el.value = value;
+      }
+
+      fetch("/api/config")
+        .then(function (r) {
+          return r.json();
+        })
+        .then(function (data) {
+          setFieldValue('wa-input[name="hostname"]', data.hostname);
+          setFieldValue('wa-input[name="apiKey"]', data.apiKey);
+          setFieldValue('wa-select[name="timezone"]', data.timezone);
+          setFieldValue(
+            'wa-number-input[name="updateInterval"]',
+            data.updateInterval,
+          );
+          setFieldValue(
+            'wa-number-input[name="atStationThreshold"]',
+            data.atStationThreshold,
+          );
+          setFieldValue('wa-color-picker[name="line1Color"]', data.line1Color);
+          setFieldValue('wa-color-picker[name="line2Color"]', data.line2Color);
+          setFieldValue('wa-color-picker[name="sharedColor"]', data.sharedColor);
+        })
+        .catch(function (e) {
+          console.error("Failed to load config:", e);
+        });
+
+      fetch("/api/stations")
+        .then(function (r) {
+          return r.json();
+        })
+        .then(function (stations) {
+          var select = document.getElementById("testStationSelect");
+          stations.forEach(function (station) {
+            var option = document.createElement("wa-option");
+            option.value = station.id;
+            option.textContent = station.name;
+            select.appendChild(option);
+          });
+        })
+        .catch(function (e) {
+          console.error("Failed to load stations:", e);
+        });
     </script>
   </body>
 </html>

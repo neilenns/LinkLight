@@ -18,17 +18,19 @@ public:
   void sendLEDState(int clientNum = -1);
   
 private:
-  void handleRoot();
-  void handleConfig();
+  void handleFile();
   void handleSaveConfig();
   void handleTestStation();
   void handleLogsData();
+  void handleStatusApi();
+  void handleConfigApi();
+  void handleStationsApi();
   void handleUpdateFirmware();
   void handleUpdateFirmwareUpload();
   void handleUpdateFilesystem();
   void handleUpdateFilesystemUpload();
   void handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length);
-  void handleStaticFile(const String& path, const String& contentType);
+  String getMimeType(const String& path);
   
   WebServer server{WEB_SERVER_PORT};
   WebSocketsServer webSocket{WEB_SOCKET_PORT};

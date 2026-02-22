@@ -48,11 +48,11 @@
       <div class="info">
         <div class="info-item">
           <span class="info-label">Hostname</span>
-          <span>{{hostname}}</span>
+          <span id="hostname"></span>
         </div>
         <div class="info-item">
           <span class="info-label">IP address</span>
-          <span>{{ipAddress}}</span>
+          <span id="ipAddress"></span>
         </div>
       </div>
     </wa-card>
@@ -63,5 +63,18 @@
       <wa-button href="/update">Firmware update</wa-button>
       <wa-button href="/logs">System logs</wa-button>
     </div>
+    <script>
+      fetch("/api/status")
+        .then(function (r) {
+          return r.json();
+        })
+        .then(function (data) {
+          document.getElementById("hostname").textContent = data.hostname;
+          document.getElementById("ipAddress").textContent = data.ipAddress;
+        })
+        .catch(function (e) {
+          console.error("Failed to load status:", e);
+        });
+    </script>
   </body>
 </html>

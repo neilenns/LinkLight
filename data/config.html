@@ -19,6 +19,27 @@
       body {
         width: 610px;
       }
+      /* Styles used to display trains as LED squares */
+      [class^="led-square"] {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background-color: var(--wa-color-neutral-20);
+        flex-shrink: 0;
+        display: inline-block;
+      }
+
+      .led-square-green {
+        background-color: var(--ll-sound-transit-green);
+      }
+
+      .led-square-blue {
+        background-color: var(--ll-sound-transit-blue);
+      }
+
+      .led-square-yellow {
+        background-color: var(--ll-shared-track);
+      }
     </style>
   </head>
   <body>

@@ -30,6 +30,22 @@
         box-sizing: border-box;
         gap: 10px;
       }
+
+      .last-updated {
+        color: var(--wa-color-text-quiet);
+        font-size: var(--wa-font-size-s);
+        margin-left: auto;
+      }
+
+      .state-at-station {
+        color: var(--wa-color-green-80);
+        font-weight: var(--wa-font-weight-semibold);
+      }
+      .state-moving {
+        color: var(--wa-color-cyan-80);
+      }
+
+      /* LED grid styles */
       .led-grid {
         background-color: var(--wa-color-surface-raised);
         border: var(--wa-border-style) var(--wa-border-width-s)
@@ -79,6 +95,39 @@
       }
       .led-square.shared-track {
         background-color: var(--ll-shared-track);
+      }
+
+      /* LED popup styles */
+      /* LED hover popup */
+      .led-popup {
+        position: fixed;
+        inset: auto;
+        margin: 8px;
+        padding: 8px;
+        border: var(--wa-border-style) var(--wa-border-width-s)
+          var(--wa-color-surface-raised);
+        border-radius: var(--wa-border-radius-m);
+        background-color: var(--wa-color-surface-raised);
+        z-index: 100;
+        cursor: text;
+      }
+      .led-popup:not(:popover-open) {
+        display: none;
+      }
+      .train-card:last-child {
+        margin-bottom: 0;
+      }
+      wa-card::part(body) {
+        padding-top: 12px;
+      }
+      wa-card::part(header) ::slotted(.line-1) {
+        background-color: var(--ll-sound-transit-green);
+      }
+      wa-card::part(header) ::slotted(.line-2) {
+        background-color: var(--ll-sound-transit-blue);
+      }
+      wa-card .train-card {
+        margin: 0px;
       }
 
       /* Train table styles*/
@@ -132,13 +181,6 @@
       tbody tr {
         cursor: pointer;
       }
-      td.state-at-station {
-        color: var(--wa-color-green-80);
-        font-weight: var(--wa-font-weight-semibold);
-      }
-      td.state-moving {
-        color: var(--wa-color-cyan-80);
-      }
       td.line-1 {
         color: var(--ll-sound-transit-green);
         font-weight: var(--wa-font-weight-semibold);
@@ -151,58 +193,6 @@
         color: var(--wa-color-text-quiet);
         text-align: center;
         padding: 40px;
-      }
-      .last-updated {
-        color: var(--wa-color-text-quiet);
-        font-size: var(--wa-font-size-s);
-        margin-left: auto;
-      }
-
-      /* LED hover popup */
-      .led-popup {
-        position: fixed;
-        inset: auto;
-        margin: 0;
-        padding: 0;
-        border: none;
-        background: transparent;
-        z-index: 100;
-        max-width: 280px;
-        cursor: text;
-      }
-      .led-popup:not(:popover-open) {
-        display: none;
-      }
-      .train-card {
-        background-color: #2d2d30;
-        border: 1px solid #3c3c3c;
-        border-radius: 4px;
-        padding: 8px 10px;
-        margin-bottom: 6px;
-        font-size: 12px;
-        line-height: 1.5;
-      }
-      .train-card:last-child {
-        margin-bottom: 0;
-      }
-      .train-card-header {
-        font-weight: bold;
-        margin-bottom: 4px;
-      }
-      .train-card-header.line-1 {
-        color: #4ec9b0;
-      }
-      .train-card-header.line-2 {
-        color: #569cd6;
-      }
-      .train-card-row {
-        color: #9cdcfe;
-      }
-      .train-card-state-at {
-        color: #4ec9b0;
-      }
-      .train-card-state-moving {
-        color: #9cdcfe;
       }
     </style>
   </head>
@@ -399,9 +389,7 @@
 
         let html = "";
         trains.forEach(function (train) {
-          const stateClass =
-            train.state === "At Station" ? "state-at-station" : "state-moving";
-          const lineClass = train.line === 1 ? "line-1" : "line-2";
+          const { stateClass, lineClass } = getTrainClasses(train);
           const focusedClass =
             train.vehicleId === focusedVehicleId ? " focused-train" : "";
 
@@ -428,6 +416,13 @@
         return div.innerHTML;
       }
 
+      function getTrainClasses(train) {
+        const stateClass =
+          train.state === "At Station" ? "state-at-station" : "state-moving";
+        const lineClass = train.line === 1 ? "line-1" : "line-2";
+        return { stateClass, lineClass };
+      }
+
       function updateConnectionStatus(connected) {
         const badge = document.getElementById("connectionStatus");
         if (connected) {
@@ -439,26 +434,10 @@
         }
       }
 
-      // LED hover popup (native dialog)
+      // LED click popup (native dialog)
       const ledGrid = document.getElementById("ledGrid");
       const ledPopup = document.getElementById("ledPopup");
-      let popupHideTimer = null;
-
-      function clearPopupHideTimer() {
-        if (popupHideTimer) {
-          clearTimeout(popupHideTimer);
-          popupHideTimer = null;
-        }
-      }
-
-      function schedulePopupHide() {
-        clearPopupHideTimer();
-        popupHideTimer = setTimeout(function () {
-          if (ledPopup.matches(":popover-open")) {
-            ledPopup.hidePopover();
-          }
-        }, 120);
-      }
+      let activeSquareId = "";
 
       function buildPopupHtml(ids) {
         let html = "";
@@ -466,17 +445,14 @@
           const train = trainLookup[id];
           if (!train) return;
           const headerClass = train.line === 1 ? "line-1" : "line-2";
-          const stateClass =
-            train.state === "At Station"
-              ? "train-card-state-at"
-              : "train-card-state-moving";
-          html += '<div class="train-card">';
-          html += `<div class="train-card-header ${headerClass}">Vehicle ${escapeHtml(train.vehicleId)} &mdash; Line ${train.line}</div>`;
-          html += `<div class="train-card-row">To: ${escapeHtml(train.headsign)}</div>`;
+          const { stateClass, lineClass } = getTrainClasses(train);
+          html += "<wa-card class='train-card'>";
+          html += `<div slot="header" class="${headerClass}">${escapeHtml(train.vehicleId)} &mdash; Line ${train.line}</div>`;
           html += `<div class="${stateClass}">${escapeHtml(train.state)}</div>`;
+          html += `<div class="train-card-row">To: ${escapeHtml(train.headsign)}</div>`;
           html += `<div class="train-card-row">Closest: ${escapeHtml(train.closestStop)}, ${prettyTime(train.closestStopTimeOffset)}</div>`;
           html += `<div class="train-card-row">Next: ${escapeHtml(train.nextStop)}, ${prettyTime(train.nextStopTimeOffset)}</div>`;
-          html += "</div>";
+          html += "</wa-card>";
         });
         return html;
       }
@@ -512,41 +488,20 @@
           ledPopup.showPopover();
         }
         positionPopup(square);
+        activeSquareId = square.id || "";
       }
 
-      ledGrid.addEventListener("pointerover", function (e) {
+      ledGrid.addEventListener("click", function (e) {
         const square = e.target.closest(".led-square.has-trains");
         if (!square) return;
-        clearPopupHideTimer();
+
+        if (ledPopup.matches(":popover-open") && activeSquareId === square.id) {
+          ledPopup.hidePopover();
+          activeSquareId = "";
+          return;
+        }
+
         showPopupForSquare(square);
-      });
-
-      ledGrid.addEventListener("pointerout", function (e) {
-        const square = e.target.closest(".led-square.has-trains");
-        if (!square) return;
-
-        if (
-          e.relatedTarget &&
-          (e.relatedTarget.closest(".led-square.has-trains") ||
-            e.relatedTarget.closest("#ledPopup"))
-        ) {
-          return;
-        }
-        schedulePopupHide();
-      });
-
-      ledPopup.addEventListener("pointerenter", function () {
-        clearPopupHideTimer();
-      });
-
-      ledPopup.addEventListener("pointerleave", function (e) {
-        if (
-          e.relatedTarget &&
-          e.relatedTarget.closest(".led-square.has-trains")
-        ) {
-          return;
-        }
-        schedulePopupHide();
       });
 
       document.addEventListener("pointerdown", function (e) {
@@ -558,6 +513,7 @@
           return;
         }
         ledPopup.hidePopover();
+        activeSquareId = "";
       });
 
       document

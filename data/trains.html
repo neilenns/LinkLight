@@ -98,11 +98,12 @@
       }
 
       /* LED tooltip styles */
-      .train-card:last-child {
-        margin-bottom: 0;
+      wa-popover::part(body) {
+        padding: 12px;
       }
       wa-card::part(body) {
         padding-top: 12px;
+        padding-bottom: 12px;
       }
       wa-card::part(header) {
         /* I don't understand why, but using var(--wa-font-weight-semibold) here doesn't work. */
@@ -116,6 +117,9 @@
       }
       wa-card .train-card {
         margin: 0px;
+      }
+      .train-card:last-child {
+        margin-bottom: 0;
       }
 
       /* Train table styles*/
@@ -353,7 +357,7 @@
             html += "></div>";
 
             if (hasTrains) {
-              html += `<wa-tooltip for="${squareId}" trigger="click" placement="bottom">${buildPopupHtml(ids)}</wa-tooltip>`;
+              html += `<wa-popover for="${squareId}" placement="bottom">${buildPopupHtml(ids)}</wa-popover>`;
             }
           }
           container.innerHTML = html;
@@ -435,8 +439,8 @@
           html += `<div slot="header" class="${lineClass}">${escapeHtml(train.vehicleId)} &mdash; Line ${train.line}</div>`;
           html += `<div class="${stateClass}">${escapeHtml(train.state)}</div>`;
           html += `<div class="train-card-row">To: ${escapeHtml(train.headsign)}</div>`;
-          html += `<div class="train-card-row">Closest: ${escapeHtml(train.closestStop)}, ${prettyTime(train.closestStopTimeOffset)}</div>`;
-          html += `<div class="train-card-row">Next: ${escapeHtml(train.nextStop)}, ${prettyTime(train.nextStopTimeOffset)}</div>`;
+          html += `<div class="train-card-row">Closest: ${escapeHtml(train.closestStop)}, ${prettyTime(train.closestStopTimeOffset, stateClass)}</div>`;
+          html += `<div class="train-card-row">Next: ${escapeHtml(train.nextStop)}, ${prettyTime(train.nextStopTimeOffset, stateClass)}</div>`;
           html += "</wa-card>";
         });
         return html || "Train details unavailable.";

@@ -120,11 +120,15 @@
       wa-card::part(body) {
         padding-top: 12px;
       }
-      wa-card::part(header) ::slotted(.line-1) {
-        background-color: var(--ll-sound-transit-green);
+      wa-card::part(header) {
+        /* I don't understand why, but using var(--wa-font-weight-semibold) here doesn't work. */
+        font-weight: bold;
       }
-      wa-card::part(header) ::slotted(.line-2) {
-        background-color: var(--ll-sound-transit-blue);
+      wa-card .line-1 {
+        color: var(--ll-sound-transit-green);
+      }
+      wa-card .line-2 {
+        color: var(--ll-sound-transit-blue);
       }
       wa-card .train-card {
         margin: 0px;

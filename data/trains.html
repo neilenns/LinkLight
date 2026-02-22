@@ -328,6 +328,7 @@
         }
       }
 
+      // Given a list of train IDs, determine the appropriate CSS class for the corresponding LED square based on which lines the trains belong to.
       function getClassFromTrainIds(trainIds) {
         let hasLine1 = false;
         let hasLine2 = false;
@@ -367,6 +368,7 @@
             const ids = ledMap[ledIndex] || [];
             const squareClass = getClassFromTrainIds(ids);
             const hasTrains = ids.length > 0;
+
             html += `<div class="led-square ${hasTrains ? "has-trains" : ""} ${squareClass}" id="led-${ledIndex}"`;
             if (hasTrains) {
               html += ` data-ids="${escapeHtml(ids.join(","))}"`;

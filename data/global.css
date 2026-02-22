@@ -42,6 +42,14 @@ wa-card h3 {
   background-color: var(--ll-shared-track);
 }
 
+/* Override the default tooltip styles so the background has a dark theme. */
+wa-tooltip::part(body) {
+  background-color: var(--wa-color-surface-raised);
+  border: var(--wa-border-style) var(--wa-border-width-s)
+    var(--wa-color-surface-border);
+  border-radius: var(--wa-border-radius-m);
+}
+
 /* 
 Use with a div to align input field labels on the left, and the input field on the right.
 Right now only targets wa-input, wa-select, and wa-color-picker. When using additional

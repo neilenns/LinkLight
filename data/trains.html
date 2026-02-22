@@ -97,23 +97,7 @@
         background-color: var(--ll-shared-track);
       }
 
-      /* LED popup styles */
-      /* LED hover popup */
-      .led-popup {
-        position: fixed;
-        inset: auto;
-        margin: 8px;
-        padding: 8px;
-        border: var(--wa-border-style) var(--wa-border-width-s)
-          var(--wa-color-surface-raised);
-        border-radius: var(--wa-border-radius-m);
-        background-color: var(--wa-color-surface-raised);
-        z-index: 100;
-        cursor: text;
-      }
-      .led-popup:not(:popover-open) {
-        display: none;
-      }
+      /* LED tooltip styles */
       .train-card:last-child {
         margin-bottom: 0;
       }
@@ -238,8 +222,6 @@
       </div>
     </div>
 
-    <div class="led-popup" id="ledPopup" popover="manual"></div>
-
     <div class="table-container">
       <table id="trainTable">
         <colgroup>
@@ -363,11 +345,16 @@
             const squareClass = getClassFromTrainIds(ids);
             const hasTrains = ids.length > 0;
 
-            html += `<div class="led-square ${hasTrains ? "has-trains" : ""} ${squareClass}" id="led-${ledIndex}"`;
+            const squareId = `led-${ledIndex}`;
+            html += `<div class="led-square ${hasTrains ? "has-trains" : ""} ${squareClass}" id="${squareId}"`;
             if (hasTrains) {
               html += ` data-ids="${escapeHtml(ids.join(","))}"`;
             }
             html += "></div>";
+
+            if (hasTrains) {
+              html += `<wa-tooltip for="${squareId}" trigger="click" placement="bottom">${buildPopupHtml(ids)}</wa-tooltip>`;
+            }
           }
           container.innerHTML = html;
         });
@@ -377,7 +364,7 @@
         lastTrains = trains;
         const tbody = document.getElementById("trainTableBody");
 
-        // Update train lookup used by the LED grid popup and colour computation
+        // Update train lookup used by the LED grid tooltip and colour computation
         trainLookup = {};
         if (trains) {
           trains.forEach(function (t) {
@@ -438,11 +425,6 @@
         }
       }
 
-      // LED click popup (native dialog)
-      const ledGrid = document.getElementById("ledGrid");
-      const ledPopup = document.getElementById("ledPopup");
-      let activeSquareId = "";
-
       function buildPopupHtml(ids) {
         let html = "";
         ids.forEach(function (id) {
@@ -458,67 +440,8 @@
           html += `<div class="train-card-row">Next: ${escapeHtml(train.nextStop)}, ${prettyTime(train.nextStopTimeOffset)}</div>`;
           html += "</wa-card>";
         });
-        return html;
+        return html || "Train details unavailable.";
       }
-
-      function positionPopup(square) {
-        const rect = square.getBoundingClientRect();
-        let x = rect.left;
-        let y = rect.bottom + 4;
-
-        ledPopup.style.left = `${x}px`;
-        ledPopup.style.top = `${y}px`;
-
-        const popupRect = ledPopup.getBoundingClientRect();
-        if (popupRect.right > window.innerWidth) {
-          x = window.innerWidth - popupRect.width - 4;
-          ledPopup.style.left = `${x}px`;
-        }
-        if (popupRect.bottom > window.innerHeight) {
-          y = rect.top - popupRect.height - 4;
-          ledPopup.style.top = `${y}px`;
-        }
-      }
-
-      function showPopupForSquare(square) {
-        const ids = square.dataset.ids ? square.dataset.ids.split(",") : [];
-        if (!ids.length) return;
-
-        const html = buildPopupHtml(ids);
-        if (!html) return;
-
-        ledPopup.innerHTML = html;
-        if (!ledPopup.matches(":popover-open")) {
-          ledPopup.showPopover();
-        }
-        positionPopup(square);
-        activeSquareId = square.id || "";
-      }
-
-      ledGrid.addEventListener("click", function (e) {
-        const square = e.target.closest(".led-square.has-trains");
-        if (!square) return;
-
-        if (ledPopup.matches(":popover-open") && activeSquareId === square.id) {
-          ledPopup.hidePopover();
-          activeSquareId = "";
-          return;
-        }
-
-        showPopupForSquare(square);
-      });
-
-      document.addEventListener("pointerdown", function (e) {
-        if (!ledPopup.matches(":popover-open")) return;
-        if (
-          e.target.closest("#ledPopup") ||
-          e.target.closest(".led-square.has-trains")
-        ) {
-          return;
-        }
-        ledPopup.hidePopover();
-        activeSquareId = "";
-      });
 
       document
         .getElementById("trainTableBody")

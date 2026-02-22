@@ -30,7 +30,7 @@ private:
   void handleUpdateFilesystem();
   void handleUpdateFilesystemUpload();
   void handleWebSocketEvent(uint8_t clientNum, WStype_t type, uint8_t * payload, size_t length);
-  String getMimeType(const String& path);
+  static String getMimeType(const String& path);
   
   WebServer server{WEB_SERVER_PORT};
   WebSocketsServer webSocket{WEB_SOCKET_PORT};

@@ -70,13 +70,13 @@ void WebServerManager::handleFile() {
   }
 
   if (!LittleFS.exists(path)) {
-    server.send(404, "text/plain", "File not found: " + path);
+    server.send(404, "text/plain", "Not found");
     return;
   }
 
   File file = LittleFS.open(path, "r");
   if (!file) {
-    server.send(500, "text/plain", "Failed to open file: " + path);
+    server.send(500, "text/plain", "Internal error");
     return;
   }
 
@@ -119,7 +119,8 @@ void WebServerManager::handleStationsApi() {
     JsonObject stationObj = stations.add<JsonObject>();
     stationObj["name"] = station.first;
     String id = station.first;
-    id.replace(" ", "_");
+    // Encode spaces as %20 since station names with spaces cannot be used as values in sl-option elements on the frontend
+    id.replace(" ", "%20");
     stationObj["id"] = id;
   }
 
@@ -239,7 +240,7 @@ void WebServerManager::handleTestStation() {
   }
   
   String stationName = server.arg("stationName");
-  stationName.replace("_", " ");  // Convert underscores back to spaces (values in sl-option cannot include spaces)
+  stationName.replace("%20", " ");  // Convert %20 back to spaces (station names are URL-encoded)
   
   // Call the LED controller to test the station
   ledController.testStationLEDs(stationName);

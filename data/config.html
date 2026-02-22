@@ -222,6 +222,7 @@
 
       fetch("/api/config")
         .then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
           return r.json();
         })
         .then(function (data) {
@@ -250,6 +251,7 @@
 
       fetch("/api/stations")
         .then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
           return r.json();
         })
         .then(function (stations) {

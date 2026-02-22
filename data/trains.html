@@ -269,7 +269,7 @@
         const abs = Math.abs(seconds);
 
         let out;
-        if (abs <= 0 || stateClass === "state-at-station") {
+        if (abs == 0 || stateClass === "state-at-station") {
           return "now";
         } else if (abs < 5) {
           return "soon";
@@ -430,10 +430,9 @@
         ids.forEach(function (id) {
           const train = trainLookup[id];
           if (!train) return;
-          const headerClass = train.line === 1 ? "line-1" : "line-2";
           const { stateClass, lineClass } = getTrainClasses(train);
           html += "<wa-card class='train-card'>";
-          html += `<div slot="header" class="${headerClass}">${escapeHtml(train.vehicleId)} &mdash; Line ${train.line}</div>`;
+          html += `<div slot="header" class="${lineClass}">${escapeHtml(train.vehicleId)} &mdash; Line ${train.line}</div>`;
           html += `<div class="${stateClass}">${escapeHtml(train.state)}</div>`;
           html += `<div class="train-card-row">To: ${escapeHtml(train.headsign)}</div>`;
           html += `<div class="train-card-row">Closest: ${escapeHtml(train.closestStop)}, ${prettyTime(train.closestStopTimeOffset)}</div>`;

@@ -15,18 +15,18 @@
       href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
     />
     <link rel="stylesheet" href="global.css" />
-  </head>
-  <style>
-    wa-card [slot="footer"] {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    <style>
+      wa-card [slot="footer"] {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-    wa-card [slot="footer"] wa-progress-bar {
-      flex: 1;
-    }
-  </style>
+      wa-card [slot="footer"] wa-progress-bar {
+        flex: 1;
+      }
+    </style>
+  </head>
   <body>
     <h1>LinkLight - Firmware update</h1>
 
@@ -101,7 +101,9 @@
               window.location.reload();
             }, 10000);
           } else {
-            notyf.error("Upload failed: " + xhr.responseText);
+            var msg = document.createElement("div");
+            msg.textContent = "Upload failed: " + xhr.responseText;
+            notyf.error(msg.textContent);
           }
         };
 

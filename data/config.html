@@ -238,9 +238,13 @@
           );
           setFieldValue('wa-color-picker[name="line1Color"]', data.line1Color);
           setFieldValue('wa-color-picker[name="line2Color"]', data.line2Color);
-          setFieldValue('wa-color-picker[name="sharedColor"]', data.sharedColor);
+          setFieldValue(
+            'wa-color-picker[name="sharedColor"]',
+            data.sharedColor,
+          );
         })
         .catch(function (e) {
+          notyf.error("Failed to load configuration");
           console.error("Failed to load config:", e);
         });
 
@@ -258,6 +262,7 @@
           });
         })
         .catch(function (e) {
+          notyf.error("Failed to load stations");
           console.error("Failed to load stations:", e);
         });
     </script>

@@ -14,16 +14,3 @@ void FileSystemManager::setup() {
     return;
   }
   }
-
-String FileSystemManager::readFile(const char* path) {
-  File file = LittleFS.open(path, "r");
-  if (!file) {
-    LINK_LOGE(LOG_TAG, "Failed to open file: %s", path);
-    return String();
-  }
-  
-  String content = file.readString();
-  file.close();
-  
-  return content;
-}

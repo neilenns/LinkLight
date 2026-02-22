@@ -8,6 +8,12 @@
       src="https://kit.webawesome.com/2ef289f478d44f55.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="/notyf.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+    />
     <link rel="stylesheet" href="global.css" />
     <style>
       body {
@@ -48,11 +54,11 @@
       <div class="info">
         <div class="info-item">
           <span class="info-label">Hostname</span>
-          <span>{{hostname}}</span>
+          <span id="hostname"></span>
         </div>
         <div class="info-item">
           <span class="info-label">IP address</span>
-          <span>{{ipAddress}}</span>
+          <span id="ipAddress"></span>
         </div>
       </div>
     </wa-card>
@@ -63,5 +69,20 @@
       <wa-button href="/update">Firmware update</wa-button>
       <wa-button href="/logs">System logs</wa-button>
     </div>
+    <script>
+      fetch("/api/status")
+        .then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        })
+        .then(function (data) {
+          document.getElementById("hostname").textContent = data.hostname;
+          document.getElementById("ipAddress").textContent = data.ipAddress;
+        })
+        .catch(function (e) {
+          notyf.error("Failed to load status");
+          console.error("Failed to load status:", e);
+        });
+    </script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 #include "WebServerManager.h"
 #include <WiFi.h>
 #include <ArduinoJson.h>
-#include <Ministache.h>
+#include <LittleFS.h>
 #include <Update.h>
 #include "LogManager.h"
 #include "FileSystemManager.h"
@@ -17,31 +17,22 @@ WebServerManager webServerManager;
 void WebServerManager::setup() {
   LINK_LOGD(LOG_TAG, "Setting up web server...");
   
-  // Register handlers
-  server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
-  
-  // CSS files
-  server.on("/global.css", HTTP_GET, [this]() { this->handleStaticFile("/global.css", "text/css"); });
-  server.on("/notyf.min.css", HTTP_GET, [this]() { this->handleStaticFile("/notyf.min.css", "text/css"); });
-  
-  // Javascript files
-  server.on("/notyf.min.js", HTTP_GET, [this]() { this->handleStaticFile("/notyf.min.js", "application/javascript"); });
-  server.on("/notyf.js", HTTP_GET, [this]() { this->handleStaticFile("/notyf.js", "application/javascript"); });
-  server.on("/webawesome.js", HTTP_GET, [this]() { this->handleStaticFile("/webawesome.js", "application/javascript"); });
-
-  server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
+  // Register API handlers
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });
   server.on("/test-station", HTTP_POST, [this]() { this->handleTestStation(); });
-  server.on("/logs", HTTP_GET, [this]() { this->handleStaticFile("/logs.html", "text/html"); });
   server.on("/api/logs", HTTP_GET, [this]() { this->handleLogsData(); });
-  server.on("/trains", HTTP_GET, [this]() { this->handleStaticFile("/trains.html", "text/html"); });
-  server.on("/update", HTTP_GET, [this]() { this->handleStaticFile("/update.html", "text/html"); });
+  server.on("/api/status", HTTP_GET, [this]() { this->handleStatusApi(); });
+  server.on("/api/config", HTTP_GET, [this]() { this->handleConfigApi(); });
+  server.on("/api/stations", HTTP_GET, [this]() { this->handleStationsApi(); });
   server.on("/update/firmware", HTTP_POST,
     [this]() { this->handleUpdateFirmware(); },
     [this]() { this->handleUpdateFirmwareUpload(); });
   server.on("/update/filesystem", HTTP_POST,
     [this]() { this->handleUpdateFilesystem(); },
     [this]() { this->handleUpdateFilesystemUpload(); });
+  
+  // Stream all static files from LittleFS
+  server.onNotFound([this]() { this->handleFile(); });
   
   // Start server
   server.begin();
@@ -60,64 +51,85 @@ void WebServerManager::handleClient() {
   webSocket.loop();
 }
 
-void WebServerManager::handleStaticFile(const String& path, const String& contentType) {
-  String content = fileSystemManager.readFile(path.c_str());
-  if (content.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load " + path + " - ensure filesystem was uploaded with 'pio run --target uploadfs'");
-    return;
-  }
-
-  server.send(200, contentType, content);
+String WebServerManager::getMimeType(const String& path) {
+  if (path.endsWith(".html")) return "text/html";
+  if (path.endsWith(".css")) return "text/css";
+  if (path.endsWith(".js")) return "application/javascript";
+  if (path.endsWith(".json")) return "application/json";
+  if (path.endsWith(".ico")) return "image/x-icon";
+  return "text/plain";
 }
 
-void WebServerManager::handleRoot() {
-  String html = fileSystemManager.readFile("/index.html");
-  if (html.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load index.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
+void WebServerManager::handleFile() {
+  String path = server.uri();
+
+  // Handle root path by serving index.html
+  if (path == "/") {
+    path = "/index.html";
+  } else if (path.indexOf('.') == -1) {
+    // For paths without a file extension, assume .html and append it
+    // This allows clean URLs like /about to serve /about.html without requiring the extension
+    path += ".html";
+  }
+
+  if (!LittleFS.exists(path)) {
+    server.send(404, "text/plain", "Not found");
     return;
   }
-  
-  // Create data for Ministache template
-  JsonDocument data(PSRAMJsonAllocator::instance());
-  data["ipAddress"] = WiFi.localIP().toString();
-  data["hostname"] = preferencesManager.getHostname();
-  
-  String output = ministache::render(html, data);
-  server.send(200, "text/html", output);
+
+  File file = LittleFS.open(path, "r");
+  if (!file) {
+    server.send(500, "text/plain", "Internal error");
+    return;
+  }
+
+  server.streamFile(file, getMimeType(path));
+  file.close();
 }
 
-void WebServerManager::handleConfig() {
-  String html = fileSystemManager.readFile("/config.html");
-  if (html.isEmpty()) {
-    server.send(500, "text/plain", "Failed to load config.html - ensure filesystem was uploaded with 'pio run --target uploadfs'");
-    return;
-  }
-  
-  // Create data for Ministache template
-  JsonDocument data(PSRAMJsonAllocator::instance());
-  data["apiKey"] = preferencesManager.getApiKey();
-  data["hostname"] = preferencesManager.getHostname();
-  data["timezone"] = preferencesManager.getTimezone();
-  data["updateInterval"] = preferencesManager.getUpdateInterval();
-  data["atStationThreshold"] = preferencesManager.getAtStationThreshold();
-  data["line1Color"] = preferencesManager.getLine1Color();
-  data["line2Color"] = preferencesManager.getLine2Color();
-  data["sharedColor"] = preferencesManager.getSharedColor();
-  
-  // Add station data for the test dropdown
-  JsonArray stationsArray = data["stations"].to<JsonArray>();
+void WebServerManager::handleStatusApi() {
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  doc["hostname"] = preferencesManager.getHostname();
+  doc["ipAddress"] = WiFi.localIP().toString();
+
+  String response;
+  serializeJson(doc, response);
+  server.send(200, "application/json", response);
+}
+
+void WebServerManager::handleConfigApi() {
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  doc["apiKey"] = preferencesManager.getApiKey();
+  doc["hostname"] = preferencesManager.getHostname();
+  doc["timezone"] = preferencesManager.getTimezone();
+  doc["updateInterval"] = preferencesManager.getUpdateInterval();
+  doc["atStationThreshold"] = preferencesManager.getAtStationThreshold();
+  doc["line1Color"] = preferencesManager.getLine1Color();
+  doc["line2Color"] = preferencesManager.getLine2Color();
+  doc["sharedColor"] = preferencesManager.getSharedColor();
+
+  String response;
+  serializeJson(doc, response);
+  server.send(200, "application/json", response);
+}
+
+void WebServerManager::handleStationsApi() {
+  JsonDocument doc(PSRAMJsonAllocator::instance());
+  JsonArray stations = doc.to<JsonArray>();
+
   const std::map<String, StationLEDMapping>& stationMap = ledController.getStationMap();
-  
   for (const auto& station : stationMap) {
-    JsonObject stationObj = stationsArray.add<JsonObject>();
+    JsonObject stationObj = stations.add<JsonObject>();
     stationObj["name"] = station.first;
-    String stationId = station.first;
-    stationId.replace(" ", "_");
-    stationObj["id"] = stationId;
+    String id = station.first;
+    // Encode spaces as %20 since station names with spaces cannot be used as values in sl-option elements on the frontend
+    id.replace(" ", "%20");
+    stationObj["id"] = id;
   }
-  
-  String output = ministache::render(html, data);
-  server.send(200, "text/html", output);
+
+  String response;
+  serializeJson(doc, response);
+  server.send(200, "application/json", response);
 }
 
 void WebServerManager::handleSaveConfig() {
@@ -231,7 +243,7 @@ void WebServerManager::handleTestStation() {
   }
   
   String stationName = server.arg("stationName");
-  stationName.replace("_", " ");  // Convert underscores back to spaces (values in sl-option cannot include spaces)
+  stationName.replace("%20", " ");  // Convert %20 back to spaces (station names are URL-encoded)
   
   // Call the LED controller to test the station
   ledController.testStationLEDs(stationName);

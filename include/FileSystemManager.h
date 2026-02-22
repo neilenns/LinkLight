@@ -6,7 +6,6 @@
 class FileSystemManager {
 public:
   void setup();
-  String readFile(const char* path);
 };
 
 extern FileSystemManager fileSystemManager;

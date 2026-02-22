@@ -4,17 +4,17 @@
     <meta charset="utf-8" />
     <title>LinkLight - Configuration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
-    />
-    <link rel="stylesheet" href="global.css" />
     <script
       src="https://kit.webawesome.com/2ef289f478d44f55.js"
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="/notyf.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+    />
+    <link rel="stylesheet" href="global.css" />
     <style>
       .led-test-footer {
         display: flex;
@@ -24,6 +24,27 @@
 
       body {
         width: 610px;
+      }
+      /* Styles used to display trains as LED squares */
+      [class^="led-square"] {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background-color: var(--wa-color-neutral-20);
+        flex-shrink: 0;
+        display: inline-block;
+      }
+
+      .led-square-green {
+        background-color: var(--ll-sound-transit-green);
+      }
+
+      .led-square-blue {
+        background-color: var(--ll-sound-transit-blue);
+      }
+
+      .led-square-yellow {
+        background-color: var(--ll-shared-track);
       }
     </style>
   </head>

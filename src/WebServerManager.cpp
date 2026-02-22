@@ -19,8 +19,16 @@ void WebServerManager::setup() {
   
   // Register handlers
   server.on("/", HTTP_GET, [this]() { this->handleRoot(); });
+  
+  // CSS files
   server.on("/global.css", HTTP_GET, [this]() { this->handleStaticFile("/global.css", "text/css"); });
+  server.on("/notyf.min.css", HTTP_GET, [this]() { this->handleStaticFile("/notyf.min.css", "text/css"); });
+  
+  // Javascript files
+  server.on("/notyf.min.js", HTTP_GET, [this]() { this->handleStaticFile("/notyf.min.js", "application/javascript"); });
   server.on("/notyf.js", HTTP_GET, [this]() { this->handleStaticFile("/notyf.js", "application/javascript"); });
+  server.on("/webawesome.js", HTTP_GET, [this]() { this->handleStaticFile("/webawesome.js", "application/javascript"); });
+
   server.on("/config", HTTP_GET, [this]() { this->handleConfig(); });
   server.on("/config", HTTP_POST, [this]() { this->handleSaveConfig(); });
   server.on("/test-station", HTTP_POST, [this]() { this->handleTestStation(); });

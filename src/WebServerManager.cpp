@@ -63,9 +63,12 @@ String WebServerManager::getMimeType(const String& path) {
 void WebServerManager::handleFile() {
   String path = server.uri();
 
+  // Handle root path by serving index.html
   if (path == "/") {
     path = "/index.html";
   } else if (path.indexOf('.') == -1) {
+    // For paths without a file extension, assume .html and append it
+    // This allows clean URLs like /about to serve /about.html without requiring the extension
     path += ".html";
   }
 

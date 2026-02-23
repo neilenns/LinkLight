@@ -46,6 +46,16 @@
       .led-square-yellow {
         background-color: var(--ll-shared-track);
       }
+
+      wa-color-picker::part(swatches) {
+        grid-template-columns: repeat(auto-fit, minmax(1.5em, 3em));
+        justify-content: start;
+      }
+
+      wa-color-picker::part(swatch) {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+      }
     </style>
   </head>
   <body>

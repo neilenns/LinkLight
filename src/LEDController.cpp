@@ -145,7 +145,20 @@ int LEDController::getTrainLEDIndex(const TrainData& train) const {
     }
 
     const StationLEDMapping& nextMapping = nextStationInfo->second;
-    ledIndex = isNorthbound ? nextMapping.northboundEnrouteIndex : nextMapping.southboundEnrouteIndex;
+
+    // TODO: Remove this special case once the cross-lake connection is built.
+    // Northbound Line 2 trains heading to Int'l Dist/Chinatown show at Judkins Park's
+    // southboundEnrouteIndex rather than in the Line 1 section of the board.
+    if (train.line == Line::LINE_2 && isNorthbound && train.nextStopName == "Int'l Dist/Chinatown") {
+      auto judkinsParkInfo = stationMap.find("Judkins Park");
+      if (judkinsParkInfo != stationMap.end()) {
+        ledIndex = judkinsParkInfo->second.southboundEnrouteIndex;
+      } else {
+        ledIndex = nextMapping.northboundEnrouteIndex;
+      }
+    } else {
+      ledIndex = isNorthbound ? nextMapping.northboundEnrouteIndex : nextMapping.southboundEnrouteIndex;
+    }
   }
 
   // Ensure the index is within valid bounds

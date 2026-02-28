@@ -136,6 +136,7 @@
       }
       thead {
         position: sticky;
+        top: 0;
         background-color: var(--wa-color-surface-raised);
         font-size: var(--wa-font-size-m);
         z-index: 1;
@@ -231,15 +232,17 @@
         <colgroup>
           <col style="width: 11%" />
           <col style="width: 10%" />
-          <col style="width: 23%" />
+          <col style="width: 13%" />
+          <col style="width: 18%" />
           <col style="width: 10%" />
-          <col style="width: 23%" />
-          <col style="width: 23%" />
+          <col style="width: 19%" />
+          <col style="width: 19%" />
         </colgroup>
         <thead>
           <tr>
             <th>Vehicle ID</th>
             <th>Line</th>
+            <th>Direction</th>
             <th>Headsign</th>
             <th>State</th>
             <th>Closest stop</th>
@@ -248,7 +251,7 @@
         </thead>
         <tbody id="trainTableBody">
           <tr>
-            <td colspan="6" class="no-trains">Waiting for train data...</td>
+            <td colspan="7" class="no-trains">Waiting for train data...</td>
           </tr>
         </tbody>
       </table>
@@ -378,7 +381,7 @@
 
         if (!trains || trains.length === 0) {
           tbody.innerHTML =
-            '<tr><td colspan="6" class="no-trains">No trains found.</td></tr>';
+            '<tr><td colspan="7" class="no-trains">No trains found.</td></tr>';
           return;
         }
 
@@ -391,6 +394,7 @@
           html += `<tr data-vehicle-id="${escapeHtml(train.vehicleId)}" class="${focusedClass.trim()}">`;
           html += `<td>${escapeHtml(train.vehicleId)}</td>`;
           html += `<td class="${lineClass}">Line ${train.line}</td>`;
+          html += `<td>${escapeHtml(train.direction)}</td>`;
           html += `<td>${escapeHtml(train.headsign)}</td>`;
           html += `<td class="${stateClass}">${escapeHtml(train.state)}</td>`;
           html += `<td>${escapeHtml(train.closestStop)}, ${prettyTime(train.closestStopTimeOffset, stateClass)}</td>`;

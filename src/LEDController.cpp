@@ -147,15 +147,10 @@ int LEDController::getTrainLEDIndex(const TrainData& train) const {
     const StationLEDMapping& nextMapping = nextStationInfo->second;
 
     // TODO: Remove this special case once the cross-lake connection is built.
-    // Northbound Line 2 trains heading to Int'l Dist/Chinatown show at Judkins Park's
-    // southboundEnrouteIndex rather than in the Line 1 section of the board.
+    // Northbound Line 2 trains heading to Int'l Dist/Chinatown should show at the LED after Judkins Park
+    // rather than the LED south of Intl' Dist/Chinatown.
     if (train.line == Line::LINE_2 && isNorthbound && train.nextStopName == "Int'l Dist/Chinatown") {
-      auto judkinsParkInfo = stationMap.find("Judkins Park");
-      if (judkinsParkInfo != stationMap.end()) {
-        ledIndex = judkinsParkInfo->second.southboundEnrouteIndex;
-      } else {
-        ledIndex = nextMapping.northboundEnrouteIndex;
-      }
+      ledIndex = 134; // The special LED that's just after the Judkins Park LED on the northbound strip
     } else {
       ledIndex = isNorthbound ? nextMapping.northboundEnrouteIndex : nextMapping.southboundEnrouteIndex;
     }
